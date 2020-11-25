@@ -1,0 +1,407 @@
+---
+title: "What's new in flipbookr"
+subtitle: "With flipbookr and xaringan"
+author: "Gina Reynolds, December 2019"
+output:
+  xaringan::moon_reader:
+    seal: false
+    lib_dir: libs
+    css: [xaringan-themer.css]
+    nature:
+      ratio: 16:10
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+Flipbooks created with {flipbookr} and {xaringan} give intuition about coding pipelines by walking through code step-by-step and side-by-side with output. 
+They show the series of states from within a single pipeline. States are compared by superimposing one atop the next to deliver a movie-like experience.  Being able to see longer pipelines evolve gives a sense of narrative, and the side-by-side presentation of code and output translates easily between "what" and "how".  New features in {flipbookr} further strengthen comparison, storytelling, and translation capabilities.  The presentation will introduce and demonstrate the new functionality.
+
+```{r prepare_background, include = F}
+library(magrittr)
+honey_comb <- "https://images.unsplash.com/photo-1541697418880-71a2ccd305a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
+
+magick::image_read(honey_comb) %>% 
+  magick::image_colorize(opacity = 75, 
+                         color = "snow1") %>% 
+  magick::image_write(path = "background.png")
+```
+
+
+
+```{r xaringan-themer, include = F}
+xaringanthemer::style_mono_accent(
+  inverse_text_color = "#ff4500", #faded-orange
+  # hex color should be provided, or theme_xaringan doesn't work
+  base_color = 'grey40', #orange
+  title_slide_background_image = "https://images.unsplash.com/photo-1541697418880-71a2ccd305a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80",
+  background_image = "background.png",
+  code_font_size = '14px',
+  text_slide_number_color = '#b3b3b3', #grey70
+  link_color = '#ff4500', #orangered  
+  footnote_font_size = '0.5em',
+  footnote_position_bottom = "30px",
+  code_highlight_color = "#ffedcc", #faded-orange
+  extra_css = list(
+    ".pull-left-70" = list("float" = "left", "width" = "65.8%"),
+    ".pull-right-30" = list("float" = "right", "width" = "28.2%"),
+    ".pull-left-30" = list("float" = "left", "width" = "28.2%"),
+    ".pull-right-70" = list("float" = "right", "width" = "65.8%"),
+    ".orange" = list("color" = "#ffa500"),
+    ".note" = list("font-size" = "0.8em", "position" = "absolute", 
+      "bottom" = "30px", "padding-right" = "4em")
+  )
+)
+```
+
+
+
+
+
+
+class: left, top, inverse
+background-image: url(https://images.unsplash.com/photo-1541697418880-71a2ccd305a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80)
+background-size: cover
+
+# .Large[What's new in {flipbookr}?]
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+#### .right[Gina Reynolds<br>Photo Credit: Hannah Grace]
+
+
+
+
+```{r, include = F}
+# This is the recommended set up for flipbooks
+# you might think about setting cache to TRUE as you gain practice --- building flipbooks from scratch can be time consuming
+knitr::opts_chunk$set(fig.width = 6, message = FALSE, warning = FALSE, comment = "", cache = T, fig.retina = 3)
+library(flipbookr)
+library(tidyverse)
+xaringanExtra::use_webcam()
+```
+
+
+
+
+---
+
+
+`r chunk_reveal("example1", title = "### Flipbooks? ")`
+
+```{r example1, include = F}
+cars %>% 
+  ggplot() +
+  ggthemes::theme_solarized() +
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_point(fill = "plum4",
+             size = 6,
+             shape = 21, 
+             alpha = .9,
+             color = "beige")
+```
+
+
+---
+
+## And the package, {flipbookr}?
+
+```{r, out.width="50%", echo = F}
+knitr::include_graphics("https://evamaerey.github.io/images/hex_sticker_making_files/figure-html/britt_auto_01_output-1.png")
+```
+
+
+
+
+
+---
+
+## Strengths up till now: 
+
+##- useful comparison (superimposed states showing before-after changes)
+
+--
+
+##- tracking process gives a sense of narrative
+
+--
+
+##- useful translation (co-evolution of R code <-> output)
+
+
+
+
+---
+
+## New functionality allow for
+
+##- making *more* useful comparisons 
+
+--
+
+##- creating *more powerful* narratives
+
+--
+
+##- doing *more* useful translation
+
+
+
+---
+
+# Talk proposal:
+
+##- introduce new functionality
+
+--
+
+##- demo usage
+
+---
+
+
+---
+class: middle, center
+
+# 1. A tool for *more* useful comparisons
+
+
+
+
+---
+
+`r chunk_reveal("my_rotate", break_type = "rotate", widths = c(50,50), title = '#### break_type = "rotate" allows for comparison between choices as you cycle through code')`
+
+```{r my_rotate, eval = F, echo = F}
+ggplot(data = cars) +
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_point(size = 8,
+             shape = 21,
+             alpha = .9,
+             color = "snow") +
+  aes(fill = speed) +
+  scale_fill_gradient(low = "blue", high = "magenta") + #ROTATE
+  scale_fill_gradientn(colors = c("blue","green" , "red")) + #ROTATE
+  scale_fill_viridis_c(option = "viridis") + #ROTATE
+  scale_fill_viridis_c(option = "viridis", direction = -1) + #ROTATE
+  scale_fill_distiller(palette = "Spectral") #ROTATE
+```
+
+
+---
+
+`r chunk_reveal("my_replace", break_type = "replacement", widths = c(50,50), title = '#### break_type = "replacement" allows for comparison between choices as you cycle through replacements in code', replacements = c("magma", "cividis", "infirno", "viridis"), replace = "magma")`
+
+```{r my_replace, eval = F, echo = F}
+ggplot(data = cars) +
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_point(size = 8,
+             shape = 21,
+             alpha = .9,
+             color = "snow") +
+  aes(fill = speed) +
+  scale_fill_viridis_c(option = "magma")
+```
+
+
+
+---
+
+
+`r chunk_reveal("logical", display_type = c("code", "output", "output_lag"), color = c("black", "black", "grey5"), widths = c(1,1,1), title = '### display_type = c("code", "output", "output_lag") allows for lateral comparison between states')`
+
+```{r logical, include=F}
+list(1, 2) %>% 
+  list(1:5, 5, 
+       ., letters[1:4]) %>% 
+  .[[4]] %>% 
+  .[3]
+```
+
+
+
+
+
+---
+class: middle, center
+
+
+# 2. strengthen narratives and story telling
+
+
+---
+class: middle, center
+
+# `title = "## My title"`
+
+--
+
+# `widths = c(20, 80)`
+
+---
+
+`r chunk_reveal("cars3", title = "## The cars data were reported in 1930 by M. Ezekiel", widths = c(24, 75))`
+
+
+```{r cars3, include=F}
+cars %>% 
+  ggplot() +
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_point() +
+  aes(size = speed)
+```
+
+
+---
+class: middle, center
+
+# Create a 'slow essay' using text_reveal().
+
+---
+
+```{r, echo = F}
+"Sometimes, it's helpful to slow down and look at exactly one decision.| Flipbooks present code step-by-step and side-by-side with output.| They parse code pipelines.| And reconstruct code into partial builds.| Then present those builds with their output.| Both code and output are superimposed on the previous state. | This makes seeing what changed --- both in code and output --- easy." ->
+  philosophy
+```
+
+
+`r text_reveal(text = philosophy, sep = "\\|", class = "class: middle, center" )`
+
+
+---
+class: middle, center
+
+# 3. *more* translation capability
+
+
+---
+
+## `display_type = c("md", "code"), md = c("hi", "by"))`
+
+A series of markdown inputs may co-evolution with code or output
+
+
+---
+
+`r chunk_reveal("custom_example", md = c("### a value 2", "### assigned to x", "### computing: $$\\frac{1}{x}$$"), display_type = c("md", "code", "output"), title = '### display_type = c("md", "code"), md = c("hi", "by")) md panel allows co-evolution of markdown w/ code or output' )`
+
+
+
+```{r custom_example, include = F}
+2 ->
+  x
+
+1/x
+```
+
+
+---
+
+```{python, cache = F}
+import pandas as pd
+from vega_datasets import data
+import matplotlib.pylab as plt
+```
+
+
+---
+
+`r chunk_reveal("hans", lang = "python", left_assign=TRUE, title = "## translating between python and its output")`
+
+```{python hans, include = F, cache = F}
+gap_2000 = data \
+  .countries()  \
+  .drop(['_comment'], axis = 1) \
+  .filter(['country', 'life_expect',
+           'year', 'fertility'])
+           
+gap_2000 = gap_2000[gap_2000.year.eq(2000)] 
+```   
+
+
+---
+
+
+`r chunk_reveal("plotting1", lang = "python")`
+
+```{python plotting1, include = F}
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(figsize = (10,7))
+plt.scatter(x = gap_2000.life_expect, 
+            y = gap_2000.fertility)
+ax. set_title('Life expectancy and fertility are strongly negatively correlated',  
+    fontsize='x-large') 
+ax.set_xlabel('life expectancy (years)',
+    fontsize='x-large')
+ax.set_ylabel('fertility (average number of children)',
+    fontsize='x-large')
+```
+
+
+---
+
+## So new functionality adds to core strengths:
+
+--
+
+##- comparison
+
+--
+
+##- narrative
+
+--
+
+##- translation 
+
+---
+
+
+```{r cars2, include = F}
+ggplot(data = cars) +
+  aes(x = speed) +
+  aes(y = dist) + 
+  geom_point(alpha = .8) + 
+  aes(size = speed) + 
+  aes(color = speed) +
+  scale_size(range = c(3,8)) +
+  scale_color_viridis_c(option = "magma") +
+  labs(title = "Cars") +
+  theme(plot.title.position = "plot")
+```
+
+# The End!
+
+
+```{r, code = chunk_code_seq_as_vector("cars2"), echo = F, fig.show="hold", out.width="20%"}
+```
+
+
+```{css, eval = TRUE, echo = FALSE}
+.remark-code{line-height: 1.5; font-size: 80%}
+
+@media print {
+  .has-continuation {
+    display: block;
+  }
+}
+
+```

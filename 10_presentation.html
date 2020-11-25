@@ -1,0 +1,2831 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Flipbooks</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Evangeline Reynolds Korbel School of International Studies - University of Denver" />
+    <meta name="date" content="2019-12-20" />
+    <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Flipbooks
+## with flipbookr
+### Evangeline Reynolds Korbel School of International Studies - University of Denver
+### 2019-12-20
+
+---
+
+
+
+
+
+
+
+
+
+
+
+&lt;blockquote class="twitter-tweet"&gt;&lt;p lang="en" dir="ltr"&gt;📈 I learned a lot doing this week&amp;#39;s &lt;a href="https://twitter.com/hashtag/TidyTuesday?src=hash&amp;amp;ref_src=twsrc%5Etfw"&gt;#TidyTuesday&lt;/a&gt;. I had to make the axes and the lines connecting the points look hand-drawn (it takes some jittering!), and learn how to put a figure in the background. Happy with the result! Code below.&lt;a href="https://twitter.com/hashtag/dataviz?src=hash&amp;amp;ref_src=twsrc%5Etfw"&gt;#dataviz&lt;/a&gt; &lt;a href="https://twitter.com/hashtag/rstats?src=hash&amp;amp;ref_src=twsrc%5Etfw"&gt;#rstats&lt;/a&gt; &lt;a href="https://twitter.com/hashtag/ggplot2?src=hash&amp;amp;ref_src=twsrc%5Etfw"&gt;#ggplot2&lt;/a&gt; &lt;a href="https://twitter.com/R4DScommunity?ref_src=twsrc%5Etfw"&gt;@R4DScommunity&lt;/a&gt; &lt;a href="https://t.co/Gr0w37pbt9"&gt;pic.twitter.com/Gr0w37pbt9&lt;/a&gt;&lt;/p&gt;&amp;mdash; Gil Henriques 🌹 (he/him/his) (@_Gil_Henriques) &lt;a href="https://twitter.com/_Gil_Henriques/status/1166373844040335360?ref_src=twsrc%5Etfw"&gt;August 27, 2019&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="https://platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;
+
+
+---
+
+
+---
+
+``` r
+# 2019, August 27 - Gil J. B. Henriques
+# TidyTuesday: https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-08-27
+
+library(tidyverse)
+library(showtext) # for google fonts
+
+font_add_google("Gaegu", "gaegu")
+showtext_auto()
+
+
+# Read and prepare data ---------------------------------------------------
+df &lt;- read_delim("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-08-27/simpsons-guests.csv", delim = "|", quote = "")
+df2 &lt;- df %&gt;% mutate(number = strsplit(as.character(number), "; ")) %&gt;% 
+  unnest() %&gt;% # Splits rows that contain multiple episodes into multiple rows
+  group_by(season) %&gt;% summarize(guests_per_episode = n_distinct(guest_star)/n_distinct(number))
+
+
+# Prepare for plot --------------------------------------------------------
+# I want the axes and the line connecting the points to look hand-drawn, so I will use geom_line + jitter to draw them
+spline_int &lt;- as.data.frame(spline(as.numeric(df2$season), df2$guests_per_episode, method = "natural"))
+x.ax &lt;- data.frame(x = seq(from = 0, to = 30, by = 1), y = rep(0, 31))
+y.ax &lt;- data.frame(x = rep(0, 21), y = seq(from = 0, to = 4, by = 0.2))
+
+# Plotting ----------------------------------------------------------------
+windows()
+plot &lt;- df2 %&gt;% 
+  ggplot(aes(x = as.numeric(season), y = guests_per_episode)) + 
+  geom_point(size = 4, color = "white") + 
+  theme_void() + 
+  theme(text = element_text(family = "gaegu"),
+        axis.text = element_text(size = 15, color = "white"),
+        axis.title = element_text(size = 20, color = "white"),
+        plot.title = element_text(size = 25,face = "bold", color = "white", hjust = 0.5),
+        plot.caption = element_text(color = "white"),
+        plot.margin = margin(t = 1, r = 3, b = 1, l = 1, "cm"),
+        axis.title.y = element_text(angle = 90)) + 
+```
+
+---
+
+
+
+
+![](http://stat545.com/img/how-to-draw-an-own-imgur.jpg)&lt;!-- --&gt;
+
+
+---
+
+"If all the steps are known and recorded there, can't we present them as steps?"
+
+
+---
+
+&lt;iframe src="https://evamaerey.github.io/tidytuesday_walk_through/simpsons.html#8" width="504" height="400px"&gt;&lt;/iframe&gt;
+
+---
+
+
+
+
+
+# What are Flipbooks?
+
+
+--
+
+code and output
+
+--
+
+presented side-by-side
+
+--
+
+with evolutionary states incrementally superimposed
+
+--
+
+via automated parsing and reconstruction
+
+
+
+
+---
+
+# Incrementalism
+
+- move back and forward, at own pace
+- identify unfamiliar pieces
+
+
+--
+
+# Presenting smaller steps
+
+
+- less mental gymnastics (for familiar folks)
+
+--
+
+- less guesswork (for newcomers)
+
+--
+
+- reminders and reassurance (for the infrequent user)
+
+
+---
+
+# Okay, but why flipping?  
+
+
+--
+
+Why not infinitely scrolling through steps?
+
+
+--
+
+Why do we prefer *temporal* offset over than *spatial* offset?
+
+
+
+
+---
+
+# superimposition makes differencing easy...
+
+&lt;div class="figure"&gt;
+&lt;img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Hinman_collator.jpg" alt="'Carlton Hinman's mechanical collater and its adaptations have revolutionized collation.' (Randall McLeod - 1979)" width="80%" /&gt;
+&lt;p class="caption"&gt;'Carlton Hinman's mechanical collater and its adaptations have revolutionized collation.' (Randall McLeod - 1979)&lt;/p&gt;
+&lt;/div&gt;
+
+---
+
+&lt;img src="figures/shakespeare_spatial_offset.png" width="80%" /&gt;
+
+---
+
+
+&lt;img src="figures/shakespeare_superimposed.jpg" width="50%" /&gt;
+
+
+
+
+
+
+---
+
+&lt;div class="figure"&gt;
+&lt;img src="https://www.sightsize.com/wp-content/uploads/2015/08/Classic-ZEISS-Blink-Comparator.jpg" alt="Blink Comparator helped discover Pluto, toggling between two aligned images and noticing what moved" width="80%" /&gt;
+&lt;p class="caption"&gt;Blink Comparator helped discover Pluto, toggling between two aligned images and noticing what moved&lt;/p&gt;
+&lt;/div&gt;
+
+
+
+---
+
+![](https://upload.wikimedia.org/wikipedia/commons/d/d3/Global_LORRI_mosaic_of_Pluto_in_true_colour.jpg)&lt;!-- --&gt;
+
+
+
+
+
+---
+
+# less visual search ...
+
+... because visual search requires attention/concentration
+
+&lt;img src="https://upload.wikimedia.org/wikipedia/commons/0/0a/Spot_the_difference.png" width="80%" /&gt;
+
+&lt;!-- Lateral comparison is hard; superimposed temporal comparison is easy; Consider the \"spot the differences\" games. Imagine if these images were super imposed.  Flickering back and forth between the two of them, superimposed and aligned, and with changes made incrementally (one-by-one), the challenge would be taken out of the game. --&gt;
+
+---
+
+# less visual search ...
+
+&lt;img src="https://static.independent.co.uk/s3fs-public/thumbnails/image/2011/11/12/19/48-Where's-Wally-WALKER-BOOKS.jpg?w968" width="130%" /&gt;
+
+
+---
+
+# Motion detection is easy...
+
+... even for anphibians
+
+&lt;blockquote class="twitter-tweet"&gt;&lt;p lang="en" dir="ltr"&gt;Grant: &amp;quot;Don’t move! It can’t see us if we don’t move.&amp;quot; &lt;a href="https://twitter.com/hashtag/JurassicPark?src=hash&amp;amp;ref_src=twsrc%5Etfw"&gt;#JurassicPark&lt;/a&gt; &lt;a href="https://t.co/KtSdZWdq3d"&gt;pic.twitter.com/KtSdZWdq3d&lt;/a&gt;&lt;/p&gt;&amp;mdash; Jurassic Park Quotes (@JurassicPQuotes) &lt;a href="https://twitter.com/JurassicPQuotes/status/818931155818938368?ref_src=twsrc%5Etfw"&gt;January 10, 2017&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="https://platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;
+
+
+
+---
+
+&lt;iframe src="https://www.youtube.com/watch?v=NOs116aoyo0http://archives.evergreen.edu/webpages/curricular/2011-2012/m2o1112/web/amphibians.html#Motion_Detection" width="504" height="400px"&gt;&lt;/iframe&gt;
+
+
+---
+
+# Admitting to guess work...
+
+&lt;blockquote class="twitter-tweet"&gt;&lt;p lang="en" dir="ltr"&gt;Raise your hand if you learned to code by copy-pasting stuff from the internet and changing it until it broke. 🖐&lt;/p&gt;&amp;mdash; Thomas J. Leeper (@thosjleeper) &lt;a href="https://twitter.com/thosjleeper/status/1147840011125100544?ref_src=twsrc%5Etfw"&gt;July 7, 2019&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="https://platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;
+
+--
+
+&lt;!-- jhbadger comment on Hacker News:  --&gt;
+
+ggplot2 user:  It's easy to just find some code on the Web for a graph similar to what you want and tweak it for your data. ... The trick is to **really understand what each clause is doing**. 
+
+
+---
+ 
+# So, how is a flipbook built?
+
+User creates an input code that can be broken into steps
+
+
+
+
+
+```r
+cars %&gt;%  # the data 
+  filter(speed &gt; 4) %&gt;% 
+  ggplot() +  # begin plot   
+  aes(x = speed) +
+  aes(y = dist) + 
+  # geometric lyr
+  geom_point(
+    alpha = .3, 
+    color = "blue" 
+    ) + 
+  aes(size = speed) 
+```
+
+---
+
+# id of *lines* of code is given
+
+
+
+
+
+```
+# A tibble: 11 x 2
+    line raw_code                       
+   &lt;int&gt; &lt;chr&gt;                          
+ 1     1 "cars %&gt;%  # the data "        
+ 2     2 "  filter(speed &gt; 4) %&gt;% "     
+ 3     3 "  ggplot() +  # begin plot   "
+ 4     4 "  aes(x = speed) +"           
+ 5     5 "  aes(y = dist) + "           
+ 6     6 "  # geometric lyr"            
+ 7     7 "  geom_point("                
+ 8     8 "    alpha = .3, "             
+ 9     9 "    color = \"blue\" "        
+10    10 "    ) + "                     
+11    11 "  aes(size = speed) "         
+```
+
+
+---
+
+# parses code
+
+
+```
+# A tibble: 11 x 3
+   code                   connector comment        
+   &lt;chr&gt;                  &lt;chr&gt;     &lt;chr&gt;          
+ 1 "cars "                %&gt;%       # the data     
+ 2 "  filter(speed &gt; 4) " %&gt;%       ""             
+ 3 "  ggplot() "          +         # begin plot   
+ 4 "  aes(x = speed) "    +         ""             
+ 5 "  aes(y = dist) "     +         ""             
+ 6 ""                     ""        # geometric lyr
+ 7 "  geom_point("        ""        ""             
+ 8 "    alpha = .3,"      ""        ""             
+ 9 "    color = \"blue\"" ""        ""             
+10 "    ) "               +         ""             
+11 "  aes(size = speed)"  ""        ""             
+```
+
+
+---
+
+# calculate break points
+
+
+```
+# A tibble: 11 x 4
+   code                   connector comment         auto 
+   &lt;chr&gt;                  &lt;chr&gt;     &lt;chr&gt;           &lt;lgl&gt;
+ 1 "cars "                %&gt;%       # the data      TRUE 
+ 2 "  filter(speed &gt; 4) " %&gt;%       ""              TRUE 
+ 3 "  ggplot() "          +         # begin plot    TRUE 
+ 4 "  aes(x = speed) "    +         ""              TRUE 
+ 5 "  aes(y = dist) "     +         ""              TRUE 
+ 6 ""                     ""        # geometric lyr FALSE
+ 7 "  geom_point("        ""        ""              FALSE
+ 8 "    alpha = .3,"      ""        ""              FALSE
+ 9 "    color = \"blue\"" ""        ""              FALSE
+10 "    ) "               +         ""              TRUE 
+11 "  aes(size = speed)"  ""        ""              TRUE 
+```
+
+---
+
+# create the partial code to present sequentially
+
+
+
+```
+[1] "cars   # the data#&lt;&lt;"
+```
+
+--
+
+
+```
+[1] "cars %&gt;%  # the data"      "  filter(speed &gt; 4)   #&lt;&lt;"
+```
+
+--
+
+
+```
+[1] "cars %&gt;%  # the data"         "  filter(speed &gt; 4) %&gt;%  "   
+[3] "  ggplot()   # begin plot#&lt;&lt;"
+```
+
+
+&lt;!-- --- --&gt;
+
+&lt;!-- # ... using the `partial_chunk()` function   --&gt;
+
+&lt;!-- ```{r what_partial_chunk, eval = F, echo = T} --&gt;
+&lt;!-- flipbookr::partial_chunk( --&gt;
+&lt;!--   chunk_name = "the_cars", # point to input chunk by name  --&gt;
+&lt;!--   which_show = 1:5, # what lines should be shown #REVEAL2 --&gt;
+&lt;!--   which_highlight = 5, # what lines should be highlighted #REVEAL3 --&gt;
+&lt;!--   reg_assign = FALSE # is regular assignment is used #REVEAL4 --&gt;
+&lt;!--   ) --&gt;
+&lt;!-- ``` --&gt;
+
+&lt;!-- r flipbookr::reveal("what_partial_chunk", display_type = "code", break_type = "non_seq")` --&gt;
+
+
+---
+
+# create instructions...  
+
+... to present each partial code snippet and output side by side as frames
+
+--
+
+... an example with Xaringan
+
+
+````
+class: split-40
+count: false
+My Title
+.column[.content[
+```{r code_the_cars_1_auto, eval=FALSE, echo = TRUE, code=partial_chunk('the_cars', which_show = 1, which_highlight = 1, reg_assign = FALSE)}
+```
+]]
+.column[.content[
+```{r output_the_cars_1_auto, eval=TRUE, echo = FALSE, code=partial_chunk('the_cars', which_show = 1, which_highlight = 1, reg_assign = FALSE)}
+```
+]]
+---
+class: split-40
+count: false
+My Title
+.column[.content[
+```{r code_the_cars_2_auto, eval=FALSE, echo = TRUE, code=partial_chunk('the_cars', which_show = 1:2, which_highlight = 2, reg_assign = FALSE)}
+```
+]]
+.column[.content[
+```{r output_the_cars_2_auto, eval=TRUE, echo = FALSE, code=partial_chunk('the_cars', which_show = 1:2, which_highlight = 2, reg_assign = FALSE)}
+```
+]]
+---
+class: split-40
+count: false
+My Title
+.column[.content[
+```{r code_the_cars_3_auto, eval=FALSE, echo = TRUE, code=partial_chunk('the_cars', which_show = 1:3, which_highlight = 3, reg_assign = FALSE)}
+```
+]]
+.column[.content[
+```{r output_the_cars_3_auto, eval=TRUE, echo = FALSE, code=partial_chunk('the_cars', which_show = 1:3, which_highlight = 3, reg_assign = FALSE)}
+```
+]]
+````
+
+
+---
+
+# Use instructions to build flipbook. Voila! A flipbook is born...
+
+... on the next slide
+
+---
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*cars   # the data
+```
+]]
+.column[.content[
+
+```
+   speed dist
+1      4    2
+2      4   10
+3      7    4
+4      7   22
+5      8   16
+6      9   10
+7     10   18
+8     10   26
+9     10   34
+10    11   17
+11    11   28
+12    12   14
+13    12   20
+14    12   24
+15    12   28
+16    13   26
+17    13   34
+18    13   34
+19    13   46
+20    14   26
+21    14   36
+22    14   60
+23    14   80
+24    15   20
+25    15   26
+26    15   54
+27    16   32
+28    16   40
+29    17   32
+30    17   40
+31    17   50
+32    18   42
+33    18   56
+34    18   76
+35    18   84
+36    19   36
+37    19   46
+38    19   68
+39    20   32
+40    20   48
+41    20   52
+42    20   56
+43    20   64
+44    22   66
+45    23   54
+46    24   70
+47    24   92
+48    24   93
+49    24  120
+50    25   85
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  # the data
+* filter(speed &gt; 4)
+```
+]]
+.column[.content[
+
+```
+   speed dist
+1      7    4
+2      7   22
+3      8   16
+4      9   10
+5     10   18
+6     10   26
+7     10   34
+8     11   17
+9     11   28
+10    12   14
+11    12   20
+12    12   24
+13    12   28
+14    13   26
+15    13   34
+16    13   34
+17    13   46
+18    14   26
+19    14   36
+20    14   60
+21    14   80
+22    15   20
+23    15   26
+24    15   54
+25    16   32
+26    16   40
+27    17   32
+28    17   40
+29    17   50
+30    18   42
+31    18   56
+32    18   76
+33    18   84
+34    19   36
+35    19   46
+36    19   68
+37    20   32
+38    20   48
+39    20   52
+40    20   56
+41    20   64
+42    22   66
+43    23   54
+44    24   70
+45    24   92
+46    24   93
+47    24  120
+48    25   85
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  # the data
+  filter(speed &gt; 4) %&gt;%  
+* ggplot()   # begin plot
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_the_cars_3_auto-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  # the data
+  filter(speed &gt; 4) %&gt;%  
+  ggplot() +  # begin plot
+* aes(x = speed)
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_the_cars_4_auto-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  # the data
+  filter(speed &gt; 4) %&gt;%  
+  ggplot() +  # begin plot
+  aes(x = speed) +  
+* aes(y = dist)
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_the_cars_5_auto-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  # the data
+  filter(speed &gt; 4) %&gt;%  
+  ggplot() +  # begin plot
+  aes(x = speed) +  
+  aes(y = dist) +  
+* # geometric lyr
+* geom_point(
+*   alpha = .3,
+*   color = "blue"
+*   )
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_the_cars_6_auto-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  # the data
+  filter(speed &gt; 4) %&gt;%  
+  ggplot() +  # begin plot
+  aes(x = speed) +  
+  aes(y = dist) +  
+  # geometric lyr
+  geom_point(  
+    alpha = .3,  
+    color = "blue"  
+    ) +  
+* aes(size = speed)
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_the_cars_7_auto-1.png" width="504" /&gt;
+]]
+
+---
+
+
+
+
+
+
+
+
+---
+
+# Is there a package for that?
+
+--
+
+- Yes! flipbookr is available on github.
+
+To install: 
+
+``` r
+devtools::install_github("EvaMaeRey/flipbookr")
+```
+
+
+---
+
+# Flipbooking with flipbookr and Xaringan
+
+--
+
+- Create a new Xaringan document (you can do this from the template in flipbookr)
+
+--
+
+- load the flipbookr library
+
+
+
+```r
+library(flipbookr)
+```
+
+---
+
+# Create an code chunk to flipbookify
+
+
+````markdown
+```{r cars, echo = F, eval = F}
+cars %&gt;%             # the data 
+  filter(speed &gt; 4) %&gt;%  # subset
+  ggplot() +              # pipe to ggplot
+  aes(x = speed) +
+  aes(y = dist) + #REVEAL
+  # Describing what follows
+  geom_point(
+    alpha = .3, #REVEAL2
+    color = "blue" #REVEAL3
+    ) + #REVEAL
+  aes(size = speed) #REVEAL
+``
+````
+
+---
+
+# use flipbook::reveal() flipbook this code!
+
+
+&lt;!-- The above is for the html output version, just look at the examples below if you are in the source! --&gt;
+```markdown
+`r flipbook::reveal(chunk_name = "cars")`
+``` 
+
+---
+
+
+
+# flipbook modalities
+
+There are several modalities that you might be interested in using for "flipbookifying" your code and the next section is dedicated to demoing some of them below.
+
+
+- **break type** -- *which lines of code should be revealed when*, `break_type` defaults to "auto"
+
+--
+
+- **display type** -- *display code and output, or just output, or just code?*, `display_type` defaults to "both"
+
+--
+
+- **assignment type** -- *does code chunk use regular assignment?*, `reg_assign` defaults to FALSE
+
+
+
+
+
+---
+
+# `break_type`
+
+
+
+Notice the regular comments and the special #REVEAL comments, these will be used for a couple of the different "break type" modalities.
+
+
+
+```r
+cars %&gt;%             # the data 
+  filter(speed &gt; 4) %&gt;%  # subset
+  ggplot() +              # pipe to ggplot
+  aes(x = speed) +
+  aes(y = dist) + #REVEAL
+  # Describing what follows
+  geom_point(
+    alpha = .3, #REVEAL2
+    color = "blue" #REVEAL3
+    ) + #REVEAL
+  aes(size = speed) #REVEAL
+```
+
+&lt;!-- Also notice how we've created a new code chunk with the code from the previous chunk. --&gt;
+&lt;!-- This slide is also about giving you some intuition about how flipbooking works in the background. --&gt;
+&lt;!-- (more on this [here](https://emitanaka.rbind.io/post/knitr-knitr-code/)) --&gt;
+
+
+---
+
+## break_type = "auto"
+
+One parameter of flipbooking is the break_type.  The default is "auto", in which appropriate breakpoints are determined automatically --- by finding where parentheses are balanced. 
+
+---
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*cars   # the data
+```
+]]
+.column[.content[
+
+```
+   speed dist
+1      4    2
+2      4   10
+3      7    4
+4      7   22
+5      8   16
+6      9   10
+7     10   18
+8     10   26
+9     10   34
+10    11   17
+11    11   28
+12    12   14
+13    12   20
+14    12   24
+15    12   28
+16    13   26
+17    13   34
+18    13   34
+19    13   46
+20    14   26
+21    14   36
+22    14   60
+23    14   80
+24    15   20
+25    15   26
+26    15   54
+27    16   32
+28    16   40
+29    17   32
+30    17   40
+31    17   50
+32    18   42
+33    18   56
+34    18   76
+35    18   84
+36    19   36
+37    19   46
+38    19   68
+39    20   32
+40    20   48
+41    20   52
+42    20   56
+43    20   64
+44    22   66
+45    23   54
+46    24   70
+47    24   92
+48    24   93
+49    24  120
+50    25   85
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  # the data
+* filter(speed &gt; 4)   # subset
+```
+]]
+.column[.content[
+
+```
+   speed dist
+1      7    4
+2      7   22
+3      8   16
+4      9   10
+5     10   18
+6     10   26
+7     10   34
+8     11   17
+9     11   28
+10    12   14
+11    12   20
+12    12   24
+13    12   28
+14    13   26
+15    13   34
+16    13   34
+17    13   46
+18    14   26
+19    14   36
+20    14   60
+21    14   80
+22    15   20
+23    15   26
+24    15   54
+25    16   32
+26    16   40
+27    17   32
+28    17   40
+29    17   50
+30    18   42
+31    18   56
+32    18   76
+33    18   84
+34    19   36
+35    19   46
+36    19   68
+37    20   32
+38    20   48
+39    20   52
+40    20   56
+41    20   64
+42    22   66
+43    23   54
+44    24   70
+45    24   92
+46    24   93
+47    24  120
+48    25   85
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  # the data
+  filter(speed &gt; 4) %&gt;%  # subset
+* ggplot()   # pipe to ggplot
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_cars_3_auto-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  # the data
+  filter(speed &gt; 4) %&gt;%  # subset
+  ggplot() +  # pipe to ggplot
+* aes(x = speed)
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_cars_4_auto-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  # the data
+  filter(speed &gt; 4) %&gt;%  # subset
+  ggplot() +  # pipe to ggplot
+  aes(x = speed) +  
+* aes(y = dist)
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_cars_5_auto-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  # the data
+  filter(speed &gt; 4) %&gt;%  # subset
+  ggplot() +  # pipe to ggplot
+  aes(x = speed) +  
+  aes(y = dist) +  
+* # Describing what follows
+* geom_point(
+*   alpha = .3,
+*   color = "blue"
+*   )
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_cars_6_auto-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  # the data
+  filter(speed &gt; 4) %&gt;%  # subset
+  ggplot() +  # pipe to ggplot
+  aes(x = speed) +  
+  aes(y = dist) +  
+  # Describing what follows
+  geom_point(  
+    alpha = .3,  
+    color = "blue"  
+    ) +  
+* aes(size = speed)
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_cars_7_auto-1.png" width="504" /&gt;
+]]
+
+---
+
+## break_type = "user"
+
+If the break_type is set to "user", the breakpoints are those indicated by the user with the special comment #REVEAL
+
+
+```r
+cars %&gt;%             # the data 
+  filter(speed &gt; 4) %&gt;%  # subset
+  ggplot() +              # pipe to ggplot
+  aes(x = speed) +
+  aes(y = dist) + #REVEAL
+  # Describing what follows
+  geom_point(
+    alpha = .3, #REVEAL2
+    color = "blue" #REVEAL3
+    ) + #REVEAL
+  aes(size = speed) #REVEAL
+```
+
+
+
+---
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*cars %&gt;%  # the data
+* filter(speed &gt; 4) %&gt;%  # subset
+* ggplot() +  # pipe to ggplot
+* aes(x = speed) +
+* aes(y = dist)
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_cars_1_user-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  # the data
+  filter(speed &gt; 4) %&gt;%  # subset
+  ggplot() +  # pipe to ggplot
+  aes(x = speed) +  
+  aes(y = dist) +  
+* # Describing what follows
+* geom_point(
+*   alpha = .3,
+*   color = "blue"
+*   )
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_cars_2_user-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  # the data
+  filter(speed &gt; 4) %&gt;%  # subset
+  ggplot() +  # pipe to ggplot
+  aes(x = speed) +  
+  aes(y = dist) +  
+  # Describing what follows
+  geom_point(  
+    alpha = .3,  
+    color = "blue"  
+    ) +  
+* aes(size = speed)
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_cars_3_user-1.png" width="504" /&gt;
+]]
+
+---
+
+## break_type = "non_seq"
+
+If the break_type is set to "non_seq", the breakpoints are those indicated by the user with the special numeric comment #REVEAL2, #REVEAL3 etc to indicate at which point in time the code should appear.  
+
+
+```r
+cars %&gt;%             # the data 
+  filter(speed &gt; 4) %&gt;%  # subset
+  ggplot() +              # pipe to ggplot
+  aes(x = speed) +
+  aes(y = dist) + #REVEAL
+  # Describing what follows
+  geom_point(
+    alpha = .3, #REVEAL2
+    color = "blue" #REVEAL3
+    ) + #REVEAL
+  aes(size = speed) #REVEAL
+```
+
+
+
+---
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  # the data
+  filter(speed &gt; 4) %&gt;%  # subset
+  ggplot() +  # pipe to ggplot
+  aes(x = speed) +  
+  aes(y = dist) +  
+  # Describing what follows
+  geom_point(  
+    ) +  
+  aes(size = speed)  
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_cars_1_non_seq-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  # the data
+  filter(speed &gt; 4) %&gt;%  # subset
+  ggplot() +  # pipe to ggplot
+  aes(x = speed) +  
+  aes(y = dist) +  
+  # Describing what follows
+  geom_point(  
+*   alpha = .3,
+    ) +  
+  aes(size = speed)  
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_cars_2_non_seq-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  # the data
+  filter(speed &gt; 4) %&gt;%  # subset
+  ggplot() +  # pipe to ggplot
+  aes(x = speed) +  
+  aes(y = dist) +  
+  # Describing what follows
+  geom_point(  
+    alpha = .3,  
+*   color = "blue"
+    ) +  
+  aes(size = speed)  
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_cars_3_non_seq-1.png" width="504" /&gt;
+]]
+
+
+---
+
+## `break_type = 5` *(or entering the multiverse)*
+
+&lt;!-- Another modality is to set break_type equal to a positive integer, indicating that you want the same code chunk to be displayed multiple times. This makes the most sense in a setting where there is some randomization or random sampling and you want to see different realizations. Let's see this used on the user input code chunk "cars_multi", whose first step is to randomly sample rows from the data set cars with replacement. --&gt;
+
+
+
+
+```r
+cars %&gt;% 
+  sample_frac(size = 1, replace = T) %&gt;%      
+  ggplot() +              
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_count(
+    alpha = .3,
+    color = "blue" 
+    ) + 
+  geom_smooth(method = lm, se = F) +
+  coord_cartesian(xlim = range(cars$speed),
+                  ylim = range(cars$dist)) +
+  theme(legend.position = c(.9, .2))
+```
+
+
+---
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  
+  sample_frac(size = 1, replace = T) %&gt;%  
+  ggplot() +  
+  aes(x = speed) +  
+  aes(y = dist) +  
+  geom_count(  
+    alpha = .3,  
+    color = "blue"  
+    ) +  
+  geom_smooth(method = lm, se = F) +  
+  coord_cartesian(xlim = range(cars$speed),  
+                  ylim = range(cars$dist)) +  
+  theme(legend.position = c(.9, .2))  
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_cars_multi_1_3-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  
+  sample_frac(size = 1, replace = T) %&gt;%  
+  ggplot() +  
+  aes(x = speed) +  
+  aes(y = dist) +  
+  geom_count(  
+    alpha = .3,  
+    color = "blue"  
+    ) +  
+  geom_smooth(method = lm, se = F) +  
+  coord_cartesian(xlim = range(cars$speed),  
+                  ylim = range(cars$dist)) +  
+  theme(legend.position = c(.9, .2))  
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_cars_multi_2_3-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  
+  sample_frac(size = 1, replace = T) %&gt;%  
+  ggplot() +  
+  aes(x = speed) +  
+  aes(y = dist) +  
+  geom_count(  
+    alpha = .3,  
+    color = "blue"  
+    ) +  
+  geom_smooth(method = lm, se = F) +  
+  coord_cartesian(xlim = range(cars$speed),  
+                  ylim = range(cars$dist)) +  
+  theme(legend.position = c(.9, .2))  
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_cars_multi_3_3-1.png" width="504" /&gt;
+]]
+
+
+---
+
+# `display_type`
+
+- both
+- output
+- code
+
+
+&lt;!-- There are also different display modalities.  Namely you can indicate if you want "both" the code and the output displayed in your flipbookification, or just the "output" (perhaps to be used in a traditional presentation), or just the "code" (which might be used to kind of test student expectations about some code).  You have already seen the default where the parameter display_type is set to "both", but let's have a look at "output" and "code" only. --&gt;
+
+---
+
+## `display_type = "output"`
+
+Let's look at where only the *output* is displayed for the "cars" code chunk.
+
+
+---
+
+count: false
+
+&lt;img src="10_presentation_files/figure-html/output_cars_1_user-1.png" width="504" /&gt;
+---
+count: false
+
+&lt;img src="10_presentation_files/figure-html/output_cars_2_user-1.png" width="504" /&gt;
+---
+count: false
+
+&lt;img src="10_presentation_files/figure-html/output_cars_3_user-1.png" width="504" /&gt;
+
+---
+
+## `display_type = "code"`
+
+And now where only the *code* is displayed for the "cars" code chunk.
+
+
+---
+
+count: false
+
+
+```r
+*cars   # the data
+```
+---
+count: false
+
+
+```r
+cars %&gt;%  # the data
+* filter(speed &gt; 4)   # subset
+```
+---
+count: false
+
+
+```r
+cars %&gt;%  # the data
+  filter(speed &gt; 4) %&gt;%  # subset
+* ggplot()   # pipe to ggplot
+```
+---
+count: false
+
+
+```r
+cars %&gt;%  # the data
+  filter(speed &gt; 4) %&gt;%  # subset
+  ggplot() +  # pipe to ggplot
+* aes(x = speed)
+```
+---
+count: false
+
+
+```r
+cars %&gt;%  # the data
+  filter(speed &gt; 4) %&gt;%  # subset
+  ggplot() +  # pipe to ggplot
+  aes(x = speed) +  
+* aes(y = dist)
+```
+---
+count: false
+
+
+```r
+cars %&gt;%  # the data
+  filter(speed &gt; 4) %&gt;%  # subset
+  ggplot() +  # pipe to ggplot
+  aes(x = speed) +  
+  aes(y = dist) +  
+* # Describing what follows
+* geom_point(
+*   alpha = .3,
+*   color = "blue"
+*   )
+```
+---
+count: false
+
+
+```r
+cars %&gt;%  # the data
+  filter(speed &gt; 4) %&gt;%  # subset
+  ggplot() +  # pipe to ggplot
+  aes(x = speed) +  
+  aes(y = dist) +  
+  # Describing what follows
+  geom_point(  
+    alpha = .3,  
+    color = "blue"  
+    ) +  
+* aes(size = speed)
+```
+
+
+
+---
+
+# Assignment
+
+If you want to create an object in your flipbooks, it is most "natural" to use [reverse assignment](https://stat.ethz.ch/R-manual/R-devel/library/base/html/assignOps.html).  
+
+&lt;!-- Working sequentially with a pipeline of code, you get feedback all along the way until you get to the point of assigning all of what you have done to a new object with reverse assignment.  With regular assignment in R, you don't get any feedback, so flipbooking prefers this step at the end of a pipeline, so we can enjoy all the nice feedback. So the parameter reg_assign is by default set to FALSE. --&gt;
+
+
+![](http://www.mechanicsofsport.com/snowboarding/graphics/setup/regular-goofy.jpg)&lt;!-- --&gt;
+
+
+---
+
+
+# `reg_assign = TRUE`
+
+
+But, setting the reg_assign paramter to T and using regular assignment, you can still create a meaningful flipbook that gives you feedback.   When reg_assign = T, the first object that is created prints at the end of the derivative code chunks. 
+
+
+---
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*my_plot &lt;- cars   # the data
+ 
+my_plot # print object
+```
+]]
+.column[.content[
+
+```
+   speed dist
+1      4    2
+2      4   10
+3      7    4
+4      7   22
+5      8   16
+6      9   10
+7     10   18
+8     10   26
+9     10   34
+10    11   17
+11    11   28
+12    12   14
+13    12   20
+14    12   24
+15    12   28
+16    13   26
+17    13   34
+18    13   34
+19    13   46
+20    14   26
+21    14   36
+22    14   60
+23    14   80
+24    15   20
+25    15   26
+26    15   54
+27    16   32
+28    16   40
+29    17   32
+30    17   40
+31    17   50
+32    18   42
+33    18   56
+34    18   76
+35    18   84
+36    19   36
+37    19   46
+38    19   68
+39    20   32
+40    20   48
+41    20   52
+42    20   56
+43    20   64
+44    22   66
+45    23   54
+46    24   70
+47    24   92
+48    24   93
+49    24  120
+50    25   85
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+my_plot &lt;- cars %&gt;%  # the data
+* filter(speed &gt; 4)   # subset
+ 
+my_plot # print object
+```
+]]
+.column[.content[
+
+```
+   speed dist
+1      7    4
+2      7   22
+3      8   16
+4      9   10
+5     10   18
+6     10   26
+7     10   34
+8     11   17
+9     11   28
+10    12   14
+11    12   20
+12    12   24
+13    12   28
+14    13   26
+15    13   34
+16    13   34
+17    13   46
+18    14   26
+19    14   36
+20    14   60
+21    14   80
+22    15   20
+23    15   26
+24    15   54
+25    16   32
+26    16   40
+27    17   32
+28    17   40
+29    17   50
+30    18   42
+31    18   56
+32    18   76
+33    18   84
+34    19   36
+35    19   46
+36    19   68
+37    20   32
+38    20   48
+39    20   52
+40    20   56
+41    20   64
+42    22   66
+43    23   54
+44    24   70
+45    24   92
+46    24   93
+47    24  120
+48    25   85
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+my_plot &lt;- cars %&gt;%  # the data
+  filter(speed &gt; 4) %&gt;%  # subset
+* ggplot()   # pipe to ggplot
+ 
+my_plot # print object
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_reg_assign_3_auto-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+my_plot &lt;- cars %&gt;%  # the data
+  filter(speed &gt; 4) %&gt;%  # subset
+  ggplot() +  # pipe to ggplot
+* aes(x = speed)
+ 
+my_plot # print object
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_reg_assign_4_auto-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+my_plot &lt;- cars %&gt;%  # the data
+  filter(speed &gt; 4) %&gt;%  # subset
+  ggplot() +  # pipe to ggplot
+  aes(x = speed) +  
+* aes(y = dist)
+ 
+my_plot # print object
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_reg_assign_5_auto-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+my_plot &lt;- cars %&gt;%  # the data
+  filter(speed &gt; 4) %&gt;%  # subset
+  ggplot() +  # pipe to ggplot
+  aes(x = speed) +  
+  aes(y = dist) +  
+* geom_point()
+ 
+my_plot # print object
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_reg_assign_6_auto-1.png" width="504" /&gt;
+]]
+
+
+
+
+
+
+
+
+---
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*cars
+```
+]]
+.column[.content[
+
+```
+   speed dist
+1      4    2
+2      4   10
+3      7    4
+4      7   22
+5      8   16
+6      9   10
+7     10   18
+8     10   26
+9     10   34
+10    11   17
+11    11   28
+12    12   14
+13    12   20
+14    12   24
+15    12   28
+16    13   26
+17    13   34
+18    13   34
+19    13   46
+20    14   26
+21    14   36
+22    14   60
+23    14   80
+24    15   20
+25    15   26
+26    15   54
+27    16   32
+28    16   40
+29    17   32
+30    17   40
+31    17   50
+32    18   42
+33    18   56
+34    18   76
+35    18   84
+36    19   36
+37    19   46
+38    19   68
+39    20   32
+40    20   48
+41    20   52
+42    20   56
+43    20   64
+44    22   66
+45    23   54
+46    24   70
+47    24   92
+48    24   93
+49    24  120
+50    25   85
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  
+* ggplot()
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_plot_object_2_auto-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  
+  ggplot() +  
+* aes(x = speed)
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_plot_object_3_auto-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  
+  ggplot() +  
+  aes(x = speed) +  
+* aes(y = dist)
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_plot_object_4_auto-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  
+  ggplot() +  
+  aes(x = speed) +  
+  aes(y = dist) +  
+* geom_point()
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_plot_object_5_auto-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  
+  ggplot() +  
+  aes(x = speed) +  
+  aes(y = dist) +  
+  geom_point() -&gt;  
+*cars_plot
+```
+]]
+.column[.content[
+
+]]
+
+
+
+
+---
+
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*cars_plot
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_further_building_1_auto-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars_plot +  
+* labs(x = "Speed (mph)")
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_further_building_2_auto-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars_plot +  
+  labs(x = "Speed (mph)") +  
+* labs(y = "Stopping distance (ft)")
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_further_building_3_auto-1.png" width="504" /&gt;
+]]
+
+
+
+
+
+---
+
+# Beyond the tidyverse
+
+It is no surprise that Flipbooks are born in the context of the popularity of the tidyverse tools --- tools that are designed be be used in sequential pipelines and that give a satisfying amount of feedback along the way!
+
+But base R techniques and other popular tools can certainly also be employed.  
+
+---
+
+# "chaining" by overwriting objects
+
+---
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*cars_mod &lt;- cars
+ 
+cars_mod # print object
+```
+]]
+.column[.content[
+
+```
+   speed dist
+1      4    2
+2      4   10
+3      7    4
+4      7   22
+5      8   16
+6      9   10
+7     10   18
+8     10   26
+9     10   34
+10    11   17
+11    11   28
+12    12   14
+13    12   20
+14    12   24
+15    12   28
+16    13   26
+17    13   34
+18    13   34
+19    13   46
+20    14   26
+21    14   36
+22    14   60
+23    14   80
+24    15   20
+25    15   26
+26    15   54
+27    16   32
+28    16   40
+29    17   32
+30    17   40
+31    17   50
+32    18   42
+33    18   56
+34    18   76
+35    18   84
+36    19   36
+37    19   46
+38    19   68
+39    20   32
+40    20   48
+41    20   52
+42    20   56
+43    20   64
+44    22   66
+45    23   54
+46    24   70
+47    24   92
+48    24   93
+49    24  120
+50    25   85
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars_mod &lt;- cars  
+*cars_mod$half_dist &lt;- cars$dist / 2
+ 
+cars_mod # print object
+```
+]]
+.column[.content[
+
+```
+   speed dist half_dist
+1      4    2       1.0
+2      4   10       5.0
+3      7    4       2.0
+4      7   22      11.0
+5      8   16       8.0
+6      9   10       5.0
+7     10   18       9.0
+8     10   26      13.0
+9     10   34      17.0
+10    11   17       8.5
+11    11   28      14.0
+12    12   14       7.0
+13    12   20      10.0
+14    12   24      12.0
+15    12   28      14.0
+16    13   26      13.0
+17    13   34      17.0
+18    13   34      17.0
+19    13   46      23.0
+20    14   26      13.0
+21    14   36      18.0
+22    14   60      30.0
+23    14   80      40.0
+24    15   20      10.0
+25    15   26      13.0
+26    15   54      27.0
+27    16   32      16.0
+28    16   40      20.0
+29    17   32      16.0
+30    17   40      20.0
+31    17   50      25.0
+32    18   42      21.0
+33    18   56      28.0
+34    18   76      38.0
+35    18   84      42.0
+36    19   36      18.0
+37    19   46      23.0
+38    19   68      34.0
+39    20   32      16.0
+40    20   48      24.0
+41    20   52      26.0
+42    20   56      28.0
+43    20   64      32.0
+44    22   66      33.0
+45    23   54      27.0
+46    24   70      35.0
+47    24   92      46.0
+48    24   93      46.5
+49    24  120      60.0
+50    25   85      42.5
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars_mod &lt;- cars  
+cars_mod$half_dist &lt;- cars$dist / 2  
+*names(cars_mod)[2] &lt;- "distance"
+ 
+cars_mod # print object
+```
+]]
+.column[.content[
+
+```
+   speed distance half_dist
+1      4        2       1.0
+2      4       10       5.0
+3      7        4       2.0
+4      7       22      11.0
+5      8       16       8.0
+6      9       10       5.0
+7     10       18       9.0
+8     10       26      13.0
+9     10       34      17.0
+10    11       17       8.5
+11    11       28      14.0
+12    12       14       7.0
+13    12       20      10.0
+14    12       24      12.0
+15    12       28      14.0
+16    13       26      13.0
+17    13       34      17.0
+18    13       34      17.0
+19    13       46      23.0
+20    14       26      13.0
+21    14       36      18.0
+22    14       60      30.0
+23    14       80      40.0
+24    15       20      10.0
+25    15       26      13.0
+26    15       54      27.0
+27    16       32      16.0
+28    16       40      20.0
+29    17       32      16.0
+30    17       40      20.0
+31    17       50      25.0
+32    18       42      21.0
+33    18       56      28.0
+34    18       76      38.0
+35    18       84      42.0
+36    19       36      18.0
+37    19       46      23.0
+38    19       68      34.0
+39    20       32      16.0
+40    20       48      24.0
+41    20       52      26.0
+42    20       56      28.0
+43    20       64      32.0
+44    22       66      33.0
+45    23       54      27.0
+46    24       70      35.0
+47    24       92      46.0
+48    24       93      46.5
+49    24      120      60.0
+50    25       85      42.5
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars_mod &lt;- cars  
+cars_mod$half_dist &lt;- cars$dist / 2  
+names(cars_mod)[2] &lt;- "distance"  
+*cars_mod &lt;- cars_mod[cars_mod$distance &gt; 10,]
+ 
+cars_mod # print object
+```
+]]
+.column[.content[
+
+```
+   speed distance half_dist
+4      7       22      11.0
+5      8       16       8.0
+7     10       18       9.0
+8     10       26      13.0
+9     10       34      17.0
+10    11       17       8.5
+11    11       28      14.0
+12    12       14       7.0
+13    12       20      10.0
+14    12       24      12.0
+15    12       28      14.0
+16    13       26      13.0
+17    13       34      17.0
+18    13       34      17.0
+19    13       46      23.0
+20    14       26      13.0
+21    14       36      18.0
+22    14       60      30.0
+23    14       80      40.0
+24    15       20      10.0
+25    15       26      13.0
+26    15       54      27.0
+27    16       32      16.0
+28    16       40      20.0
+29    17       32      16.0
+30    17       40      20.0
+31    17       50      25.0
+32    18       42      21.0
+33    18       56      28.0
+34    18       76      38.0
+35    18       84      42.0
+36    19       36      18.0
+37    19       46      23.0
+38    19       68      34.0
+39    20       32      16.0
+40    20       48      24.0
+41    20       52      26.0
+42    20       56      28.0
+43    20       64      32.0
+44    22       66      33.0
+45    23       54      27.0
+46    24       70      35.0
+47    24       92      46.0
+48    24       93      46.5
+49    24      120      60.0
+50    25       85      42.5
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars_mod &lt;- cars  
+cars_mod$half_dist &lt;- cars$dist / 2  
+names(cars_mod)[2] &lt;- "distance"  
+cars_mod &lt;- cars_mod[cars_mod$distance &gt; 10,]  
+*cars_mod &lt;- cars_mod["distance"]
+ 
+cars_mod # print object
+```
+]]
+.column[.content[
+
+```
+   distance
+4        22
+5        16
+7        18
+8        26
+9        34
+10       17
+11       28
+12       14
+13       20
+14       24
+15       28
+16       26
+17       34
+18       34
+19       46
+20       26
+21       36
+22       60
+23       80
+24       20
+25       26
+26       54
+27       32
+28       40
+29       32
+30       40
+31       50
+32       42
+33       56
+34       76
+35       84
+36       36
+37       46
+38       68
+39       32
+40       48
+41       52
+42       56
+43       64
+44       66
+45       54
+46       70
+47       92
+48       93
+49      120
+50       85
+```
+]]
+
+
+
+
+
+---
+
+## using the .[] and .[[]] syntax with the migrittr pipe - %&gt;%
+
+Flipbooking can also be applied to logical indexing workflows if the steps are broken up using the %&gt;% followed by .[] and .[[]].  Thus flipbooking can also be used with base R logical indexing and with the popular `data.table` package. 
+
+
+---
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*cars
+```
+]]
+.column[.content[
+
+```
+   speed dist
+1      4    2
+2      4   10
+3      7    4
+4      7   22
+5      8   16
+6      9   10
+7     10   18
+8     10   26
+9     10   34
+10    11   17
+11    11   28
+12    12   14
+13    12   20
+14    12   24
+15    12   28
+16    13   26
+17    13   34
+18    13   34
+19    13   46
+20    14   26
+21    14   36
+22    14   60
+23    14   80
+24    15   20
+25    15   26
+26    15   54
+27    16   32
+28    16   40
+29    17   32
+30    17   40
+31    17   50
+32    18   42
+33    18   56
+34    18   76
+35    18   84
+36    19   36
+37    19   46
+38    19   68
+39    20   32
+40    20   48
+41    20   52
+42    20   56
+43    20   64
+44    22   66
+45    23   54
+46    24   70
+47    24   92
+48    24   93
+49    24  120
+50    25   85
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  
+* .[cars$speed &gt; median(cars$speed),]
+```
+]]
+.column[.content[
+
+```
+   speed dist
+27    16   32
+28    16   40
+29    17   32
+30    17   40
+31    17   50
+32    18   42
+33    18   56
+34    18   76
+35    18   84
+36    19   36
+37    19   46
+38    19   68
+39    20   32
+40    20   48
+41    20   52
+42    20   56
+43    20   64
+44    22   66
+45    23   54
+46    24   70
+47    24   92
+48    24   93
+49    24  120
+50    25   85
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  
+  .[cars$speed &gt; median(cars$speed),] %&gt;%  
+* .["speed"]
+```
+]]
+.column[.content[
+
+```
+   speed
+27    16
+28    16
+29    17
+30    17
+31    17
+32    18
+33    18
+34    18
+35    18
+36    19
+37    19
+38    19
+39    20
+40    20
+41    20
+42    20
+43    20
+44    22
+45    23
+46    24
+47    24
+48    24
+49    24
+50    25
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  
+  .[cars$speed &gt; median(cars$speed),] %&gt;%  
+  .["speed"] %&gt;%  
+* .[,1]
+```
+]]
+.column[.content[
+
+```
+ [1] 16 16 17 17 17 18 18 18 18 19 19 19 20 20 20 20 20 22 23 24 24 24 24 25
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+cars %&gt;%  
+  .[cars$speed &gt; median(cars$speed),] %&gt;%  
+  .["speed"] %&gt;%  
+  .[,1] -&gt;  
+*top_speeds
+```
+]]
+.column[.content[
+
+]]
+
+
+
+---
+
+
+# Base R plotting
+
+It has been a while since I've done much plotting with base R, but I think it is important to have an example or two. 
+
+---
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+*plot(cars, xlab = "Speed (mph)",
+*    ylab = "Stopping distance (ft)",
+*    las = 1)
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_base_r_plotting_1_auto-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+plot(cars, xlab = "Speed (mph)",  
+     ylab = "Stopping distance (ft)",  
+     las = 1)  
+*lines(lowess(cars$speed, cars$dist,
+*            f = 2/3, iter = 3),
+*     col = "red")
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_base_r_plotting_2_auto-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+plot(cars, xlab = "Speed (mph)",  
+     ylab = "Stopping distance (ft)",  
+     las = 1)  
+lines(lowess(cars$speed, cars$dist,  
+             f = 2/3, iter = 3),  
+      col = "red")  
+*title(main = "the `cars` data")
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_base_r_plotting_3_auto-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+plot(cars, xlab = "Speed (mph)",  
+     ylab = "Stopping distance (ft)",  
+     las = 1)  
+lines(lowess(cars$speed, cars$dist,  
+             f = 2/3, iter = 3),  
+      col = "red")  
+title(main = "the `cars` data")  
+*title(sub = "Data is from Ezekiel's (1930) 'Methods of Correlation Analysis'.")
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_base_r_plotting_4_auto-1.png" width="504" /&gt;
+]]
+
+
+
+
+---
+
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+* ## An example of polynomial regression
+*plot(cars, xlab = "Speed (mph)",
+*    ylab = "Stopping distance (ft)",
+*   las = 1, xlim = c(0, 25))
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_cars_anova_1_auto-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+  ## An example of polynomial regression
+plot(cars, xlab = "Speed (mph)",  
+     ylab = "Stopping distance (ft)",  
+    las = 1, xlim = c(0, 25))  
+*seq(0, 25, length.out = 200)
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_cars_anova_2_auto-1.png" width="504" /&gt;
+
+```
+  [1]  0.0000000  0.1256281  0.2512563  0.3768844  0.5025126  0.6281407
+  [7]  0.7537688  0.8793970  1.0050251  1.1306533  1.2562814  1.3819095
+ [13]  1.5075377  1.6331658  1.7587940  1.8844221  2.0100503  2.1356784
+ [19]  2.2613065  2.3869347  2.5125628  2.6381910  2.7638191  2.8894472
+ [25]  3.0150754  3.1407035  3.2663317  3.3919598  3.5175879  3.6432161
+ [31]  3.7688442  3.8944724  4.0201005  4.1457286  4.2713568  4.3969849
+ [37]  4.5226131  4.6482412  4.7738693  4.8994975  5.0251256  5.1507538
+ [43]  5.2763819  5.4020101  5.5276382  5.6532663  5.7788945  5.9045226
+ [49]  6.0301508  6.1557789  6.2814070  6.4070352  6.5326633  6.6582915
+ [55]  6.7839196  6.9095477  7.0351759  7.1608040  7.2864322  7.4120603
+ [61]  7.5376884  7.6633166  7.7889447  7.9145729  8.0402010  8.1658291
+ [67]  8.2914573  8.4170854  8.5427136  8.6683417  8.7939698  8.9195980
+ [73]  9.0452261  9.1708543  9.2964824  9.4221106  9.5477387  9.6733668
+ [79]  9.7989950  9.9246231 10.0502513 10.1758794 10.3015075 10.4271357
+ [85] 10.5527638 10.6783920 10.8040201 10.9296482 11.0552764 11.1809045
+ [91] 11.3065327 11.4321608 11.5577889 11.6834171 11.8090452 11.9346734
+ [97] 12.0603015 12.1859296 12.3115578 12.4371859 12.5628141 12.6884422
+[103] 12.8140704 12.9396985 13.0653266 13.1909548 13.3165829 13.4422111
+[109] 13.5678392 13.6934673 13.8190955 13.9447236 14.0703518 14.1959799
+[115] 14.3216080 14.4472362 14.5728643 14.6984925 14.8241206 14.9497487
+[121] 15.0753769 15.2010050 15.3266332 15.4522613 15.5778894 15.7035176
+[127] 15.8291457 15.9547739 16.0804020 16.2060302 16.3316583 16.4572864
+[133] 16.5829146 16.7085427 16.8341709 16.9597990 17.0854271 17.2110553
+[139] 17.3366834 17.4623116 17.5879397 17.7135678 17.8391960 17.9648241
+[145] 18.0904523 18.2160804 18.3417085 18.4673367 18.5929648 18.7185930
+[151] 18.8442211 18.9698492 19.0954774 19.2211055 19.3467337 19.4723618
+[157] 19.5979899 19.7236181 19.8492462 19.9748744 20.1005025 20.2261307
+[163] 20.3517588 20.4773869 20.6030151 20.7286432 20.8542714 20.9798995
+[169] 21.1055276 21.2311558 21.3567839 21.4824121 21.6080402 21.7336683
+[175] 21.8592965 21.9849246 22.1105528 22.2361809 22.3618090 22.4874372
+[181] 22.6130653 22.7386935 22.8643216 22.9899497 23.1155779 23.2412060
+[187] 23.3668342 23.4924623 23.6180905 23.7437186 23.8693467 23.9949749
+[193] 24.1206030 24.2462312 24.3718593 24.4974874 24.6231156 24.7487437
+[199] 24.8743719 25.0000000
+```
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+  ## An example of polynomial regression
+plot(cars, xlab = "Speed (mph)",  
+     ylab = "Stopping distance (ft)",  
+    las = 1, xlim = c(0, 25))  
+seq(0, 25, length.out = 200) -&gt;  
+* d
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_cars_anova_3_auto-1.png" width="504" /&gt;
+]]
+---
+class: split-40
+count: false
+
+.column[.content[
+
+```r
+  ## An example of polynomial regression
+plot(cars, xlab = "Speed (mph)",  
+     ylab = "Stopping distance (ft)",  
+    las = 1, xlim = c(0, 25))  
+seq(0, 25, length.out = 200) -&gt;  
+  d  
+*for (degree in 1:4) {
+* model &lt;- lm(dist ~ poly(speed, degree),
+*          data = cars)
+* lines(d,
+*       predict(model,
+*               data.frame(speed = d)),
+*       col = degree)
+*} 
+```
+]]
+.column[.content[
+&lt;img src="10_presentation_files/figure-html/output_cars_anova_4_auto-1.png" width="504" /&gt;
+]]
+
+
+
+
+
+
+---
+
+# Sharing your flipbooks (html website)
+
+- zip and ship
+- get it on github
+- flipbook mini coming soon - gif 
+
+---
+
+# Present
+
+- me making lot of flipbooks
+
+- educators making flipbooks for special occasions (workshops) with my messy script
+
+
+---
+
+# Near future
+
+- more people building flipbooks regularly using flipbookr! 
+
+---
+
+# Future future
+
+
+- Extension to other languages, py, stata, c++?
+
+- hacking the jupytr notebook? 
+
+
+---
+
+# Thanks to Flipbookers
+
+- Emi Tanaka
+- Garrick Aden-Buie
+
+At DU:
+
+- Ryan
+- Suraj
+- Matt
+
+
+
+---
+
+# Critical infrastructures
+
+Much gratitude for contributors authors of:
+
+- xaringan
+- remarkjs
+- ggplot2
+- magrittr
+- getParseData
+- glue
+- cowplot
+
+
+
+---
+
+
+# Flipbooks wish you a Merry Christmas
+
+... or sprucing up your random walk
+
+&lt;iframe src="file://localhost/Users/evangelinereynolds/Google%20Drive/tiny_flipbooks/02_spruce_up_random_walk.html" width="504" height="400px"&gt;&lt;/iframe&gt;
+
+
+---
+
+
+&lt;style type="text/css"&gt;
+.remark-code{line-height: 1.5; font-size: 80%}
+&lt;/style&gt;
+
+
+
+&lt;!-- # What are their advantages (Don Norman, the Design of Everyday Things) --&gt;
+&lt;!--  - natural mapping (matching code-output temporal changes) --&gt;
+&lt;!--  - affordances (ease of use - motion detection, name) --&gt;
+&lt;!--  - feedback (minimal changes mean that feedback is digestible) --&gt;
+
+
+
+&lt;!-- # Extending the basic --&gt;
+&lt;!--   # adding connectors, allowing code wrapping, using a parser (making it safe for human consumption) --&gt;
+&lt;!--   # using %&gt;% .[] - data.table --&gt;
+&lt;!--   # Regular Assignment --&gt;
+&lt;!--   # Non sequential reveal (not yet implemented) --&gt;
+&lt;!--   # Traditional presentations --&gt;
+&lt;!--   # Ensembles (not yet stable) --&gt;
+&lt;!--   # python, C++ (not yet implemented) --&gt;
+&lt;!--   # Visual Table of contents - "You do not need a slide for the Table of Contents!" --&gt;
+&lt;!--   # Flipbook mini (not yet final) --&gt;
+&lt;!-- # resources --&gt;
+&lt;!--   # package --&gt;
+&lt;!--   # flipbooks library (my uses) --&gt;
+&lt;!--   # minimal examples --&gt;
+&lt;!--   # video? --&gt;
+&lt;!-- # caviots --&gt;
+&lt;!--   # irreproducibility across platforms (fonts) --&gt;
+&lt;!--   # not, supported by remark.js, not going to work --&gt;
+&lt;!--   # may load slow (or not at all - leaflet) --&gt;
+&lt;!-- # future... --&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

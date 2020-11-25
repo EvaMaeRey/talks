@@ -1,0 +1,568 @@
+---
+title: "Modes of flipbooking"
+subtitle: "using {flipbookr}"
+author: "Evangeline 'Gina' Reynolds"
+date: 'November 28, 2020, 10am'
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, hygge, ninjutsu]
+    nature:
+      ratio: 16:10
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+```{r set_up_demo_suppliment, include = F}
+knitr::opts_chunk$set(message = F, comment = "", warning = F)
+library(tidyverse)
+library(flipbookr)
+```
+
+
+
+
+---
+class: center, middle, inverse
+
+# break_type = "non_seq"
+
+
+---
+class: inverse
+
+
+
+```markdown
+---
+
+``r 'r chunk_reveal(chunk_name = "my_cars", break_type = "non_seq")'``
+``` 
+
+
+````markdown
+```{r my_cars, include = FALSE}`r ''`
+cars %>%
+  filter(speed > 4) %>%
+  ggplot() +
+  aes(x = speed) +
+  aes(y = dist) + #BREAK
+  geom_point(
+    alpha = .3, #BREAK2
+    color = "blue" #BREAK3
+    ) + #BREAK
+  aes(size = speed) #BREAK
+```
+````
+
+
+---
+
+
+
+
+`r chunk_reveal("cars", break_type = "non_seq")`
+
+```{r cars, include = FALSE}
+cars %>%
+  filter(speed > 4) %>%
+  ggplot() +
+  aes(x = speed) +
+  aes(y = dist) + #BREAK
+  geom_point(
+    alpha = .3, #BREAK2
+    color = "blue" #BREAK3
+    ) + #BREAK
+  aes(size = speed) #BREAK
+```
+
+
+
+
+---
+class: center, middle, inverse
+
+# break_type = "rotate"
+
+
+---
+class: inverse
+
+
+
+```markdown
+---
+
+``r 'r chunk_reveal(chunk_name = "scales", break_type = "rotate")'``
+``` 
+
+
+````markdown
+```{r scales, eval = FALSE, echo = F}`r ''`
+cars %>%
+  filter(speed > 4) %>%
+  ggplot() +
+  aes(x = speed) +
+  aes(y = dist) + 
+  geom_point() + 
+  scale_x_log10() #ROTATE
+```
+````
+
+
+---
+
+
+
+
+`r chunk_reveal("scales", break_type = "rotate")`
+
+```{r scales, include = FALSE}
+cars %>%
+  filter(speed > 4) %>%
+  ggplot() +
+  aes(x = speed) +
+  aes(y = dist) + 
+  geom_point() + 
+  aes(color = dist) +
+  scale_x_log10() + #ROTATE
+  scale_y_reverse() + #ROTATE
+  scale_color_viridis_c() #ROTATE
+```
+
+
+
+
+
+---
+class: center, middle, inverse
+
+# `break_type = 5`
+## entering the multiverse
+
+
+---
+class: inverse
+
+
+
+```markdown
+---
+
+``r 'r chunk_reveal(chunk_name = "my_cars", break_type = 7)'``
+``` 
+
+
+````markdown
+```{r cars_multi, include = FALSE}`r ''`
+cars %>% 
+  sample_frac(
+    size = 1, replace = T
+    ) %>%      
+  ggplot() +              
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_count(
+    alpha = .3,
+    color = "blue" 
+    ) + 
+  geom_smooth(
+    method = lm, 
+    se = FALSE
+    ) +
+  coord_cartesian(
+    xlim = c(0,25),
+    ylim = c(0,125)) 
+```
+````
+
+
+
+
+---
+
+`r chunk_reveal("cars_multi", break_type = 7)`
+
+```{r cars_multi, include = FALSE}
+cars %>% 
+  sample_frac(
+    size = 1, replace = T
+    ) %>%      
+  ggplot() +              
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_count(
+    alpha = .3,
+    color = "blue" 
+    ) + 
+  geom_smooth(
+    method = lm, 
+    se = FALSE
+    ) +
+  coord_cartesian(
+    xlim = c(0,25),
+    ylim = c(0,125)) +
+  scale_size(breaks = 1:6, 
+             limits = c(1,6))
+```
+
+
+---
+class: center, middle, inverse
+
+# display_type = "output"
+
+
+---
+class: inverse
+
+
+
+```markdown
+---
+
+``r 'r chunk_reveal("my_cars_output", display_type = "output", break_type = "user")'``
+``` 
+
+
+````markdown
+```{r my_cars_output, include = FALSE}`r ''`
+cars %>% 
+  ggplot() +
+  aes(x = speed) + #BREAK
+  aes(y = dist) + #BREAK
+  geom_point(size = 4) + #BREAK
+  aes(color = speed) #BREAK
+```
+````
+
+
+
+
+
+---
+
+`r chunk_reveal("my_cars_output", display_type = "output", break_type = "user", chunk_options = "fig.width = 15")`
+
+
+```{r my_cars_output, echo = F, eval = F}
+cars %>% 
+  ggplot() +
+  theme_minimal(base_size = 20) +
+  aes(x = speed) + #BREAK
+  aes(y = dist) + #BREAK
+  geom_point(size = 4) + #BREAK
+  aes(color = speed) #BREAK
+```
+
+---
+class: center, middle, inverse
+
+# display_type = "code"
+
+
+
+
+---
+class: inverse
+
+
+
+```markdown
+---
+
+``r 'r chunk_reveal("my_cars_again_2", display_type = "code")'``
+``` 
+
+
+````markdown
+```{r my_cars_again_2, include = FALSE}`r ''`
+cars %>% 
+  ggplot() +
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_point(
+    color = "steelblue",
+    alpha = .9,
+    size = 4
+  ) +
+  theme_minimal()
+```
+````
+
+
+
+---
+
+
+
+`r chunk_reveal("my_cars_again_2", display_type = "code")`
+
+
+
+
+---
+
+```{r my_cars_again_2, echo = F, eval = F}
+cars %>% 
+  ggplot() +
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_point(
+    color = "steelblue",
+    alpha = .9,
+    size = 4
+  ) +
+  theme_minimal()
+```
+
+
+---
+class: center, middle
+
+# Telling longer stories
+## Flipbooking a wrangling chunk and create an object, then a plotting chunk with the object
+
+---
+class: inverse
+
+
+
+```markdown
+---
+
+``r 'r chunk_reveal("wrangle")'``
+``` 
+
+
+````markdown
+```{r wrangle, include = FALSE}`r ''`
+cars %>% 
+  mutate(high_speed = 
+           speed > 10) %>% 
+  mutate(high_dist = 
+           dist > 20) ->
+cars_mod
+```
+````
+
+---
+class: inverse
+
+
+
+```markdown
+---
+
+``r 'r chunk_reveal("plot")'``
+``` 
+
+
+````markdown
+```{r plot, include = FALSE}`r ''`
+cars_mod %>% 
+  ggplot() +
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_point() + 
+  geom_point(
+    aes(color = high_speed,
+        size = high_dist),
+    alpha = .5
+  ) 
+```
+````
+
+
+
+---
+
+`r chunk_reveal("wrangle")`
+
+
+```{r wrangle, include = F}
+cars %>% 
+  mutate(high_speed = 
+           speed > 10) %>% 
+  mutate(high_dist = 
+           dist > 20) ->
+cars_mod
+```
+
+---
+
+`r chunk_reveal("plot")`
+
+
+```{r plot, include = F}
+cars_mod %>% 
+  ggplot() +
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_point() + 
+  geom_point(
+    aes(color = high_speed,
+        size = high_dist),
+    alpha = .5
+  ) 
+```
+
+
+---
+class: top
+background-image: url(http://www.mechanicsofsport.com/snowboarding/graphics/setup/regular-goofy.jpg)
+background-size: contain
+
+
+
+
+
+???
+
+If you want to create an object in your flipbooks, it is most "natural" to use [right assignment](https://stat.ethz.ch/R-manual/R-devel/library/base/html/assignOps.html).
+
+Working sequentially with a pipeline of code, you get feedback all along the way until you get to the point of assigning all of what you have done to a new object with reverse assignment.  With regular assignment in R, you don't get any feedback, so flipbooking prefers this step at the end of a pipeline, so we can enjoy all the nice feedback. So the parameter left_assign is by default set to FALSE.
+
+---
+class: center, middle, inverse
+
+# `left_assign = TRUE`
+
+
+
+???
+
+But, setting the left_assign parameter to T and using regular assignment, you can still create a meaningful flipbook that gives you feedback.   When left_assign = T, the first object that is created prints at the end of the derivative code chunks. 
+
+---
+class: inverse
+
+
+
+```markdown
+---
+
+``r 'r chunk_reveal("cool_plot")'``
+``` 
+
+
+````markdown
+```{r cool_plot, include = FALSE}`r ''`
+my_plot <- cars %>%  
+  filter(speed > 
+           4) %>%  
+  ggplot() +      
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_point()
+```
+````
+
+
+---
+
+`r chunk_reveal("cool_plot", left_assign = T)`
+
+
+```{r cool_plot, echo = F, eval = F}
+my_plot <- cars %>%  
+  filter(speed > 
+           4) %>%  
+  ggplot() +      
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_point()
+```
+
+
+
+
+---
+class: center, middle, inverse
+# Use beyond the tidyverse
+
+
+???
+
+It is no surprise that Flipbooks are born in the context of the popularity of the tidyverse tools --- tools that are designed be be used in sequential pipelines and that give a satisfying amount of feedback along the way!
+
+But base R techniques and other popular tools can certainly also be employed.
+
+---
+class: center, middle, inverse
+# "chaining" by overwriting objects
+
+---
+
+`r chunk_reveal("left_assign2", break_type = "auto", left_assign = T, widths = c(1,1))`
+
+
+```{r left_assign2, echo = F, eval = F}
+cars_mod <- cars
+cars_mod$half_dist <- cars$dist/2
+names(cars_mod)[2] <- "distance"
+cars_mod <- cars_mod[
+  cars_mod$distance > 10,
+  ]
+cars_mod <- cars_mod["distance"]
+```
+
+
+---
+class: center, middle, inverse
+# use brackets and logical indexing
+
+--
+
+## with a .[] and .[[]] syntax with the migrittr pipe - %>%
+
+
+???
+
+Flipbooking can also be applied to logical indexing workflows if the steps are broken up using the %>% followed by .[] and .[[]].  Thus flipbooking can also be used with base R logical indexing and with the popular `data.table` package. 
+
+
+---
+
+`r chunk_reveal("dot_notation")`
+
+```{r dot_notation, include = F}
+cars %>% 
+  .[cars$speed > 
+      median(cars$speed),] %>% 
+  .["speed"] %>% 
+  .[,1] ->
+top_speeds
+```
+
+---
+class: inverse, middle, center
+
+# Base R plotting
+
+---
+
+`r chunk_reveal("base_r_plotting")`
+
+```{r base_r_plotting, echo = F, eval = F}
+plot(cars, 
+     xlab = "Speed (mph)", 
+     las = 1)
+lines(lowess(cars$speed, 
+             cars$dist, 
+             f = 2/3, 
+             iter = 3), 
+      col = "red")
+title(main = "the `cars` data")
+```
+
+
+???
+ 
+It has been a while since I've done much plotting with base R, but I think it is important to have an example or two. 
+
+---
+
+

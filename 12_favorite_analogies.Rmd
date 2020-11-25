@@ -1,0 +1,101 @@
+---
+title: "Favorite analogies"
+subtitle: "With flipbookr and xaringan"
+author: "Gina Reynolds, December 2019"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, hygge, ninjutsu]
+    nature:
+      ratio: 16:10
+      beforeInit: "https://platform.twitter.com/widgets.js"
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+
+```{r, include = F}
+# This is the recommended set up for flipbooks
+# you might think about setting cache to TRUE as you gain practice --- building flipbooks from scratch can be time consuming
+knitr::opts_chunk$set(fig.width = 6, message = FALSE, warning = FALSE, comment = "", cache = FALSE, fig.retina = 3)
+library(flipbookr)
+library(tidyverse)
+```
+
+
+---
+
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">I really enjoyed looking through this data viz slide deck by Rhian. A great intro to polar area charts.<br>I like that the idea of showing how your chart is built step by step is catching on - think it helps with comprehension.<br>And where can I get a Florence Nightingale tote? <a href="https://t.co/xiRxBJyGDj">https://t.co/xiRxBJyGDj</a></p>&mdash; Francis Barton (@ludictech) <a href="https://twitter.com/ludictech/status/1279358354775781376?ref_src=twsrc%5Etfw">July 4, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+---
+
+Simplicity
+
+  - "Let's make it easier" (from the sound of Music) - and the history of solfeggio
+  - "I like understanding and explaining things" - David Blackwell
+  - flipbooks are a midwestern, 'salt of the earth' project https://www.youtube.com/watch?v=XQhQuPiBmNU
+
+
+  - we might prize mental gymnastics -- being able to hold a lot of transformations in your head.  But is this a good idea?  "Check your work!" is the refrain of the middle school math teacher.  
+
+  - Richard Feynman, on scientific affinity - "you have to have a lot of imagination" (but does this have to   mean mental gymnastics...)  Building mental models from something concrete.  
+  
+---
+
+![]()
+  
+
+---
+
+
+Translation
+
+  - And all those language analogies from the last time!
+  - "braid together representation" - conversant quantitative 
+  
+
+
+
+
+  
+---
+
+Anti-effort
+
+  - A long stretch of rode with no on or exit ramps (flipbooks give lots of on and exit ramps)
+  - Using the magic on the spell book...
+  - Boy scooping knowledge from book: https://www.youtube.com/watch?v=5NIR58Z6beQ
+  
+![](https://media.tenor.com/images/3ec767f25559af0ab8c9808aec130f12/tenor.gif)  
+  
+  - Data visualization as super highway from data to brain
+  - pre-attentive processing of movie
+
+
+---
+
+Minimize the creator's role
+  - The stop motion movie -- a puppet show -- the puppeteer should be in the background 
+
+![](https://media.giphy.com/media/26xBHGE8LbwsxtUB2/giphy.gif)
+
+
+---
+
+Result
+
+![](https://media.giphy.com/media/3mKBXLpYeLzUY/giphy.gif)
+![]()
+
+```{css, eval = TRUE, echo = FALSE}
+.remark-code{line-height: 1.5; font-size: 80%}
+
+@media print {
+  .has-continuation {
+    display: block;
+  }
+}
+```

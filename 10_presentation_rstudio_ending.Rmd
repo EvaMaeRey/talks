@@ -1,0 +1,81 @@
+---
+title: "Flipbooks"
+subtitle: "with {flipbookr}"  
+author: "Evangeline 'Gina' Reynolds University of Denver"
+date: 'Jan. 29, 2020, 4pm'
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    seal: false
+    css: [default, hygge, xaringan-themer.css, ninjutsu]
+    chakra: remark-latest.min.js
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: "https://platform.twitter.com/widgets.js"
+---
+
+
+```{r, include=F}
+library(flipbookr)
+library(tidyverse)
+```
+ 
+
+
+```{r cute,  include = F}
+library(tidyverse)
+yhrt <- function(t) {
+  13 * cos(t) - 
+  5 * cos(2 * t) - 
+  2 * cos(3 * t) - 
+  cos(4 * t)
+  }
+xhrt <- function(t) 16 * sin(t)^3
+
+rstudio_png <- "figures/rstudio_ball.png" %>% 
+  png::readPNG() %>% 
+  grid::rasterGrob(interpolate = TRUE)
+
+data.frame(t = seq(0, 
+                   2 * pi, 
+                   by = 0.01)) %>% 
+  mutate(y = yhrt(t)) %>% 
+  mutate(x = xhrt(t)) ->
+heart_data  
+```
+
+`r chunk_reveal("heart", break_type = "user", display_type = "output")`
+
+```{r heart, include = F}
+ggplot(data = heart_data) + 
+  aes(x = x) +
+  aes(y = y) + #BREAK
+  annotation_custom(grob = rstudio_png, 
+                    xmin = -5, 
+                    xmax = 5, 
+                    ymin = -10, 
+                    ymax = 4) + #BREAK
+  coord_cartesian(xlim = c(-20,20), 
+                  ylim = c(-20,15)) +
+  geom_point(color = "firebrick",
+             size = 6) +  #BREAK
+  theme_void() +
+  labs(title = "Viz adapted from Dr. Mowinckel's Blogpost\n 'Why RStudio Conf is the Best Conference Experience I have Had'") + #BREAK
+  annotate(geom = "text", 
+           label = "github.com/EvaMaeRey/flipbookr",
+           x = 0, 
+           y = -10,
+           size = 10) + #BREAK
+    annotate(geom = "text", 
+           label = "Questions?",
+           x = 0, 
+           y = 5,
+           size = 20) + #BREAK
+  gganimate::transition_time(time = t) +
+  gganimate::ease_aes('linear') +
+  gganimate::shadow_wake(wake_length = 2) #BREAK
+```
+
+
