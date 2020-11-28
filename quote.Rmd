@@ -1,0 +1,82 @@
+
+
+```markdown
+---
+
+``r 'r chunk_reveal("wrangle")'``
+``` 
+
+
+````markdown
+```{r wrangle, include = FALSE}`r ''`
+cars %>% 
+  mutate(high_speed = 
+           speed > 10) %>% 
+  mutate(high_dist = 
+           dist > 20) ->
+cars_mod
+```
+````
+
+---
+
+```{r, comment = ""}
+cat("---\n\n```{r wrangle, include = FALSE}
+cars %>% 
+  mutate(high_speed = 
+           speed > 10) %>% 
+  mutate(high_dist = 
+           dist > 20) ->
+cars_mod
+```\n\n---")
+```
+
+
+
+
+```{r, eval = F}
+library(tidyverse)
+readLines("https://raw.githubusercontent.com/EvaMaeRey/flipbookr/master/inst/rmarkdown/templates/most-features/skeleton/skeleton.Rmd", skipNul = F) ->
+lines  
+
+lines %>% 
+  str_replace_all(" ", "~~") %>% 
+  data.frame(line = .) %>% 
+  mutate(original = str_replace_all(line, "~~", " ")) %>% 
+  # mutate(start_chunk = str_detect(line, "```\\{r")) %>% 
+  # mutate(mod = ifelse(start_chunk, 
+  #                     paste0("````markdown\n", line, 
+  #                            "`r ''`"), "")) %>% 
+  # mutate(end_chunk = str_detect(line, "```$")) %>% 
+  # # filter(start_chunk) %>% 
+  # mutate(in_line = str_detect(line, "^`r")) %>% 
+  # mutate(mod = ifelse(end_chunk, 
+  #                     paste0(line, "\n````"),
+  #                     "")) %>% 
+  mutate(slide_break = str_detect(line, "^---$")) %>% 
+  mutate(slide = cumsum(slide_break)) %>% 
+  filter(!slide_break) %>% 
+  group_by(slide) %>% 
+  summarize(slide_content = paste0(line, collapse = "\n")) %>% 
+  pull() %>% 
+  str_replace_all("~~", " ") %>% 
+  paste0("---\n",., "\n---\nclass: inverse\n\n", 
+         "```{r, comment = '', echo = F, return = 'asis'}\ncat('"````, 
+         str_replace_all(str_replace_all(., "\'", "\\\\'"), "\n", "\n\\\\n ") , 
+         "')\n```") %>% 
+  paste0(collapse = "\n---\n") %>% 
+  writeLines(con = "test_out.Rmd")  
+
+"```{r, comment = ''}\ncat("
+")
+```"
+```
+
+
+```{r}
+  
+
+ifelse(T, paste0("hi", "`r ''`"), "")
+str_detect("`r", "`r")
+```
+

@@ -1,7 +1,7 @@
 ---
 title: "Flipbooks"
 subtitle: "with flipbookr"  
-author: "Evangeline Reynolds \n Korbel School of International Studies - University of Denver"
+author: "Evangeline Reynolds"
 date: '`r Sys.Date()`'
 output:
   xaringan::moon_reader:

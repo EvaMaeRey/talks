@@ -17,7 +17,7 @@
 
 
 
-class: right, top,inverse
+class: right, top, inverse
 background-image: url(https://images.unsplash.com/photo-1541697418880-71a2ccd305a7?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1050&amp;q=80)
 background-size: cover
 
@@ -25,7 +25,9 @@ background-size: cover
 
 ## Evangeline "Gina" Reynolds
 
-#### Jan. 29, 2020, 4pm | Zurich Methods Summer School
+#### Zurich Summer School for Women in Political Methodology
+
+#### November 27, 16:45
 
 #### github.com/EvaMaeRey/flipbookr
 ???
@@ -41,7 +43,7 @@ background-position: 5% 5%, 8% 60%
 background-size: 10%, 30%
 
 ### teach: West Point
-### r community: Denver RLadies -&gt; USMA RLadies?!
+### r community: Denver RLadies -&gt; West Point RLadies?!
 ### twitter: @EvaMaeRey
 ### github: github.com/EvaMaeRey
 
@@ -89,11 +91,11 @@ background-size: contain
 , checking intermediate output states as they go
 
 
----
+--
 
 
 
-![](figures/stop_motion.gif)&lt;!-- --&gt;
+![](https://media.giphy.com/media/3mKBXLpYeLzUY/giphy.gif)&lt;!-- --&gt;
 
 ???
 
@@ -104,25 +106,438 @@ Try to make the action in the output tell the story, and go light on narrative (
 ---
 
 
-Maybe you have built a flipbook before
 
---
+# 2018: early flipbooks
 
-Flipbookr helps you do this automatically
-
-- creates many slides from single code-chunk
+&lt;img src="figures/garrick_proto_flipbook.png" width="70%" /&gt;
 
 
 ---
 
-Talk Overview:
+# 2018: early flipbooks
+
+&lt;img src="figures/gina_proto_flipbook.png" width="70%" /&gt;
+
+---
+
+# 2018: early flipbooks
+
+&lt;img src="figures/emi_proto_flipbook.png" width="70%" /&gt;
+
+@grrrck
+@evamaerey
+@statsgen
+
+--
+
+Hand-crafted, 
+Artisanal
+
+
+
+
+???
+
+In 2018, the proto flipbook emerged on the Xaringan platform.  But each frame of the flipbook was individually crafted, which was kind of painstaking.  Garrick Aden-Buie created the first one I know of.  I created another one using SLOWggplot2 --- a totally incremental workflow.  Emi also embraced SLOWggplot2, styled the flipbook with her beautiful kunoichi and ninjutsu .css files and later partially automated flipbooking.
+
+
+
+
+
+
+
+---
+![](figures/do_you_want_to_build_snowman.gif)
+
+
+
+
+# Do you want to build "flipbooks" together?
+
+
+???
+
+I wanted to collaborate with these brilliant like-minded people.  And they were game...  (I named  is exactly when flipbooks got their name too!)
+
+
+---
+background-image: url(figures/moth_circling.jpg)
+background-size: cover
+
+???
+
+We were kind of all circling around the idea - "flipbooks" had huge potential.  They could deliver a lot of insight about code behavior to their consumers. 
+
+
+
+
+---
+
+# Move to automate
+
+
+## *Automatically* parsing a block of input code 
+
+--
+
+## *Automatically* reconstructing code into partial builds
+
+--
+
+## *Automatically* delivered on a presentation platform (here Xaringan)
+
+
+???
+
+Able to do this in large part because of the flexibility of knitr and rmarkdown documents!!!  Garrick and Emi are super expert and knew about some of the knitr secrets that few people know -- at that time the unexported function!  I love Emi's blogpost about this ...    
+
+
+
+---
+background-image: url(figures/volt_meter_thomas_kelley_unsplash.jpg)
+background-size: cover
+
+
+
+
+???
+
+But to realize the full potential, creators needed to be unburdened from copy and paste. Flipbooks were a pain to build manually.  If you made a change in your vision of the overall pipeline, you might have to scrap all your work and start the whole annoying copy paste process again.  
+
+
+---
+
+# Do I need to use any 'weird tricks' to writing code to be 'flipbooked'?
+
+--
+
+# Yup.
+
+
+---
+
+
+## Aim for incremental, sequential workflow, where feedback is given at each step.
+
+--
+
+- ### Piped workflow
+
+  - %&gt;%
+  - %&gt;% + .
+  - %$%
+  
+
+
+--
+
+- ### right assignment -&gt; instead of = or &lt;- makes it easier to display output
+
+
+--
+  
+- ### ggplot pipelines - but SLOWggplot is recommended
+
+
+---
+background-image: url(figures/upsplash_yancy_min_snail.jpg)
+background-size: cover
+
+
+# **S**LOWggplot2's 
+
+--
+# **L**iterally 
+
+--
+# **O**nly 
+
+--
+# **W**onderful  &lt;br&gt; (or **W**ickham's  &lt;br&gt; or **W**ayfairing)
+
+--
+# **ggplot2**
+
+
+???
+
+For the demo, I'm going to use a dialect of ggplot2.  Slowggplot2 is just ggplot.  It is fully supported and native.  
+
+
+---
+background-image: url(figures/upsplash_yancy_min_snail.jpg)
+background-size: cover
+
+class: middle
+
+# .large[incrementalism]
+--
+
+# .large[feedback]
+
+
+
+
+
+---
+background-image: url(figures/upsplash_yancy_min_snail.jpg)
+background-size: cover
+
+class: middle
+
+# .large[one ggplot &lt;br&gt; statement]
+--
+
+# .large[per decision]
+
+
+
+---
+
+
+# from some ggplot documentation
+
+# `+` is the key to constructing sophisticated ggplot2 graphics. It allows you to start simple, then get more and more complex, **checking your work at each step.**
+
+
+
+
+
+---
+
+count: false
+
+
+```r
+*ggplot(data = cars,
+*      mapping = aes(x = speed,
+*                    y = dist,
+*                    col = dist))
+```
+
+---
+count: false
+
+
+```r
+ggplot(data = cars,
+       mapping = aes(x = speed,
+                     y = dist,
+                     col = dist)) +
+* geom_point()
+```
+
+---
+count: false
+
+
+```r
+ggplot(data = cars,
+       mapping = aes(x = speed,
+                     y = dist,
+                     col = dist)) +
+  geom_point() +
+* labs(x = "Speed (mph)",
+*      y = "Distance (feet)",
+*      title = "Speed v. Stopping ...")
+```
+
+&lt;style&gt;
+.panel1-fast_ggplot-auto {
+  color: black;
+  width: 99%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-fast_ggplot-auto {
+  color: black;
+  width: NA%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-fast_ggplot-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+
+
+
+
+---
+
+count: false
+
+
+```r
+*cars
+```
+
+---
+count: false
+
+
+```r
+cars %&gt;%
+* ggplot()
+```
+
+---
+count: false
+
+
+```r
+cars %&gt;%
+  ggplot() +
+* aes(x = speed)
+```
+
+---
+count: false
+
+
+```r
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+* aes(y = dist)
+```
+
+---
+count: false
+
+
+```r
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  aes(y = dist) +
+* geom_point()
+```
+
+---
+count: false
+
+
+```r
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_point() +
+* aes(color = dist)
+```
+
+---
+count: false
+
+
+```r
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_point() +
+  aes(color = dist) +
+* labs(x = "Speed (mph)")
+```
+
+---
+count: false
+
+
+```r
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_point() +
+  aes(color = dist) +
+  labs(x = "Speed (mph)") +
+* labs(y = "Distance (feet)")
+```
+
+---
+count: false
+
+
+```r
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_point() +
+  aes(color = dist) +
+  labs(x = "Speed (mph)") +
+  labs(y = "Distance (feet)") +
+* labs(title = "Speed v. Stopping ...")
+```
+
+&lt;style&gt;
+.panel1-slow-auto {
+  color: black;
+  width: 99%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-slow-auto {
+  color: black;
+  width: NA%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-slow-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+
+
+
+
+
+---
+
+Remainder of talk Overview:
 
 1. Let's build flipbooks
 2. Some additional modes
 3. Why Flipbooks?
-4. Flipbooks origin story
 
+--
 
+Background for Demo:
+
+- R, Rmarkdown, Rstudio
+- tidyverse + ggplot2
 
 
 ---
@@ -170,6 +585,13 @@ https://www.youtube.com/watch?v=jbkSRLYSojo
 ---
 
 # "Having the *code* is not enough.  You have to show the *code* in ways that people enjoy and understand"
+
+
+
+---
+
+
+---
 
 
 
@@ -1044,7 +1466,7 @@ cars %&gt;%
 
 
 ---
-class: center, middle
+class: center, middle, inverse
 
 # Telling longer stories
 ## Flipbooking a wrangling chunk and create an object, then a plotting chunk with the object
@@ -2632,563 +3054,6 @@ It has been a while since I've done much plotting with base R, but I think it is
 
 
 
----
-
-# Did you notice some 'weird tricks' to writing code to be 'flipbooked'?
-
---
-
-# Yup.
-
-
----
-
-
-### Aim for incremental, sequential workflow, where feedback is given at each step.
-
---
-
-- ### Piped workflow:  
-  - %&gt;%
-  - %&gt;% + .
-  - %$%
-  
---
-  
-- ### ggplot pipelines - and SLOWggplot2
-
---
-
-- ### right assignment -&gt; instead of = or &lt;-
-
----
-
-
-
-
-
----
-background-image: url(figures/upsplash_yancy_min_snail.jpg)
-background-size: cover
-
-
-# **S**LOWggplot2's 
-
---
-# **L**iterally 
-
---
-# **O**nly 
-
---
-# **W**onderful  &lt;br&gt; (or **W**ickham's  &lt;br&gt; or **W**ayfairing)
-
---
-# **ggplot2**
-
-
-???
-
-For the demo, I'm going to use a dialect of ggplot2.  Slowggplot2 is just ggplot.  It is fully supported and native.  
-
----
-background-image: url(figures/upsplash_yancy_min_snail.jpg)
-background-size: cover
-
-
-
-# Embraces: 
-
---
-# *incrementalism*
-
---
-# *feedback*
-
-
-???
-
-It is a little verbose, but ideal for flipbooking (it is pretty key in the flipbook origin story); it will allow automatic parsing and reconstrution of code that deliver clarity about each ggplot decision and its behavior. 
-
-
----
-background-image: url(figures/upsplash_yancy_min_snail.jpg)
-background-size: cover
-
-class: middle
-
-# .large[one ggplot &lt;br&gt; statement]
---
-
-# .large[per decision]
-
-
-
----
-
-
-
-# What constitutes a SLOWggplot?
-
---
-
-1. Pull out aes() from the ggplot() function *ggplot(data = my_data) + aes(x = var1)*
-
---
-
-2. One ggplot statement per decision, if possible *aes(x = var1) + aes(y = var2) rather than aes(x = var1, y = var2)*
-
---
-
-3. Use `::`.  Use base R functions and tidyverse functions directly. For other packages, use the `package::function()` style to call them, so their source is clear.
-
-
----
-
-# What constitutes a SLOWggplot?
-
-
-4. write out arguments (no shortcuts) *aes(x = gdppercap) not aes(gdppercap)*
-
---
-
-5. order ggplot commands for reactivity
-
-  - In practice this means writing positional aes() statements before geoms .  These are required aesthetics and they deliver feedback without the geom plotted.  
-  - Optional aesthetic decisions should follow geoms, like color, size, linetype etc. These are optional and stating them before declaring the geom means that feedback isn't delivered.
-  - Note: aes(label = ?) comes before geom_text() and geom_label() because it is required; else we'd get an error; sadly, no feedback with the statement.
-
-
---
-
-6. using fewer functions; example - using labs() to add a title instead of ggtitle()
-
----
-
-
-
-
-# from some ggplot documentation
-
-&gt; `+` is the key to constructing sophisticated ggplot2 graphics. It allows you to start simple, then get more and more complex, **checking your work at each step.**
-
-
-
-
-
----
-
-count: false
-
-
-```r
-*ggplot(data = cars,
-*      mapping = aes(x = speed,
-*                    y = dist,
-*                    col = dist))
-```
-
----
-count: false
-
-
-```r
-ggplot(data = cars,
-       mapping = aes(x = speed,
-                     y = dist,
-                     col = dist)) +
-* geom_point()
-```
-
----
-count: false
-
-
-```r
-ggplot(data = cars,
-       mapping = aes(x = speed,
-                     y = dist,
-                     col = dist)) +
-  geom_point() +
-* labs(x = "Speed (mph)",
-*      y = "Distance (feet)",
-*      title = "Speed v. Stopping ...")
-```
-
-&lt;style&gt;
-.panel1-fast_ggplot-auto {
-  color: black;
-  width: 99%;
-  hight: 32%;
-  float: left;
-  padding-left: 1%;
-  font-size: 80%
-}
-.panel2-fast_ggplot-auto {
-  color: black;
-  width: NA%;
-  hight: 32%;
-  float: left;
-  padding-left: 1%;
-  font-size: 80%
-}
-.panel3-fast_ggplot-auto {
-  color: black;
-  width: NA%;
-  hight: 33%;
-  float: left;
-  padding-left: 1%;
-  font-size: 80%
-}
-&lt;/style&gt;
-
-
-
-
-
-
-
-
-
-
----
-
-count: false
-
-
-```r
-*cars
-```
-
----
-count: false
-
-
-```r
-cars %&gt;%
-* ggplot()
-```
-
----
-count: false
-
-
-```r
-cars %&gt;%
-  ggplot() +
-* aes(x = speed)
-```
-
----
-count: false
-
-
-```r
-cars %&gt;%
-  ggplot() +
-  aes(x = speed) +
-* aes(y = dist)
-```
-
----
-count: false
-
-
-```r
-cars %&gt;%
-  ggplot() +
-  aes(x = speed) +
-  aes(y = dist) +
-* geom_point()
-```
-
----
-count: false
-
-
-```r
-cars %&gt;%
-  ggplot() +
-  aes(x = speed) +
-  aes(y = dist) +
-  geom_point() +
-* aes(color = dist)
-```
-
----
-count: false
-
-
-```r
-cars %&gt;%
-  ggplot() +
-  aes(x = speed) +
-  aes(y = dist) +
-  geom_point() +
-  aes(color = dist) +
-* labs(x = "Speed (mph)")
-```
-
----
-count: false
-
-
-```r
-cars %&gt;%
-  ggplot() +
-  aes(x = speed) +
-  aes(y = dist) +
-  geom_point() +
-  aes(color = dist) +
-  labs(x = "Speed (mph)") +
-* labs(y = "Distance (feet)")
-```
-
----
-count: false
-
-
-```r
-cars %&gt;%
-  ggplot() +
-  aes(x = speed) +
-  aes(y = dist) +
-  geom_point() +
-  aes(color = dist) +
-  labs(x = "Speed (mph)") +
-  labs(y = "Distance (feet)") +
-* labs(title = "Speed v. Stopping ...")
-```
-
-&lt;style&gt;
-.panel1-slow-auto {
-  color: black;
-  width: 99%;
-  hight: 32%;
-  float: left;
-  padding-left: 1%;
-  font-size: 80%
-}
-.panel2-slow-auto {
-  color: black;
-  width: NA%;
-  hight: 32%;
-  float: left;
-  padding-left: 1%;
-  font-size: 80%
-}
-.panel3-slow-auto {
-  color: black;
-  width: NA%;
-  hight: 33%;
-  float: left;
-  padding-left: 1%;
-  font-size: 80%
-}
-&lt;/style&gt;
-
-
-
-
-
-
-
-
----
-
-count: false
- 
-
-.panel1-my_cars_again-auto[
-
-```r
-*cars
-```
-]
- 
-.panel2-my_cars_again-auto[
-
-```
-   speed dist
-1      4    2
-2      4   10
-3      7    4
-4      7   22
-5      8   16
-6      9   10
-7     10   18
-8     10   26
-9     10   34
-10    11   17
-11    11   28
-12    12   14
-13    12   20
-14    12   24
-15    12   28
-16    13   26
-17    13   34
-18    13   34
-19    13   46
-20    14   26
-21    14   36
-22    14   60
-23    14   80
-24    15   20
-25    15   26
-26    15   54
-27    16   32
-28    16   40
-29    17   32
-30    17   40
-31    17   50
-32    18   42
-33    18   56
-34    18   76
-35    18   84
-36    19   36
-37    19   46
-38    19   68
-39    20   32
-40    20   48
-41    20   52
-42    20   56
-43    20   64
-44    22   66
-45    23   54
-46    24   70
-47    24   92
-48    24   93
-49    24  120
-50    25   85
-```
-]
-
----
-count: false
- 
-
-.panel1-my_cars_again-auto[
-
-```r
-cars %&gt;%
-* ggplot()
-```
-]
- 
-.panel2-my_cars_again-auto[
-&lt;img src="flipbookr_zurich_summer_school_files/figure-html/my_cars_again_auto_02_output-1.png" width="504" /&gt;
-]
-
----
-count: false
- 
-
-.panel1-my_cars_again-auto[
-
-```r
-cars %&gt;%
-  ggplot() +
-* aes(x = speed)
-```
-]
- 
-.panel2-my_cars_again-auto[
-&lt;img src="flipbookr_zurich_summer_school_files/figure-html/my_cars_again_auto_03_output-1.png" width="504" /&gt;
-]
-
----
-count: false
- 
-
-.panel1-my_cars_again-auto[
-
-```r
-cars %&gt;%
-  ggplot() +
-  aes(x = speed) +
-* aes(y = dist)
-```
-]
- 
-.panel2-my_cars_again-auto[
-&lt;img src="flipbookr_zurich_summer_school_files/figure-html/my_cars_again_auto_04_output-1.png" width="504" /&gt;
-]
-
----
-count: false
- 
-
-.panel1-my_cars_again-auto[
-
-```r
-cars %&gt;%
-  ggplot() +
-  aes(x = speed) +
-  aes(y = dist) +
-* geom_point(size = 4)
-```
-]
- 
-.panel2-my_cars_again-auto[
-&lt;img src="flipbookr_zurich_summer_school_files/figure-html/my_cars_again_auto_05_output-1.png" width="504" /&gt;
-]
-
----
-count: false
- 
-
-.panel1-my_cars_again-auto[
-
-```r
-cars %&gt;%
-  ggplot() +
-  aes(x = speed) +
-  aes(y = dist) +
-  geom_point(size = 4) +
-* aes(color = speed)
-```
-]
- 
-.panel2-my_cars_again-auto[
-&lt;img src="flipbookr_zurich_summer_school_files/figure-html/my_cars_again_auto_06_output-1.png" width="504" /&gt;
-]
-
-&lt;style&gt;
-.panel1-my_cars_again-auto {
-  color: black;
-  width: 38.6060606060606%;
-  hight: 32%;
-  float: left;
-  padding-left: 1%;
-  font-size: 80%
-}
-.panel2-my_cars_again-auto {
-  color: black;
-  width: 59.3939393939394%;
-  hight: 32%;
-  float: left;
-  padding-left: 1%;
-  font-size: 80%
-}
-.panel3-my_cars_again-auto {
-  color: black;
-  width: NA%;
-  hight: 33%;
-  float: left;
-  padding-left: 1%;
-  font-size: 80%
-}
-&lt;/style&gt;
-
-
-
-
-
-???
-
-And this is the output we are going after.
-We're going to work with a template, write this slowggplot code, and turn it into a flipbook built in Xaringan.
-
 
 
 
@@ -3206,6 +3071,10 @@ We've tried to make creating flipbooks easy for you.  But it is still a bit of e
 ---
 
 # when newcomers see a long pipeline of code ...
+
+--
+
+# No exit next 15 miles...
 
 
 ---
@@ -3315,6 +3184,18 @@ background-size: contain
 
 - Visual search relies on visual memory...  Pretty effortful.
 
+---
+
+&lt;img src="analogies_images/visual_memory.png" width="527" /&gt;
+
+
+---
+
+&lt;img src="analogies_images/john_conenctrate.png" width="640" /&gt;
+
+---
+
+
 &lt;img src="analogies_images/visual_memory_2.png" width="495" /&gt;
 
 
@@ -3355,7 +3236,6 @@ Blink Comparator, allowed researcher to toggle between two *superimposed* and *a
 background-image: url(figures/pluto_in_true_colour_wikipedia.jpg)
 background-size: cover
 
---
 
 
 
@@ -3371,7 +3251,6 @@ Blink Comparator -- is a proven technology -- most famously credited with humank
 background-image: url(figures/pluto_in_true_colour_wikipedia.jpg)
 background-size: cover
 
---
 
 
 
@@ -3395,6 +3274,14 @@ It's easy to notice motion.  Detecting differences via "motion detection" is the
 
 - pretty effortless!!!
 
+--
+
+pre-attentively processed
+
+---
+
+
+![](https://media.tenor.com/images/3ec767f25559af0ab8c9808aec130f12/tenor.gif)
 
 ---
 
@@ -3427,92 +3314,6 @@ flipbookr:
 ![](analogies_images/)&lt;!-- --&gt;
 
 ---
-
-# 2018: proto flipbooks
-
-&lt;img src="figures/garrick_proto_flipbook.png" width="33%" /&gt;&lt;img src="figures/gina_proto_flipbook.png" width="33%" /&gt;&lt;img src="figures/emi_proto_flipbook.png" width="33%" /&gt;
-
-@grrrck
-@evamaerey
-@statsgen
-
---
-
-Hand-crafted, 
-Artisanal
-
-
-
-
-???
-
-In 2018, the proto flipbook emerged on the Xaringan platform.  But each frame of the flipbook was individually crafted, which was kind of painstaking.  Garrick Aden-Buie created the first one I know of.  I created another one using SLOWggplot2 --- a totally incremental workflow.  Emi also embraced SLOWggplot2, styled the flipbook with her beautiful kunoichi and ninjutsu .css files and later partially automated flipbooking.
-
-
-
-
-
-
-
----
-![](figures/do_you_want_to_build_snowman.gif)
-
-
-
-
-# Do you want to build "flipbooks" together?
-
-
-???
-
-I wanted to collaborate with these brilliant like-minded people.  And they were game...  (I named  is exactly when flipbooks got their name too!)
-
-
----
-background-image: url(figures/moth_circling.jpg)
-background-size: cover
-
-???
-
-We were kind of all circling around the idea - "flipbooks" had huge potential.  They could deliver a lot of insight about code behavior to their consumers. 
-
-
-
-
----
-
-# Move to automate
-
-
-## *Automatically* parsing a block of input code 
-
---
-
-## *Automatically* reconstructing code into partial builds
-
---
-
-## *Automatically* delivered on a presentation platform (here Xaringan)
-
-
-???
-
-Able to do this in large part because of the flexibility of knitr and rmarkdown documents!!!  Garrick and Emi are super expert and knew about some of the knitr secrets that few people know -- at that time the unexported function!  I love Emi's blogpost about this ...    
-
-
-
----
-background-image: url(figures/volt_meter_thomas_kelley_unsplash.jpg)
-background-size: cover
-
-
-
-
-???
-
-But to realize the full potential, creators needed to be unburdened from copy and paste. Flipbooks were a pain to build manually.  If you made a change in your vision of the overall pipeline, you might have to scrap all your work and start the whole annoying copy paste process again.  
-
-
 
 
 ---
@@ -3622,6 +3423,7 @@ r chunk_reveal("heart2", break_type = "user")`
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script src="https://platform.twitter.com/widgets.js"></script>
 <script>var slideshow = remark.create({
+"ratio": "16:10",
 "highlightStyle": "github",
 "highlightLines": true,
 "countIncrementalSlides": false

@@ -320,7 +320,7 @@ cars %>%
 
 
 ---
-class: center, middle
+class: center, middle, inverse
 
 # Telling longer stories
 ## Flipbooking a wrangling chunk and create an object, then a plotting chunk with the object
