@@ -141,6 +141,25 @@ Try to make the action in the output tell the story, and go light on narrative (
 
 ---
 
+# Layered presentation of graphics
+
+```{r, out.width="60%"}
+knitr::include_graphics("figures/blackwell_step_by_step_plot_build.png")
+```
+
+---
+
+```{r, out.width="50%"}
+knitr::include_graphics("figures/layered_presentation_of_graphics.png")
+```
+
+
+
+
+
+
+---
+
 # 2018: early flipbooks
 
 ```{r, out.width="70%", fig.show="hold"}
@@ -677,31 +696,28 @@ Blink Comparator -- is a proven technology -- most famously credited with humank
 
 
 
-
 ---
-background-image: url(figures/jurassic_park.png)
-background-size: contain
 
 
-???
+![](https://media.tenor.com/images/3ec767f25559af0ab8c9808aec130f12/tenor.gif)
 
+Data visualization is "pre-attentively processing"
 
-![](https://media.tenor.com/images/3ec767f25559af0ab8c9808aec130f12/tenor.gif)  
+--
 
+We immediately and effortlessly notice patterns when data as visualized -- Cleveland 
 
+--
 
 It's easy to notice motion.  Detecting differences via "motion detection" is the experience flipbooks give us.  
+
+--
 
 - pretty effortless!!!
 
 --
 
-pre-attentively processed
 
----
-
-
-![](https://media.tenor.com/images/3ec767f25559af0ab8c9808aec130f12/tenor.gif)
 
 ---
 
@@ -859,7 +875,7 @@ last_plot() +
 
 
 ```{css, eval = TRUE, echo = F}
-.remark-code{line-height: 1.5; font-size: 90%}
+.remark-code{line-height: 1.5; font-size: 120%}
 ```
 
 
