@@ -2,7 +2,7 @@
 title: "Flipbooks"
 subtitle: "with {flipbookr}"  
 author: "Evangeline 'Gina' Reynolds"
-date: 'Jan. 29, 2020, 4pm'
+date: 'No, 2020, 4pm'
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -64,7 +64,7 @@ background-position: 5% 5%, 8% 60%
 background-size: 10%, 30%
 
 ### teach: West Point
-### r community: Denver RLadies -> West Point RLadies?!
+### methods community: Denver RLadies
 ### twitter: @EvaMaeRey
 ### github: github.com/EvaMaeRey
 
@@ -128,7 +128,18 @@ Try to make the action in the output tell the story, and go light on narrative (
 
 ---
 
+## Inspired by ggplot2
 
+--
+
+## which I learned in the 2017 Summer School for Women in Political Methodology. 
+
+--
+
+## liking last_plot() + ...  
+
+
+---
 
 # 2018: early flipbooks
 
@@ -141,7 +152,7 @@ knitr::include_graphics("figures/garrick_proto_flipbook.png")
 
 # 2018: early flipbooks
 
-```{r, out.width="70%", fig.show="hold"}      
+```{r, out.width="65%", fig.show="hold"}      
 knitr::include_graphics("figures/gina_proto_flipbook.png")
 ```
 
@@ -149,7 +160,7 @@ knitr::include_graphics("figures/gina_proto_flipbook.png")
 
 # 2018: early flipbooks
 
-```{r, out.width="70%", fig.show="hold"} 
+```{r, out.width="60%", fig.show="hold"} 
 knitr::include_graphics("figures/emi_proto_flipbook.png")
 ```
 
@@ -157,11 +168,10 @@ knitr::include_graphics("figures/emi_proto_flipbook.png")
 @evamaerey
 @statsgen
 
---
+---
 
-Hand-crafted, 
-Artisanal
-
+## Hand-crafted, 
+## Artisanal
 
 
 
@@ -191,7 +201,7 @@ I wanted to collaborate with these brilliant like-minded people.  And they were 
 
 ---
 background-image: url(figures/moth_circling.jpg)
-background-size: cover
+background-size: contain
 
 ???
 
@@ -221,22 +231,37 @@ We were kind of all circling around the idea - "flipbooks" had huge potential.  
 Able to do this in large part because of the flexibility of knitr and rmarkdown documents!!!  Garrick and Emi are super expert and knew about some of the knitr secrets that few people know -- at that time the unexported function!  I love Emi's blogpost about this ...    
 
 
-
----
-background-image: url(figures/volt_meter_thomas_kelley_unsplash.jpg)
-background-size: cover
-
-
-
-
-???
-
 But to realize the full potential, creators needed to be unburdened from copy and paste. Flipbooks were a pain to build manually.  If you made a change in your vision of the overall pipeline, you might have to scrap all your work and start the whole annoying copy paste process again.  
 
 
 ---
+class: inverse, center, middle
 
-# Do I need to use any 'weird tricks' to writing code to be 'flipbooked'?
+```{r, out.width="40%"}
+knitr::include_graphics("figures/flipbook_sticker_britt.png")
+```
+
+
+---
+
+## Remainder of talk:
+
+### 0. Prep for demo
+### 1. Let's build flipbooks
+### 2. Some additional modes
+### 3. Why Flipbooks?
+
+--
+
+## Background for Demo:
+
+### - R, Rmarkdown, Rstudio
+### - tidyverse + ggplot2
+
+
+---
+
+# Do I need to use any 'weird tricks' to write code to be 'flipbooked'?
 
 --
 
@@ -269,6 +294,16 @@ But to realize the full potential, creators needed to be unburdened from copy an
 
 
 ---
+
+
+```{r, out.width="80%"}
+knitr::include_graphics("figures/stop_motion.gif")
+```
+
+
+
+
+---
 background-image: url(figures/upsplash_yancy_min_snail.jpg)
 background-size: cover
 
@@ -282,7 +317,7 @@ background-size: cover
 # **O**nly 
 
 --
-# **W**onderful  <br> (or **W**ickham's  <br> or **W**ayfairing)
+# **W**onderful  <br> (or **Wayward** <br> or **W**ayfairing)
 
 --
 # **ggplot2**
@@ -300,6 +335,7 @@ background-size: cover
 class: middle
 
 # .large[incrementalism]
+
 --
 
 # .large[feedback]
@@ -376,22 +412,6 @@ cars %>%
 
 ---
 
-Remainder of talk Overview:
-
-1. Let's build flipbooks
-2. Some additional modes
-3. Why Flipbooks?
-
---
-
-Background for Demo:
-
-- R, Rmarkdown, Rstudio
-- tidyverse + ggplot2
-
-
----
-
 
 # With {flipbookr}
 
@@ -422,43 +442,29 @@ https://www.youtube.com/watch?v=jbkSRLYSojo
 
 ---
 
-![](figures/hans_color.png)
+![](figures/hans_size.png)
 
 ---
 
-![](figures/hans_size.png)
+![](figures/hans_color.png)
 
 ---
 
 # "Having the data is not enough.  You have to show the data in ways that people enjoy and understand" - Hans Rosling
 
----
-
-# "Having the *code* is not enough.  You have to show the *code* in ways that people enjoy and understand"
 
 
 
 ---
 
+# [Easy Flipbook Recipes](https://evamaerey.github.io/flipbooks/flipbook_recipes#1)
 
----
-
-
-
----
-
-[Easy Flipbook Recipes](https://evamaerey.github.io/flipbooks/flipbook_recipes#1)
+https://evamaerey.github.io/flipbooks/flipbook_recipes#1
 
 --
 
-Or, 'A Minimal Flipbook' template RStudio -> File -> New File -> Rmarkdown -> A Minimal Flipbook
+# Or RStudio -> File -> New File -> Rmarkdown -> A Minimal Flipbook
 
----
-
-
-```{r}
-knitr::include_url("https://evamaerey.github.io/flipbooks/flipbook_recipes#1")
-```
 
 
 ???
@@ -477,6 +483,8 @@ In the second part of the talk, I'll try to articulate just why I think this too
 
 
 ---
+class: inverse, center, middle
+
 
 # More {flipbookr} modes
 
@@ -530,15 +538,6 @@ Flipbooks allow people to narrow in on unfamiliar steps, looking what immediatel
 
 
 
-
----
-background-image: url(figures/gymnastics.gif)
-background-size: contain 
-
-???
-
-
-
 ---
 
 
@@ -576,17 +575,45 @@ background-size: contain
 
 
 
-.large.left[Spatial offset]
---
-
-<br />
-
-.large.center[requires us to engage in "visual search"]
-
-<br />
+# Spatial offset 
 
 --
-.large.left[which requires focused attention and concentration]
+
+
+# requires us to engage in "visual search"
+
+--
+
+# which requires focused attention and concentration
+
+--
+
+# because it relies on visual memeory
+
+
+---
+
+```{r, out.width="80%"}
+knitr::include_graphics("analogies_images/visual_memory.png")
+```
+
+
+---
+
+```{r, out.width="80%"}
+knitr::include_graphics("analogies_images/john_conenctrate.png")
+```
+
+---
+
+
+```{r, out.width="80%"}
+knitr::include_graphics("analogies_images/visual_memory_2.png")
+```
+
+
+
+
 
 
 ---
@@ -601,40 +628,6 @@ knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/0/0a/Spo
 
 Lateral comparison is hard; superimposed temporal comparison is easy; Consider the \"spot the differences\" games. Imagine if these images were super imposed.  Flickering back and forth between the two of them, superimposed and aligned, and with changes made incrementally (one-by-one), the challenge would be taken out of the game.
 
----
-background-image: url(figures/waldo_gathering.jpg)
-background-size: contain
-
-
-???
-
-"Visual search" games are fun because they are challenging.  
-
-
-
----
-
-- Visual search relies on visual memory...  Pretty effortful.
-
----
-
-```{r}
-knitr::include_graphics("analogies_images/visual_memory.png")
-```
-
-
----
-
-```{r}
-knitr::include_graphics("analogies_images/john_conenctrate.png")
-```
-
----
-
-
-```{r}
-knitr::include_graphics("analogies_images/visual_memory_2.png")
-```
 
 
 ---
@@ -686,17 +679,6 @@ Blink Comparator -- is a proven technology -- most famously credited with humank
 
 
 ---
-background-image: url(figures/pluto_in_true_colour_wikipedia.jpg)
-background-size: cover
-
-
-
-
-
-
-
-
----
 background-image: url(figures/jurassic_park.png)
 background-size: contain
 
@@ -739,21 +721,9 @@ pre-attentively processed
 
 
 
----
-
-flipbookr:
-
-![type big!](https://media.giphy.com/media/3mKBXLpYeLzUY/giphy.gif)
 
 
 
-
-
-```{r}
-knitr::include_graphics("analogies_images/")
-```
-
----
 
 
 ---
@@ -761,6 +731,7 @@ knitr::include_graphics("analogies_images/")
 # Big thanks
 
 Garrick Aden-Buie, Emi Tanaka
+
 
 ---
 
@@ -777,7 +748,6 @@ Garrick Aden-Buie, Emi Tanaka
 
 
 ---
-
 
 # {flipbookr} testers, code review
 
@@ -809,26 +779,6 @@ background-size: 10%
 - Suraj Thapa
 - Britt Woodrum
 
----
-
-Influences:
-
-Hadley Wickham, 
-Eva Murry, Andy Kriebel, #MakeoverMonday
-
-Matthew Blackwell
-
-Tyler / data.table
-
-Roger Peng/ 
-
-Jim Hester
-
-Yihui Xie
-
-
-
-
 
 
 ---
@@ -857,7 +807,6 @@ data.frame(t = seq(0,
 heart_data  
 ```
 
-r chunk_reveal("heart", break_type = "user")`
 
 ```{r heart, eval = F, echo = F}
 ggplot(data = heart_data) + #BREAK
@@ -884,7 +833,6 @@ ggplot(data = heart_data) + #BREAK
 
 ---
 
-r chunk_reveal("heart2", break_type = "user")`
 
 
 ```{r heart2, include = F}
@@ -911,7 +859,7 @@ last_plot() +
 
 
 ```{css, eval = TRUE, echo = F}
-.remark-code{line-height: 1.5; font-size: 70%}
+.remark-code{line-height: 1.5; font-size: 90%}
 ```
 
 

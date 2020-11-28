@@ -43,7 +43,7 @@ background-position: 5% 5%, 8% 60%
 background-size: 10%, 30%
 
 ### teach: West Point
-### r community: Denver RLadies -&gt; West Point RLadies?!
+### methods community: Denver RLadies
 ### twitter: @EvaMaeRey
 ### github: github.com/EvaMaeRey
 
@@ -105,7 +105,18 @@ Try to make the action in the output tell the story, and go light on narrative (
 
 ---
 
+## Inspired by ggplot2
 
+--
+
+## which I learned in the 2017 Summer School for Women in Political Methodology. 
+
+--
+
+## liking last_plot() + ...  
+
+
+---
 
 # 2018: early flipbooks
 
@@ -116,23 +127,22 @@ Try to make the action in the output tell the story, and go light on narrative (
 
 # 2018: early flipbooks
 
-&lt;img src="figures/gina_proto_flipbook.png" width="70%" /&gt;
+&lt;img src="figures/gina_proto_flipbook.png" width="65%" /&gt;
 
 ---
 
 # 2018: early flipbooks
 
-&lt;img src="figures/emi_proto_flipbook.png" width="70%" /&gt;
+&lt;img src="figures/emi_proto_flipbook.png" width="60%" /&gt;
 
 @grrrck
 @evamaerey
 @statsgen
 
---
+---
 
-Hand-crafted, 
-Artisanal
-
+## Hand-crafted, 
+## Artisanal
 
 
 
@@ -162,7 +172,7 @@ I wanted to collaborate with these brilliant like-minded people.  And they were 
 
 ---
 background-image: url(figures/moth_circling.jpg)
-background-size: cover
+background-size: contain
 
 ???
 
@@ -192,22 +202,35 @@ We were kind of all circling around the idea - "flipbooks" had huge potential.  
 Able to do this in large part because of the flexibility of knitr and rmarkdown documents!!!  Garrick and Emi are super expert and knew about some of the knitr secrets that few people know -- at that time the unexported function!  I love Emi's blogpost about this ...    
 
 
-
----
-background-image: url(figures/volt_meter_thomas_kelley_unsplash.jpg)
-background-size: cover
-
-
-
-
-???
-
 But to realize the full potential, creators needed to be unburdened from copy and paste. Flipbooks were a pain to build manually.  If you made a change in your vision of the overall pipeline, you might have to scrap all your work and start the whole annoying copy paste process again.  
 
 
 ---
+class: inverse, center, middle
 
-# Do I need to use any 'weird tricks' to writing code to be 'flipbooked'?
+&lt;img src="figures/flipbook_sticker_britt.png" width="40%" /&gt;
+
+
+---
+
+## Remainder of talk:
+
+### 0. Prep for demo
+### 1. Let's build flipbooks
+### 2. Some additional modes
+### 3. Why Flipbooks?
+
+--
+
+## Background for Demo:
+
+### - R, Rmarkdown, Rstudio
+### - tidyverse + ggplot2
+
+
+---
+
+# Do I need to use any 'weird tricks' to write code to be 'flipbooked'?
 
 --
 
@@ -240,6 +263,14 @@ But to realize the full potential, creators needed to be unburdened from copy an
 
 
 ---
+
+
+&lt;img src="figures/stop_motion.gif" width="80%" /&gt;
+
+
+
+
+---
 background-image: url(figures/upsplash_yancy_min_snail.jpg)
 background-size: cover
 
@@ -253,7 +284,7 @@ background-size: cover
 # **O**nly 
 
 --
-# **W**onderful  &lt;br&gt; (or **W**ickham's  &lt;br&gt; or **W**ayfairing)
+# **W**onderful  &lt;br&gt; (or **Wayward** &lt;br&gt; or **W**ayfairing)
 
 --
 # **ggplot2**
@@ -271,6 +302,7 @@ background-size: cover
 class: middle
 
 # .large[incrementalism]
+
 --
 
 # .large[feedback]
@@ -526,22 +558,6 @@ cars %&gt;%
 
 ---
 
-Remainder of talk Overview:
-
-1. Let's build flipbooks
-2. Some additional modes
-3. Why Flipbooks?
-
---
-
-Background for Demo:
-
-- R, Rmarkdown, Rstudio
-- tidyverse + ggplot2
-
-
----
-
 
 # With {flipbookr}
 
@@ -572,41 +588,29 @@ https://www.youtube.com/watch?v=jbkSRLYSojo
 
 ---
 
-![](figures/hans_color.png)
+![](figures/hans_size.png)
 
 ---
 
-![](figures/hans_size.png)
+![](figures/hans_color.png)
 
 ---
 
 # "Having the data is not enough.  You have to show the data in ways that people enjoy and understand" - Hans Rosling
 
----
-
-# "Having the *code* is not enough.  You have to show the *code* in ways that people enjoy and understand"
 
 
 
 ---
 
+# [Easy Flipbook Recipes](https://evamaerey.github.io/flipbooks/flipbook_recipes#1)
 
----
-
-
-
----
-
-[Easy Flipbook Recipes](https://evamaerey.github.io/flipbooks/flipbook_recipes#1)
+https://evamaerey.github.io/flipbooks/flipbook_recipes#1
 
 --
 
-Or, 'A Minimal Flipbook' template RStudio -&gt; File -&gt; New File -&gt; Rmarkdown -&gt; A Minimal Flipbook
+# Or RStudio -&gt; File -&gt; New File -&gt; Rmarkdown -&gt; A Minimal Flipbook
 
----
-
-
-&lt;iframe src="https://evamaerey.github.io/flipbooks/flipbook_recipes#1" width="504" height="400px"&gt;&lt;/iframe&gt;
 
 
 ???
@@ -625,6 +629,8 @@ In the second part of the talk, I'll try to articulate just why I think this too
 
 
 ---
+class: inverse, center, middle
+
 
 # More {flipbookr} modes
 
@@ -3097,15 +3103,6 @@ Flipbooks allow people to narrow in on unfamiliar steps, looking what immediatel
 
 
 
-
----
-background-image: url(figures/gymnastics.gif)
-background-size: contain 
-
-???
-
-
-
 ---
 
 
@@ -3143,17 +3140,39 @@ background-size: contain
 
 
 
-.large.left[Spatial offset]
---
-
-&lt;br /&gt;
-
-.large.center[requires us to engage in "visual search"]
-
-&lt;br /&gt;
+# Spatial offset 
 
 --
-.large.left[which requires focused attention and concentration]
+
+
+# requires us to engage in "visual search"
+
+--
+
+# which requires focused attention and concentration
+
+--
+
+# because it relies on visual memeory
+
+
+---
+
+&lt;img src="analogies_images/visual_memory.png" width="80%" /&gt;
+
+
+---
+
+&lt;img src="analogies_images/john_conenctrate.png" width="80%" /&gt;
+
+---
+
+
+&lt;img src="analogies_images/visual_memory_2.png" width="80%" /&gt;
+
+
+
+
 
 
 ---
@@ -3169,34 +3188,6 @@ background-size: contain
 
 Lateral comparison is hard; superimposed temporal comparison is easy; Consider the \"spot the differences\" games. Imagine if these images were super imposed.  Flickering back and forth between the two of them, superimposed and aligned, and with changes made incrementally (one-by-one), the challenge would be taken out of the game.
 
----
-background-image: url(figures/waldo_gathering.jpg)
-background-size: contain
-
-
-???
-
-"Visual search" games are fun because they are challenging.  
-
-
-
----
-
-- Visual search relies on visual memory...  Pretty effortful.
-
----
-
-&lt;img src="analogies_images/visual_memory.png" width="527" /&gt;
-
-
----
-
-&lt;img src="analogies_images/john_conenctrate.png" width="640" /&gt;
-
----
-
-
-&lt;img src="analogies_images/visual_memory_2.png" width="495" /&gt;
 
 
 ---
@@ -3248,17 +3239,6 @@ Blink Comparator -- is a proven technology -- most famously credited with humank
 
 
 ---
-background-image: url(figures/pluto_in_true_colour_wikipedia.jpg)
-background-size: cover
-
-
-
-
-
-
-
-
----
 background-image: url(figures/jurassic_park.png)
 background-size: contain
 
@@ -3301,19 +3281,9 @@ pre-attentively processed
 
 
 
----
-
-flipbookr:
-
-![type big!](https://media.giphy.com/media/3mKBXLpYeLzUY/giphy.gif)
 
 
 
-
-
-![](analogies_images/)&lt;!-- --&gt;
-
----
 
 
 ---
@@ -3321,6 +3291,7 @@ flipbookr:
 # Big thanks
 
 Garrick Aden-Buie, Emi Tanaka
+
 
 ---
 
@@ -3337,7 +3308,6 @@ Garrick Aden-Buie, Emi Tanaka
 
 
 ---
-
 
 # {flipbookr} testers, code review
 
@@ -3369,26 +3339,6 @@ background-size: 10%
 - Suraj Thapa
 - Britt Woodrum
 
----
-
-Influences:
-
-Hadley Wickham, 
-Eva Murry, Andy Kriebel, #MakeoverMonday
-
-Matthew Blackwell
-
-Tyler / data.table
-
-Roger Peng/ 
-
-Jim Hester
-
-Yihui Xie
-
-
-
-
 
 
 ---
@@ -3397,14 +3347,12 @@ Yihui Xie
 
 
 
-r chunk_reveal("heart", break_type = "user")`
 
 
 
 
 ---
 
-r chunk_reveal("heart2", break_type = "user")`
 
 
 
@@ -3416,7 +3364,7 @@ r chunk_reveal("heart2", break_type = "user")`
 
 
 &lt;style type="text/css"&gt;
-.remark-code{line-height: 1.5; font-size: 70%}
+.remark-code{line-height: 1.5; font-size: 90%}
 &lt;/style&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
