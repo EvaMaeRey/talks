@@ -1,0 +1,2643 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>What’s new in flipbookr</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Gina Reynolds, December 2019" />
+    <script src="libs/xaringanExtra-webcam-0.0.1/webcam.js"></script>
+    <script id="xaringanExtra-webcam-options" type="application/json">{"width":"200","height":"200","margin":"1em"}</script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ 
+ ```
+ ---
+ title: "What's new in flipbookr"
+ subtitle: "With flipbookr and xaringan"
+ author: "Gina Reynolds, December 2019"
+ output:
+   xaringan::moon_reader:
+     seal: false
+     lib_dir: libs
+     css: [xaringan-themer.css]
+     nature:
+       ratio: 16:10
+       highlightStyle: github
+       highlightLines: true
+       countIncrementalSlides: false
+ ```
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ 
+ ````
+ ---
+ 
+ ```{r prepare_background, include = F}
+ library(magrittr)
+ honey_comb &lt;- "https://images.unsplash.com/photo-1541697418880-71a2ccd305a7?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1050&amp;q=80"
+ 
+ magick::image_read(honey_comb) %&gt;% 
+   magick::image_colorize(opacity = 75, 
+                          color = "snow1") %&gt;% 
+   magick::image_write(path = "background.png")
+ ```
+ 
+ ```{r xaringan-themer, include = F}
+ xaringanthemer::style_mono_accent(
+   inverse_text_color = "oldlace", #faded-orange
+   # hex color should be provided, or theme_xaringan doesn't work
+   base_color = 'slateblue', #orange
+   title_slide_background_image = "https://images.unsplash.com/photo-1541697418880-71a2ccd305a7?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1050&amp;q=80",
+   background_color = "whitesmoke",
+   # background_image = "background.png",
+   code_font_size = '14px',
+   text_slide_number_color = '#b3b3b3', #grey70
+   link_color = '#ff4500', #orangered  
+   footnote_font_size = '0.5em',
+   footnote_position_bottom = "30px",
+   code_highlight_color = "#ffedcc", #faded-orange
+   extra_css = list(
+     ".pull-left-70" = list("float" = "left", "width" = "65.8%"),
+     ".pull-right-30" = list("float" = "right", "width" = "28.2%"),
+     ".pull-left-30" = list("float" = "left", "width" = "28.2%"),
+     ".pull-right-70" = list("float" = "right", "width" = "65.8%"),
+     ".orange" = list("color" = "#ffa500"),
+     ".note" = list("font-size" = "0.8em", "position" = "absolute", 
+       "bottom" = "30px", "padding-right" = "4em")
+   )
+ )
+ ```
+ 
+ 
+ 
+ 
+ 
+ 
+ class: left, top, inverse
+ background-image: url(https://images.unsplash.com/photo-1541697418880-71a2ccd305a7?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1050&amp;q=80)
+ background-size: cover
+ 
+ # .Large[What's new in {flipbookr}?]
+ 
+ &lt;br&gt;
+ &lt;br&gt;
+ &lt;br&gt;
+ &lt;br&gt;
+ &lt;br&gt;
+ &lt;br&gt;
+ &lt;br&gt;
+ &lt;br&gt;
+ &lt;br&gt;
+ &lt;br&gt;
+ &lt;br&gt;
+ &lt;br&gt;
+ &lt;br&gt;
+ &lt;br&gt;
+ &lt;br&gt;
+ 
+ #### .right[Gina Reynolds&lt;br&gt;Photo Credit: Hannah Grace]
+ 
+ ```{r, include = F}
+ # This is the recommended set up for flipbooks
+ # you might think about setting cache to TRUE as you gain practice --- building flipbooks from scratch can be time consuming
+ knitr::opts_chunk$set(fig.width = 6, message = FALSE, warning = FALSE, comment = "", cache = T, fig.retina = 3)
+ library(flipbookr)
+ library(tidyverse)
+ xaringanExtra::use_webcam()
+ ```
+ ````
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class: left, top, inverse
+background-image: url(https://images.unsplash.com/photo-1541697418880-71a2ccd305a7?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1050&amp;q=80)
+background-size: cover
+
+# .Large[What's new in {flipbookr}?]
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+#### .right[Gina Reynolds&lt;br&gt;Photo Credit: Hannah Grace]
+
+
+
+
+
+
+
+
+
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ 
+ ````
+ ---
+ 
+ 
+ `r chunk_reveal("example1", title = "### Flipbooks? ")`
+ 
+ ```{r example1, include = F}
+ cars %&gt;% 
+   ggplot() +
+   ggthemes::theme_solarized() +
+   aes(x = speed) +
+   aes(y = dist) +
+   geom_point(fill = "plum4",
+              size = 6,
+              shape = 21, 
+              alpha = .9,
+              color = "beige")
+ ```
+ ````
+---
+
+
+count: false
+ 
+### Flipbooks? 
+.panel1-example1-auto[
+
+```r
+*cars
+```
+]
+ 
+.panel2-example1-auto[
+
+```
+   speed dist
+1      4    2
+2      4   10
+3      7    4
+4      7   22
+5      8   16
+6      9   10
+7     10   18
+8     10   26
+9     10   34
+10    11   17
+11    11   28
+12    12   14
+13    12   20
+14    12   24
+15    12   28
+16    13   26
+17    13   34
+18    13   34
+19    13   46
+20    14   26
+21    14   36
+22    14   60
+23    14   80
+24    15   20
+25    15   26
+26    15   54
+27    16   32
+28    16   40
+29    17   32
+30    17   40
+31    17   50
+32    18   42
+33    18   56
+34    18   76
+35    18   84
+36    19   36
+37    19   46
+38    19   68
+39    20   32
+40    20   48
+41    20   52
+42    20   56
+43    20   64
+44    22   66
+45    23   54
+46    24   70
+47    24   92
+48    24   93
+49    24  120
+50    25   85
+```
+]
+
+---
+count: false
+ 
+### Flipbooks? 
+.panel1-example1-auto[
+
+```r
+cars %&gt;%
+* ggplot()
+```
+]
+ 
+.panel2-example1-auto[
+&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/example1_auto_02_output-1.png" width="432" /&gt;
+]
+
+---
+count: false
+ 
+### Flipbooks? 
+.panel1-example1-auto[
+
+```r
+cars %&gt;%
+  ggplot() +
+* ggthemes::theme_solarized()
+```
+]
+ 
+.panel2-example1-auto[
+&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/example1_auto_03_output-1.png" width="432" /&gt;
+]
+
+---
+count: false
+ 
+### Flipbooks? 
+.panel1-example1-auto[
+
+```r
+cars %&gt;%
+  ggplot() +
+  ggthemes::theme_solarized() +
+* aes(x = speed)
+```
+]
+ 
+.panel2-example1-auto[
+&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/example1_auto_04_output-1.png" width="432" /&gt;
+]
+
+---
+count: false
+ 
+### Flipbooks? 
+.panel1-example1-auto[
+
+```r
+cars %&gt;%
+  ggplot() +
+  ggthemes::theme_solarized() +
+  aes(x = speed) +
+* aes(y = dist)
+```
+]
+ 
+.panel2-example1-auto[
+&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/example1_auto_05_output-1.png" width="432" /&gt;
+]
+
+---
+count: false
+ 
+### Flipbooks? 
+.panel1-example1-auto[
+
+```r
+cars %&gt;%
+  ggplot() +
+  ggthemes::theme_solarized() +
+  aes(x = speed) +
+  aes(y = dist) +
+* geom_point(fill = "plum4",
+*            size = 6,
+*            shape = 21,
+*            alpha = .9,
+*            color = "beige")
+```
+]
+ 
+.panel2-example1-auto[
+&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/example1_auto_06_output-1.png" width="432" /&gt;
+]
+
+&lt;style&gt;
+.panel1-example1-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-example1-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-example1-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ 
+ ````
+ ---
+ 
+ ## And the package, {flipbookr}?
+ 
+ ```{r, out.width="50%", echo = F}
+ knitr::include_graphics("https://evamaerey.github.io/images/hex_sticker_making_files/figure-html/britt_auto_01_output-1.png")
+ ```
+ ````
+---
+
+## And the package, {flipbookr}?
+
+&lt;img src="https://evamaerey.github.io/images/hex_sticker_making_files/figure-html/britt_auto_01_output-1.png" width="50%" /&gt;
+
+
+
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ 
+ ````
+ ---
+ 
+ `r chunk_reveal("flipbookr", widths = c(1,1), break_type = "user")`
+ 
+ ```{r flipbookr, include = F}
+ "ggplot(data = cars) +
+   aes(x = speed) +
+   geom_rug()" %&gt;% #BREAK
+   code_parse() %&gt;% #BREAK
+   parsed_return_partial_code_sequence() -&gt; #BREAK
+ code_seqq #BREAK
+ ```
+ ````
+---
+
+count: false
+ 
+
+.panel1-flipbookr-user[
+
+```r
+*"ggplot(data = cars) +
+* aes(x = speed) +
+* geom_rug()"
+```
+]
+ 
+.panel2-flipbookr-user[
+
+```
+[1] "ggplot(data = cars) +  #&lt;&lt;\n  aes(x = speed) +  #&lt;&lt;\n  geom_rug()"
+```
+]
+
+---
+count: false
+ 
+
+.panel1-flipbookr-user[
+
+```r
+"ggplot(data = cars) +
+  aes(x = speed) +
+  geom_rug()" %&gt;%
+* code_parse()
+```
+]
+ 
+.panel2-flipbookr-user[
+
+```
+# A tibble: 3 x 10
+   line raw_code    code      connector comment auto  user  non_seq rotate func 
+  &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;   &lt;lgl&gt; &lt;lgl&gt;   &lt;dbl&gt; &lt;lgl&gt;  &lt;chr&gt;
+1     1 "ggplot(da… "ggplot(… "+"       ""      TRUE  FALSE       1 FALSE  ggpl…
+2     2 "  aes(x =… "  aes(x… "+"       ""      TRUE  FALSE       1 FALSE  aes  
+3     3 "  geom_ru… "  geom_… ""        ""      TRUE  FALSE       1 FALSE  geom…
+```
+]
+
+---
+count: false
+ 
+
+.panel1-flipbookr-user[
+
+```r
+"ggplot(data = cars) +
+  aes(x = speed) +
+  geom_rug()" %&gt;%
+  code_parse() %&gt;%
+* parsed_return_partial_code_sequence()
+```
+]
+ 
+.panel2-flipbookr-user[
+
+```
+[[1]]
+[1] "ggplot(data = cars)   #&lt;&lt;"
+
+[[2]]
+[1] "ggplot(data = cars) +"  "  aes(x = speed)   #&lt;&lt;"
+
+[[3]]
+[1] "ggplot(data = cars) +" "  aes(x = speed) +"    "  geom_rug()  #&lt;&lt;"    
+```
+]
+
+---
+count: false
+ 
+
+.panel1-flipbookr-user[
+
+```r
+"ggplot(data = cars) +
+  aes(x = speed) +
+  geom_rug()" %&gt;%
+  code_parse() %&gt;%
+  parsed_return_partial_code_sequence() -&gt;
+*code_seqq
+```
+]
+ 
+.panel2-flipbookr-user[
+
+]
+
+&lt;style&gt;
+.panel1-flipbookr-user {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-flipbookr-user {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-flipbookr-user {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ 
+ ````
+ ---
+ 
+ # Inject the partial code into {xaringan} slides
+ 
+ ```{r}
+ chunk_expand(num_breaks = length(code_seqq))
+ ```
+ ````
+---
+
+# Inject the partial code into {xaringan} slides
+
+
+```r
+chunk_expand(num_breaks = length(code_seqq))
+```
+
+````
+count: false
+ 
+
+.panel1-example-auto[
+```{r example_auto_01_code, eval = FALSE, echo = TRUE, code = code_seq[[1]]}
+```
+]
+ 
+.panel2-example-auto[
+```{r example_auto_01_output, eval = TRUE, echo = FALSE, code = code_seq[[1]], fig.height = 12}
+```
+]
+
+---
+count: false
+ 
+
+.panel1-example-auto[
+```{r example_auto_02_code, eval = FALSE, echo = TRUE, code = code_seq[[2]]}
+```
+]
+ 
+.panel2-example-auto[
+```{r example_auto_02_output, eval = TRUE, echo = FALSE, code = code_seq[[2]], fig.height = 12}
+```
+]
+
+---
+count: false
+ 
+
+.panel1-example-auto[
+```{r example_auto_03_code, eval = FALSE, echo = TRUE, code = code_seq[[3]]}
+```
+]
+ 
+.panel2-example-auto[
+```{r example_auto_03_output, eval = TRUE, echo = FALSE, code = code_seq[[3]], fig.height = 12}
+```
+]
+
+&lt;style&gt;
+.panel1-example-auto {
+  color: black;
+  width: 38.2121212121212%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-example-auto {
+  color: black;
+  width: 58.7878787878788%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-example-auto {
+  color: black;
+  width: 0%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+````
+
+
+
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ 
+ ```
+ ---
+ 
+ ## Where-we've-been strengths: 
+ 
+ - useful comparison (superimposed states showing incremental change)
+ 
+ --
+ 
+ - useful translation (co-evolution of R code &lt;-&gt; output)
+ 
+ --
+ 
+ - narrative (flow and process)
+ ```
+---
+
+## Where-we've-been strengths: 
+
+- useful comparison (superimposed states showing incremental change)
+
+--
+
+- useful translation (co-evolution of R code &lt;-&gt; output)
+
+--
+
+- narrative (flow and process)
+
+
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ 
+ ```
+ ---
+ 
+ ## New functionality allow for
+ 
+ - *more* useful comparisons 
+ 
+ --
+ 
+ - *more* storytelling tools
+ 
+ --
+ 
+ - *more* translation capabilities
+ ```
+---
+
+## New functionality allow for
+
+- *more* useful comparisons 
+
+--
+
+- *more* storytelling tools
+
+--
+
+- *more* translation capabilities
+
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ 
+ ```
+ ---
+ class: middle, center
+ 
+ # 1. A tool for *more* useful comparisons
+ ```
+---
+class: middle, center
+
+# 1. A tool for *more* useful comparisons
+
+
+
+
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ 
+ ````
+ ---
+ 
+ `r chunk_reveal("my_rotate", break_type = "rotate", widths = c(50,50), title = '### break_type = "rotate"')`
+ 
+ ```{r my_rotate, eval = F, echo = F}
+ ggplot(data = cars) +
+   aes(x = speed) +
+   aes(y = dist) +
+   geom_point(size = 8,
+              shape = 21,
+              alpha = .9,
+              color = "snow") +
+   aes(fill = speed) +
+   scale_fill_viridis_c(option = "viridis") + #ROTATE
+   scale_fill_viridis_c(option = "cividis") + #ROTATE
+   scale_fill_viridis_c(option = "magma") + #ROTATE
+   scale_fill_viridis_c(option = "plasma") + #ROTATE
+   scale_fill_viridis_c(option = "inferno") #ROTATE
+ ```
+ ````
+---
+
+count: false
+ 
+### break_type = "rotate"
+.panel1-my_rotate-rotate[
+
+```r
+ggplot(data = cars) +
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_point(size = 8,
+             shape = 21,
+             alpha = .9,
+             color = "snow") +
+  aes(fill = speed) +
+* scale_fill_viridis_c(option = "viridis")
+```
+]
+ 
+.panel2-my_rotate-rotate[
+&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/my_rotate_rotate_01_output-1.png" width="432" /&gt;
+]
+
+---
+count: false
+ 
+### break_type = "rotate"
+.panel1-my_rotate-rotate[
+
+```r
+ggplot(data = cars) +
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_point(size = 8,
+             shape = 21,
+             alpha = .9,
+             color = "snow") +
+  aes(fill = speed) +
+* scale_fill_viridis_c(option = "cividis")
+```
+]
+ 
+.panel2-my_rotate-rotate[
+&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/my_rotate_rotate_02_output-1.png" width="432" /&gt;
+]
+
+---
+count: false
+ 
+### break_type = "rotate"
+.panel1-my_rotate-rotate[
+
+```r
+ggplot(data = cars) +
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_point(size = 8,
+             shape = 21,
+             alpha = .9,
+             color = "snow") +
+  aes(fill = speed) +
+* scale_fill_viridis_c(option = "magma")
+```
+]
+ 
+.panel2-my_rotate-rotate[
+&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/my_rotate_rotate_03_output-1.png" width="432" /&gt;
+]
+
+---
+count: false
+ 
+### break_type = "rotate"
+.panel1-my_rotate-rotate[
+
+```r
+ggplot(data = cars) +
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_point(size = 8,
+             shape = 21,
+             alpha = .9,
+             color = "snow") +
+  aes(fill = speed) +
+* scale_fill_viridis_c(option = "plasma")
+```
+]
+ 
+.panel2-my_rotate-rotate[
+&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/my_rotate_rotate_04_output-1.png" width="432" /&gt;
+]
+
+---
+count: false
+ 
+### break_type = "rotate"
+.panel1-my_rotate-rotate[
+
+```r
+ggplot(data = cars) +
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_point(size = 8,
+             shape = 21,
+             alpha = .9,
+             color = "snow") +
+  aes(fill = speed) +
+* scale_fill_viridis_c(option = "inferno")
+```
+]
+ 
+.panel2-my_rotate-rotate[
+&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/my_rotate_rotate_05_output-1.png" width="432" /&gt;
+]
+
+&lt;style&gt;
+.panel1-my_rotate-rotate {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-my_rotate-rotate {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-my_rotate-rotate {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+
+
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ 
+ ````
+ ---
+ 
+ 
+ `r chunk_reveal("logical", display_type = c("code", "output", "output_lag"), color = c("black", "black", "darkgrey"), widths = c(1,1,1), title = '### display_type = c("code", "output", "output_lag")')`
+ 
+ ```{r logical, include=F}
+ list(1, 2) %&gt;% 
+   list(1:5, 5, 
+        ., letters[1:4]) %&gt;% 
+   .[[4]] %&gt;% 
+   .[3]
+ ```
+ ````
+---
+
+
+count: false
+ 
+### display_type = c("code", "output", "output_lag")
+.panel1-logical-auto[
+
+```r
+*list(1, 2)
+```
+]
+ 
+.panel2-logical-auto[
+
+```
+[[1]]
+[1] 1
+
+[[2]]
+[1] 2
+```
+]
+ 
+.panel3-logical-auto[
+
+```
+[1] "--"
+```
+]
+
+---
+count: false
+ 
+### display_type = c("code", "output", "output_lag")
+.panel1-logical-auto[
+
+```r
+list(1, 2) %&gt;%
+* list(1:5, 5,
+*      ., letters[1:4])
+```
+]
+ 
+.panel2-logical-auto[
+
+```
+[[1]]
+[1] 1 2 3 4 5
+
+[[2]]
+[1] 5
+
+[[3]]
+[[3]][[1]]
+[1] 1
+
+[[3]][[2]]
+[1] 2
+
+
+[[4]]
+[1] "a" "b" "c" "d"
+```
+]
+ 
+.panel3-logical-auto[
+
+```
+[[1]]
+[1] 1
+
+[[2]]
+[1] 2
+```
+]
+
+---
+count: false
+ 
+### display_type = c("code", "output", "output_lag")
+.panel1-logical-auto[
+
+```r
+list(1, 2) %&gt;%
+  list(1:5, 5,
+       ., letters[1:4]) %&gt;%
+* .[[4]]
+```
+]
+ 
+.panel2-logical-auto[
+
+```
+[1] "a" "b" "c" "d"
+```
+]
+ 
+.panel3-logical-auto[
+
+```
+[[1]]
+[1] 1 2 3 4 5
+
+[[2]]
+[1] 5
+
+[[3]]
+[[3]][[1]]
+[1] 1
+
+[[3]][[2]]
+[1] 2
+
+
+[[4]]
+[1] "a" "b" "c" "d"
+```
+]
+
+---
+count: false
+ 
+### display_type = c("code", "output", "output_lag")
+.panel1-logical-auto[
+
+```r
+list(1, 2) %&gt;%
+  list(1:5, 5,
+       ., letters[1:4]) %&gt;%
+  .[[4]] %&gt;%
+* .[3]
+```
+]
+ 
+.panel2-logical-auto[
+
+```
+[1] "c"
+```
+]
+ 
+.panel3-logical-auto[
+
+```
+[1] "a" "b" "c" "d"
+```
+]
+
+&lt;style&gt;
+.panel1-logical-auto {
+  color: black;
+  width: 32.3333333333333%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-logical-auto {
+  color: black;
+  width: 32.3333333333333%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-logical-auto {
+  color: darkgrey;
+  width: 32.3333333333333%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+
+
+
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ 
+ ```
+ ---
+ class: middle, center
+ 
+ 
+ # 2. A tool for *better* narratives and story telling (more flexible user control)
+ ```
+---
+class: middle, center
+
+
+# 2. A tool for *better* narratives and story telling (more flexible user control)
+
+
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ 
+ ```
+ ---
+ class: middle, inverse, center
+ 
+ # `title = "## My title"`
+ 
+ --
+ 
+ # `widths = c(20, 80)`
+ ```
+---
+class: middle, inverse, center
+
+# `title = "## My title"`
+
+--
+
+# `widths = c(20, 80)`
+
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ 
+ ````
+ ---
+ 
+ `r chunk_reveal("cars3", title = "## The cars data were reported in 1930 by M. Ezekiel", widths = c(24, 75))`
+ 
+ ```{r cars3, include=F}
+ cars %&gt;% 
+   ggplot() +
+   aes(x = speed) +
+   aes(y = dist) +
+   geom_point() +
+   aes(size = speed)
+ ```
+ ````
+---
+
+count: false
+ 
+## The cars data were reported in 1930 by M. Ezekiel
+.panel1-cars3-auto[
+
+```r
+*cars
+```
+]
+ 
+.panel2-cars3-auto[
+
+```
+   speed dist
+1      4    2
+2      4   10
+3      7    4
+4      7   22
+5      8   16
+6      9   10
+7     10   18
+8     10   26
+9     10   34
+10    11   17
+11    11   28
+12    12   14
+13    12   20
+14    12   24
+15    12   28
+16    13   26
+17    13   34
+18    13   34
+19    13   46
+20    14   26
+21    14   36
+22    14   60
+23    14   80
+24    15   20
+25    15   26
+26    15   54
+27    16   32
+28    16   40
+29    17   32
+30    17   40
+31    17   50
+32    18   42
+33    18   56
+34    18   76
+35    18   84
+36    19   36
+37    19   46
+38    19   68
+39    20   32
+40    20   48
+41    20   52
+42    20   56
+43    20   64
+44    22   66
+45    23   54
+46    24   70
+47    24   92
+48    24   93
+49    24  120
+50    25   85
+```
+]
+
+---
+count: false
+ 
+## The cars data were reported in 1930 by M. Ezekiel
+.panel1-cars3-auto[
+
+```r
+cars %&gt;%
+* ggplot()
+```
+]
+ 
+.panel2-cars3-auto[
+&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/cars3_auto_02_output-1.png" width="432" /&gt;
+]
+
+---
+count: false
+ 
+## The cars data were reported in 1930 by M. Ezekiel
+.panel1-cars3-auto[
+
+```r
+cars %&gt;%
+  ggplot() +
+* aes(x = speed)
+```
+]
+ 
+.panel2-cars3-auto[
+&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/cars3_auto_03_output-1.png" width="432" /&gt;
+]
+
+---
+count: false
+ 
+## The cars data were reported in 1930 by M. Ezekiel
+.panel1-cars3-auto[
+
+```r
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+* aes(y = dist)
+```
+]
+ 
+.panel2-cars3-auto[
+&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/cars3_auto_04_output-1.png" width="432" /&gt;
+]
+
+---
+count: false
+ 
+## The cars data were reported in 1930 by M. Ezekiel
+.panel1-cars3-auto[
+
+```r
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  aes(y = dist) +
+* geom_point()
+```
+]
+ 
+.panel2-cars3-auto[
+&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/cars3_auto_05_output-1.png" width="432" /&gt;
+]
+
+---
+count: false
+ 
+## The cars data were reported in 1930 by M. Ezekiel
+.panel1-cars3-auto[
+
+```r
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_point() +
+* aes(size = speed)
+```
+]
+ 
+.panel2-cars3-auto[
+&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/cars3_auto_06_output-1.png" width="432" /&gt;
+]
+
+&lt;style&gt;
+.panel1-cars3-auto {
+  color: black;
+  width: 23.7575757575758%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-cars3-auto {
+  color: black;
+  width: 74.2424242424242%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-cars3-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ 
+ ```
+ ---
+ class: middle, center
+ 
+ # Create a 'slow essay' using text_reveal().
+ ```
+---
+class: middle, center
+
+# Create a 'slow essay' using text_reveal().
+
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ 
+ ````
+ ---
+ 
+ ```{r, echo = F}
+ "Sometimes, it's helpful to slow down and look at exactly one decision.| Flipbooks present code step-by-step and side-by-side with output.| They parse code pipelines.| And reconstruct code into partial builds.| Then present those builds with their output.| Both code and output are superimposed on the previous state. | This makes seeing what changed --- both in code and output --- easy." -&gt;
+   philosophy
+ ```
+ 
+ 
+ `r text_reveal(text = philosophy, sep = "\|",  )`
+ ````
+---
+
+
+
+
+---
+class: inverse, middle, center
+# Sometimes, it's helpful to slow down and look at exactly one decision.
+---
+class: inverse, middle, center
+#  Flipbooks present code step-by-step and side-by-side with output.
+---
+class: inverse, middle, center
+#  They parse code pipelines.
+---
+class: inverse, middle, center
+#  And reconstruct code into partial builds.
+---
+class: inverse, middle, center
+#  Then present those builds with their output.
+---
+class: inverse, middle, center
+#  Both code and output are superimposed on the previous state. 
+---
+class: inverse, middle, center
+#  This makes seeing what changed --- both in code and output --- easy.
+
+
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ 
+ ```
+ ---
+ class: middle, center
+ 
+ # 3. a tool with *more* translation capability
+ ```
+---
+class: middle, center
+
+# 3. a tool with *more* translation capability
+
+
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ 
+ ```
+ ---
+ 
+ ## `display_type = c("md", "code"), md = c("hi", "by"))`
+ 
+ Allowing a series of markdown inputs allows for different types of co-evolution to be introduced
+ ```
+---
+
+## `display_type = c("md", "code"), md = c("hi", "by"))`
+
+Allowing a series of markdown inputs allows for different types of co-evolution to be introduced
+
+
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ 
+ ````
+ ---
+ 
+ `r chunk_reveal("custom_example", md = c("### a value 2", "### assigned to x", "### computing: $$\frac{1}{x}$$"), display_type = c("md", "code", "output"))`
+ 
+ ```{r custom_example, include = F}
+ 2 -&gt;
+   x
+ 
+ 1/x
+ ```
+ ````
+---
+
+count: false
+ 
+
+.panel1-custom_example-auto[
+### a value 2
+]
+ 
+.panel2-custom_example-auto[
+
+```r
+*2 
+```
+]
+ 
+.panel3-custom_example-auto[
+
+```
+[1] 2
+```
+]
+
+---
+count: false
+ 
+
+.panel1-custom_example-auto[
+### assigned to x
+]
+ 
+.panel2-custom_example-auto[
+
+```r
+2 -&gt;
+* x
+```
+]
+ 
+.panel3-custom_example-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-custom_example-auto[
+### computing: `$$\frac{1}{x}$$`
+]
+ 
+.panel2-custom_example-auto[
+
+```r
+2 -&gt;
+  x
+
+*1/x
+```
+]
+ 
+.panel3-custom_example-auto[
+
+```
+[1] 0.5
+```
+]
+
+&lt;style&gt;
+.panel1-custom_example-auto {
+  color: black;
+  width: 28.7040816326531%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-custom_example-auto {
+  color: black;
+  width: 38.6020408163265%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-custom_example-auto {
+  color: black;
+  width: 29.6938775510204%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+
+
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ 
+ ````
+ ---
+ 
+ ```{python, cache = F}
+ import pandas as pd
+ from vega_datasets import data
+ import matplotlib.pylab as plt
+ ```
+ ````
+---
+
+
+```python
+import pandas as pd
+from vega_datasets import data
+import matplotlib.pylab as plt
+```
+
+
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ 
+ ````
+ ---
+ 
+ `r chunk_reveal("hans", lang = "python", left_assign=TRUE, title = "## python &lt;-&gt; output")`
+ 
+ ```{python hans, include = F, cache = F}
+ gap_2000 = data \n  .countries()  \n  .drop(['_comment'], axis = 1) \n  .filter(['country', 'life_expect',
+            'year', 'fertility'])
+            
+ gap_2000 = gap_2000[gap_2000.year.eq(2000)] 
+ ```   
+ ````
+---
+
+count: false
+ 
+## python &lt;-&gt; output
+.panel1-hans-auto[
+
+```python
+*gap_2000 = data
+
+gap_2000
+```
+]
+ 
+.panel2-hans-auto[
+
+```
+&lt;vega_datasets.core.DataLoader object at 0x115ea64a8&gt;
+```
+]
+
+---
+count: false
+ 
+## python &lt;-&gt; output
+.panel1-hans-auto[
+
+```python
+gap_2000 = data \
+* .countries()
+
+gap_2000
+```
+]
+ 
+.panel2-hans-auto[
+
+```
+                           _comment         country  fertility  life_expect  \
+0    Data courtesy of Gapminder.org     Afghanistan     7.7000       30.332   
+1                               NaN     Afghanistan     7.7000       31.997   
+2                               NaN     Afghanistan     7.7000       34.020   
+3                               NaN     Afghanistan     7.7000       36.088   
+4                               NaN     Afghanistan     7.7000       38.438   
+5                               NaN     Afghanistan     7.8000       39.854   
+6                               NaN     Afghanistan     7.9000       40.822   
+7                               NaN     Afghanistan     8.0000       41.674   
+8                               NaN     Afghanistan     8.0000       41.763   
+9                               NaN     Afghanistan     7.4792       42.129   
+10                              NaN       Argentina     3.1265       64.399   
+11                              NaN       Argentina     3.0895       65.142   
+12                              NaN       Argentina     3.0490       65.634   
+13                              NaN       Argentina     3.1455       67.065   
+14                              NaN       Argentina     3.4400       68.481   
+15                              NaN       Argentina     3.1500       69.942   
+16                              NaN       Argentina     3.0530       70.774   
+17                              NaN       Argentina     2.9000       71.868   
+18                              NaN       Argentina     2.6300       73.275   
+19                              NaN       Argentina     2.3500       74.340   
+20                              NaN           Aruba     5.1500       64.381   
+21                              NaN           Aruba     4.3990       66.606   
+22                              NaN           Aruba     3.3010       68.336   
+23                              NaN           Aruba     2.6510       70.941   
+24                              NaN           Aruba     2.4500       71.830   
+25                              NaN           Aruba     2.3580       74.116   
+26                              NaN           Aruba     2.3000       74.494   
+27                              NaN           Aruba     2.2800       74.108   
+28                              NaN           Aruba     2.2080       73.011   
+29                              NaN           Aruba     2.1240       73.451   
+..                              ...             ...        ...          ...   
+600                             NaN  United Kingdom     2.4900       70.420   
+601                             NaN  United Kingdom     2.8100       70.760   
+602                             NaN  United Kingdom     2.5200       71.360   
+603                             NaN  United Kingdom     2.0400       72.010   
+604                             NaN  United Kingdom     1.7200       72.760   
+605                             NaN  United Kingdom     1.8000       74.040   
+606                             NaN  United Kingdom     1.8100       75.007   
+607                             NaN  United Kingdom     1.7800       76.420   
+608                             NaN  United Kingdom     1.7000       77.218   
+609                             NaN  United Kingdom     1.6950       78.471   
+610                             NaN   United States     3.7060       69.490   
+611                             NaN   United States     3.3140       70.210   
+612                             NaN   United States     2.5450       70.760   
+613                             NaN   United States     2.0160       71.340   
+614                             NaN   United States     1.7880       73.380   
+615                             NaN   United States     1.8250       74.650   
+616                             NaN   United States     1.9240       75.020   
+617                             NaN   United States     2.0250       76.090   
+618                             NaN   United States     1.9940       76.810   
+619                             NaN   United States     2.0380       77.310   
+620                             NaN       Venezuela     6.4585       57.907   
+621                             NaN       Venezuela     6.6570       60.770   
+622                             NaN       Venezuela     5.9045       63.479   
+623                             NaN       Venezuela     4.9410       65.712   
+624                             NaN       Venezuela     4.4685       67.456   
+625                             NaN       Venezuela     3.9570       68.557   
+626                             NaN       Venezuela     3.6485       70.190   
+627                             NaN       Venezuela     3.2500       71.150   
+628                             NaN       Venezuela     2.9415       72.146   
+629                             NaN       Venezuela     2.7230       72.766   
+
+     n_fertility  n_life_expect  p_fertility  p_life_expect  year  
+0         7.7000         31.997          NaN            NaN  1955  
+1         7.7000         34.020       7.7000         30.332  1960  
+2         7.7000         36.088       7.7000         31.997  1965  
+3         7.7000         38.438       7.7000         34.020  1970  
+4         7.8000         39.854       7.7000         36.088  1975  
+5         7.9000         40.822       7.7000         38.438  1980  
+6         8.0000         41.674       7.8000         39.854  1985  
+7         8.0000         41.763       7.9000         40.822  1990  
+8         7.4792         42.129       8.0000         41.674  1995  
+9            NaN            NaN       8.0000         41.763  2000  
+10        3.0895         65.142          NaN            NaN  1955  
+11        3.0490         65.634       3.1265         64.399  1960  
+12        3.1455         67.065       3.0895         65.142  1965  
+13        3.4400         68.481       3.0490         65.634  1970  
+14        3.1500         69.942       3.1455         67.065  1975  
+15        3.0530         70.774       3.4400         68.481  1980  
+16        2.9000         71.868       3.1500         69.942  1985  
+17        2.6300         73.275       3.0530         70.774  1990  
+18        2.3500         74.340       2.9000         71.868  1995  
+19           NaN            NaN       2.6300         73.275  2000  
+20        4.3990         66.606          NaN            NaN  1955  
+21        3.3010         68.336       5.1500         64.381  1960  
+22        2.6510         70.941       4.3990         66.606  1965  
+23        2.4500         71.830       3.3010         68.336  1970  
+24        2.3580         74.116       2.6510         70.941  1975  
+25        2.3000         74.494       2.4500         71.830  1980  
+26        2.2800         74.108       2.3580         74.116  1985  
+27        2.2080         73.011       2.3000         74.494  1990  
+28        2.1240         73.451       2.2800         74.108  1995  
+29           NaN            NaN       2.2080         73.011  2000  
+..           ...            ...          ...            ...   ...  
+600       2.8100         70.760          NaN            NaN  1955  
+601       2.5200         71.360       2.4900         70.420  1960  
+602       2.0400         72.010       2.8100         70.760  1965  
+603       1.7200         72.760       2.5200         71.360  1970  
+604       1.8000         74.040       2.0400         72.010  1975  
+605       1.8100         75.007       1.7200         72.760  1980  
+606       1.7800         76.420       1.8000         74.040  1985  
+607       1.7000         77.218       1.8100         75.007  1990  
+608       1.6950         78.471       1.7800         76.420  1995  
+609          NaN            NaN       1.7000         77.218  2000  
+610       3.3140         70.210          NaN            NaN  1955  
+611       2.5450         70.760       3.7060         69.490  1960  
+612       2.0160         71.340       3.3140         70.210  1965  
+613       1.7880         73.380       2.5450         70.760  1970  
+614       1.8250         74.650       2.0160         71.340  1975  
+615       1.9240         75.020       1.7880         73.380  1980  
+616       2.0250         76.090       1.8250         74.650  1985  
+617       1.9940         76.810       1.9240         75.020  1990  
+618       2.0380         77.310       2.0250         76.090  1995  
+619          NaN            NaN       1.9940         76.810  2000  
+620       6.6570         60.770          NaN            NaN  1955  
+621       5.9045         63.479       6.4585         57.907  1960  
+622       4.9410         65.712       6.6570         60.770  1965  
+623       4.4685         67.456       5.9045         63.479  1970  
+624       3.9570         68.557       4.9410         65.712  1975  
+625       3.6485         70.190       4.4685         67.456  1980  
+626       3.2500         71.150       3.9570         68.557  1985  
+627       2.9415         72.146       3.6485         70.190  1990  
+628       2.7230         72.766       3.2500         71.150  1995  
+629          NaN            NaN       2.9415         72.146  2000  
+
+[630 rows x 9 columns]
+```
+]
+
+---
+count: false
+ 
+## python &lt;-&gt; output
+.panel1-hans-auto[
+
+```python
+gap_2000 = data \
+  .countries()  \
+* .drop(['_comment'], axis = 1)
+
+gap_2000
+```
+]
+ 
+.panel2-hans-auto[
+
+```
+            country  fertility  life_expect  n_fertility  n_life_expect  \
+0       Afghanistan     7.7000       30.332       7.7000         31.997   
+1       Afghanistan     7.7000       31.997       7.7000         34.020   
+2       Afghanistan     7.7000       34.020       7.7000         36.088   
+3       Afghanistan     7.7000       36.088       7.7000         38.438   
+4       Afghanistan     7.7000       38.438       7.8000         39.854   
+5       Afghanistan     7.8000       39.854       7.9000         40.822   
+6       Afghanistan     7.9000       40.822       8.0000         41.674   
+7       Afghanistan     8.0000       41.674       8.0000         41.763   
+8       Afghanistan     8.0000       41.763       7.4792         42.129   
+9       Afghanistan     7.4792       42.129          NaN            NaN   
+10        Argentina     3.1265       64.399       3.0895         65.142   
+11        Argentina     3.0895       65.142       3.0490         65.634   
+12        Argentina     3.0490       65.634       3.1455         67.065   
+13        Argentina     3.1455       67.065       3.4400         68.481   
+14        Argentina     3.4400       68.481       3.1500         69.942   
+15        Argentina     3.1500       69.942       3.0530         70.774   
+16        Argentina     3.0530       70.774       2.9000         71.868   
+17        Argentina     2.9000       71.868       2.6300         73.275   
+18        Argentina     2.6300       73.275       2.3500         74.340   
+19        Argentina     2.3500       74.340          NaN            NaN   
+20            Aruba     5.1500       64.381       4.3990         66.606   
+21            Aruba     4.3990       66.606       3.3010         68.336   
+22            Aruba     3.3010       68.336       2.6510         70.941   
+23            Aruba     2.6510       70.941       2.4500         71.830   
+24            Aruba     2.4500       71.830       2.3580         74.116   
+25            Aruba     2.3580       74.116       2.3000         74.494   
+26            Aruba     2.3000       74.494       2.2800         74.108   
+27            Aruba     2.2800       74.108       2.2080         73.011   
+28            Aruba     2.2080       73.011       2.1240         73.451   
+29            Aruba     2.1240       73.451          NaN            NaN   
+..              ...        ...          ...          ...            ...   
+600  United Kingdom     2.4900       70.420       2.8100         70.760   
+601  United Kingdom     2.8100       70.760       2.5200         71.360   
+602  United Kingdom     2.5200       71.360       2.0400         72.010   
+603  United Kingdom     2.0400       72.010       1.7200         72.760   
+604  United Kingdom     1.7200       72.760       1.8000         74.040   
+605  United Kingdom     1.8000       74.040       1.8100         75.007   
+606  United Kingdom     1.8100       75.007       1.7800         76.420   
+607  United Kingdom     1.7800       76.420       1.7000         77.218   
+608  United Kingdom     1.7000       77.218       1.6950         78.471   
+609  United Kingdom     1.6950       78.471          NaN            NaN   
+610   United States     3.7060       69.490       3.3140         70.210   
+611   United States     3.3140       70.210       2.5450         70.760   
+612   United States     2.5450       70.760       2.0160         71.340   
+613   United States     2.0160       71.340       1.7880         73.380   
+614   United States     1.7880       73.380       1.8250         74.650   
+615   United States     1.8250       74.650       1.9240         75.020   
+616   United States     1.9240       75.020       2.0250         76.090   
+617   United States     2.0250       76.090       1.9940         76.810   
+618   United States     1.9940       76.810       2.0380         77.310   
+619   United States     2.0380       77.310          NaN            NaN   
+620       Venezuela     6.4585       57.907       6.6570         60.770   
+621       Venezuela     6.6570       60.770       5.9045         63.479   
+622       Venezuela     5.9045       63.479       4.9410         65.712   
+623       Venezuela     4.9410       65.712       4.4685         67.456   
+624       Venezuela     4.4685       67.456       3.9570         68.557   
+625       Venezuela     3.9570       68.557       3.6485         70.190   
+626       Venezuela     3.6485       70.190       3.2500         71.150   
+627       Venezuela     3.2500       71.150       2.9415         72.146   
+628       Venezuela     2.9415       72.146       2.7230         72.766   
+629       Venezuela     2.7230       72.766          NaN            NaN   
+
+     p_fertility  p_life_expect  year  
+0            NaN            NaN  1955  
+1         7.7000         30.332  1960  
+2         7.7000         31.997  1965  
+3         7.7000         34.020  1970  
+4         7.7000         36.088  1975  
+5         7.7000         38.438  1980  
+6         7.8000         39.854  1985  
+7         7.9000         40.822  1990  
+8         8.0000         41.674  1995  
+9         8.0000         41.763  2000  
+10           NaN            NaN  1955  
+11        3.1265         64.399  1960  
+12        3.0895         65.142  1965  
+13        3.0490         65.634  1970  
+14        3.1455         67.065  1975  
+15        3.4400         68.481  1980  
+16        3.1500         69.942  1985  
+17        3.0530         70.774  1990  
+18        2.9000         71.868  1995  
+19        2.6300         73.275  2000  
+20           NaN            NaN  1955  
+21        5.1500         64.381  1960  
+22        4.3990         66.606  1965  
+23        3.3010         68.336  1970  
+24        2.6510         70.941  1975  
+25        2.4500         71.830  1980  
+26        2.3580         74.116  1985  
+27        2.3000         74.494  1990  
+28        2.2800         74.108  1995  
+29        2.2080         73.011  2000  
+..           ...            ...   ...  
+600          NaN            NaN  1955  
+601       2.4900         70.420  1960  
+602       2.8100         70.760  1965  
+603       2.5200         71.360  1970  
+604       2.0400         72.010  1975  
+605       1.7200         72.760  1980  
+606       1.8000         74.040  1985  
+607       1.8100         75.007  1990  
+608       1.7800         76.420  1995  
+609       1.7000         77.218  2000  
+610          NaN            NaN  1955  
+611       3.7060         69.490  1960  
+612       3.3140         70.210  1965  
+613       2.5450         70.760  1970  
+614       2.0160         71.340  1975  
+615       1.7880         73.380  1980  
+616       1.8250         74.650  1985  
+617       1.9240         75.020  1990  
+618       2.0250         76.090  1995  
+619       1.9940         76.810  2000  
+620          NaN            NaN  1955  
+621       6.4585         57.907  1960  
+622       6.6570         60.770  1965  
+623       5.9045         63.479  1970  
+624       4.9410         65.712  1975  
+625       4.4685         67.456  1980  
+626       3.9570         68.557  1985  
+627       3.6485         70.190  1990  
+628       3.2500         71.150  1995  
+629       2.9415         72.146  2000  
+
+[630 rows x 8 columns]
+```
+]
+
+---
+count: false
+ 
+## python &lt;-&gt; output
+.panel1-hans-auto[
+
+```python
+gap_2000 = data \
+  .countries()  \
+  .drop(['_comment'], axis = 1) \
+* .filter(['country', 'life_expect',
+*          'year', 'fertility'])
+
+gap_2000
+```
+]
+ 
+.panel2-hans-auto[
+
+```
+            country  life_expect  year  fertility
+0       Afghanistan       30.332  1955     7.7000
+1       Afghanistan       31.997  1960     7.7000
+2       Afghanistan       34.020  1965     7.7000
+3       Afghanistan       36.088  1970     7.7000
+4       Afghanistan       38.438  1975     7.7000
+5       Afghanistan       39.854  1980     7.8000
+6       Afghanistan       40.822  1985     7.9000
+7       Afghanistan       41.674  1990     8.0000
+8       Afghanistan       41.763  1995     8.0000
+9       Afghanistan       42.129  2000     7.4792
+10        Argentina       64.399  1955     3.1265
+11        Argentina       65.142  1960     3.0895
+12        Argentina       65.634  1965     3.0490
+13        Argentina       67.065  1970     3.1455
+14        Argentina       68.481  1975     3.4400
+15        Argentina       69.942  1980     3.1500
+16        Argentina       70.774  1985     3.0530
+17        Argentina       71.868  1990     2.9000
+18        Argentina       73.275  1995     2.6300
+19        Argentina       74.340  2000     2.3500
+20            Aruba       64.381  1955     5.1500
+21            Aruba       66.606  1960     4.3990
+22            Aruba       68.336  1965     3.3010
+23            Aruba       70.941  1970     2.6510
+24            Aruba       71.830  1975     2.4500
+25            Aruba       74.116  1980     2.3580
+26            Aruba       74.494  1985     2.3000
+27            Aruba       74.108  1990     2.2800
+28            Aruba       73.011  1995     2.2080
+29            Aruba       73.451  2000     2.1240
+..              ...          ...   ...        ...
+600  United Kingdom       70.420  1955     2.4900
+601  United Kingdom       70.760  1960     2.8100
+602  United Kingdom       71.360  1965     2.5200
+603  United Kingdom       72.010  1970     2.0400
+604  United Kingdom       72.760  1975     1.7200
+605  United Kingdom       74.040  1980     1.8000
+606  United Kingdom       75.007  1985     1.8100
+607  United Kingdom       76.420  1990     1.7800
+608  United Kingdom       77.218  1995     1.7000
+609  United Kingdom       78.471  2000     1.6950
+610   United States       69.490  1955     3.7060
+611   United States       70.210  1960     3.3140
+612   United States       70.760  1965     2.5450
+613   United States       71.340  1970     2.0160
+614   United States       73.380  1975     1.7880
+615   United States       74.650  1980     1.8250
+616   United States       75.020  1985     1.9240
+617   United States       76.090  1990     2.0250
+618   United States       76.810  1995     1.9940
+619   United States       77.310  2000     2.0380
+620       Venezuela       57.907  1955     6.4585
+621       Venezuela       60.770  1960     6.6570
+622       Venezuela       63.479  1965     5.9045
+623       Venezuela       65.712  1970     4.9410
+624       Venezuela       67.456  1975     4.4685
+625       Venezuela       68.557  1980     3.9570
+626       Venezuela       70.190  1985     3.6485
+627       Venezuela       71.150  1990     3.2500
+628       Venezuela       72.146  1995     2.9415
+629       Venezuela       72.766  2000     2.7230
+
+[630 rows x 4 columns]
+```
+]
+
+---
+count: false
+ 
+## python &lt;-&gt; output
+.panel1-hans-auto[
+
+```python
+gap_2000 = data \
+  .countries()  \
+  .drop(['_comment'], axis = 1) \
+  .filter(['country', 'life_expect',
+           'year', 'fertility'])
+
+*gap_2000 = gap_2000[gap_2000.year.eq(2000)]
+
+gap_2000
+```
+]
+ 
+.panel2-hans-auto[
+
+```
+                country  life_expect  year  fertility
+9           Afghanistan       42.129  2000     7.4792
+19            Argentina       74.340  2000     2.3500
+29                Aruba       73.451  2000     2.1240
+39            Australia       80.370  2000     1.7560
+49              Austria       78.980  2000     1.3820
+59              Bahamas       71.068  2000     2.1111
+69           Bangladesh       62.013  2000     3.2240
+79             Barbados       75.970  2000     1.5000
+89              Belgium       78.320  2000     1.6380
+99              Bolivia       63.883  2000     3.9585
+109              Brazil       71.006  2000     2.3450
+119              Canada       79.770  2000     1.5220
+129               Chile       77.860  2000     2.0000
+139               China       72.028  2000     1.7000
+149            Colombia       71.682  2000     2.4705
+159          Costa Rica       78.123  2000     2.2815
+169             Croatia       74.876  2000     1.3480
+179                Cuba       77.158  2000     1.6300
+189  Dominican Republic       70.847  2000     2.9500
+199             Ecuador       74.173  2000     2.8175
+209               Egypt       69.806  2000     3.1740
+219         El Salvador       70.734  2000     2.8830
+229             Finland       78.370  2000     1.7540
+239              France       79.590  2000     1.8833
+249             Georgia       70.476  2000     1.4780
+259             Germany       78.670  2000     1.3460
+269              Greece       78.256  2000     1.2770
+279             Grenada       67.746  2000     2.4290
+289               Haiti       58.137  2000     4.0000
+299           Hong Kong       81.495  2000     0.9400
+..                  ...          ...   ...        ...
+339                Iran       69.451  2000     2.1240
+349                Iraq       57.046  2000     4.8580
+359             Ireland       77.783  2000     1.9690
+369              Israel       79.696  2000     2.9060
+379               Italy       80.240  2000     1.2860
+389             Jamaica       72.047  2000     2.6280
+399               Japan       82.000  2000     1.2910
+409               Kenya       50.992  2000     5.0000
+419         South Korea       66.662  2000     1.9173
+429         North Korea       77.045  2000     1.2420
+439             Lebanon       71.028  2000     2.3190
+449              Mexico       74.902  2000     2.4005
+459         Netherlands       78.530  2000     1.7260
+469         New Zealand       79.110  2000     1.9640
+479             Nigeria       46.608  2000     5.8450
+489              Norway       79.050  2000     1.8010
+499            Pakistan       63.610  2000     3.9936
+509                Peru       69.906  2000     2.7005
+519         Philippines       70.303  2000     3.5436
+529              Poland       74.670  2000     1.2510
+539            Portugal       77.290  2000     1.4540
+549              Rwanda       43.413  2000     6.0100
+559        Saudi Arabia       71.626  2000     3.8100
+569        South Africa       53.365  2000     2.8020
+579               Spain       79.780  2000     1.2870
+589         Switzerland       80.620  2000     1.4150
+599              Turkey       70.845  2000     2.2300
+609      United Kingdom       78.471  2000     1.6950
+619       United States       77.310  2000     2.0380
+629           Venezuela       72.766  2000     2.7230
+
+[63 rows x 4 columns]
+```
+]
+
+&lt;style&gt;
+.panel1-hans-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-hans-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-hans-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ 
+ ````
+ ---
+ 
+ 
+ `r chunk_reveal("plotting1", lang = "python")`
+ 
+ ```{python plotting1, include = F}
+ import matplotlib.pyplot as plt
+ fig, ax = plt.subplots(figsize = (10,7))
+ plt.scatter(x = gap_2000.life_expect, 
+             y = gap_2000.fertility)
+ ax. set_title('Life expectancy and fertility are strongly negatively correlated',  
+     fontsize='x-large') 
+ ax.set_xlabel('life expectancy (years)',
+     fontsize='x-large')
+ ax.set_ylabel('fertility (average number of children)',
+     fontsize='x-large')
+ ```
+ ````
+---
+
+
+count: false
+ 
+
+.panel1-plotting1-auto[
+
+```python
+*import matplotlib.pyplot as plt
+```
+]
+ 
+.panel2-plotting1-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-plotting1-auto[
+
+```python
+import matplotlib.pyplot as plt
+*fig, ax = plt.subplots(figsize = (10,7))
+```
+]
+ 
+.panel2-plotting1-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-plotting1-auto[
+
+```python
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(figsize = (10,7))
+*plt.scatter(x = gap_2000.life_expect,
+*           y = gap_2000.fertility)
+```
+]
+ 
+.panel2-plotting1-auto[
+&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/plotting1_auto_03_output-1.png" width="960" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-plotting1-auto[
+
+```python
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(figsize = (10,7))
+plt.scatter(x = gap_2000.life_expect,
+            y = gap_2000.fertility)
+*ax. set_title('Life expectancy and fertility are strongly negatively correlated',
+*   fontsize='x-large')
+```
+]
+ 
+.panel2-plotting1-auto[
+&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/plotting1_auto_04_output-1.png" width="960" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-plotting1-auto[
+
+```python
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(figsize = (10,7))
+plt.scatter(x = gap_2000.life_expect,
+            y = gap_2000.fertility)
+ax. set_title('Life expectancy and fertility are strongly negatively correlated',
+    fontsize='x-large')
+*ax.set_xlabel('life expectancy (years)',
+*   fontsize='x-large')
+```
+]
+ 
+.panel2-plotting1-auto[
+&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/plotting1_auto_05_output-1.png" width="960" /&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-plotting1-auto[
+
+```python
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(figsize = (10,7))
+plt.scatter(x = gap_2000.life_expect,
+            y = gap_2000.fertility)
+ax. set_title('Life expectancy and fertility are strongly negatively correlated',
+    fontsize='x-large')
+ax.set_xlabel('life expectancy (years)',
+    fontsize='x-large')
+*ax.set_ylabel('fertility (average number of children)',
+*   fontsize='x-large')
+```
+]
+ 
+.panel2-plotting1-auto[
+&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/plotting1_auto_06_output-1.png" width="960" /&gt;
+]
+
+&lt;style&gt;
+.panel1-plotting1-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-plotting1-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-plotting1-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ 
+ ```
+ ---
+ 
+ ## What's-New?  Adding to these core strengths:
+ 
+ - useful comparison (incremental changes, superimposed states)
+ 
+ 
+ --
+ 
+ - useful translation 
+ 
+ 
+ --
+ 
+ - Enhance narrative building
+ ```
+---
+
+## What's-New?  Adding to these core strengths:
+
+- useful comparison (incremental changes, superimposed states)
+
+
+--
+
+- useful translation 
+
+
+--
+
+- Enhance narrative building
+
+
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ 
+ ```
+ ---
+ 
+ Talk proposal:
+ 
+ - introduce new functionality
+ 
+ --
+ 
+ - demo usage
+ ```
+---
+
+Talk proposal:
+
+- introduce new functionality
+
+--
+
+- demo usage
+
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ 
+ ````
+ ---
+ 
+ ```{r cars2, include = F}
+ ggplot(data = cars) +
+   aes(x = speed) +
+   aes(y = dist) + 
+   geom_point(alpha = .8) + 
+   aes(size = speed) + 
+   aes(color = speed) +
+   scale_size(range = c(3,8)) +
+   scale_color_viridis_c(option = "magma") +
+   labs(title = "Cars") +
+   theme(plot.title.position = "plot")
+ ```
+ 
+ # The End!
+ 
+ ```{r, code = chunk_code_seq_as_vector("cars2"), echo = F, fig.show="hold", out.width="20%"}
+ ```
+ 
+ ```{css, eval = TRUE, echo = FALSE}
+ .remark-code{line-height: 1.5; font-size: 80%}
+ 
+ @media print {
+   .has-continuation {
+     display: block;
+   }
+ }
+ 
+ ```
+ ````
+---
+
+
+
+
+# The End!
+
+
+&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/unnamed-chunk-31-1.png" width="20%" /&gt;&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/unnamed-chunk-31-2.png" width="20%" /&gt;&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/unnamed-chunk-31-3.png" width="20%" /&gt;&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/unnamed-chunk-31-4.png" width="20%" /&gt;&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/unnamed-chunk-31-5.png" width="20%" /&gt;&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/unnamed-chunk-31-6.png" width="20%" /&gt;&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/unnamed-chunk-31-7.png" width="20%" /&gt;&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/unnamed-chunk-31-8.png" width="20%" /&gt;&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/unnamed-chunk-31-9.png" width="20%" /&gt;&lt;img src="10_rstudio_2021_pitch_double_files/figure-html/unnamed-chunk-31-10.png" width="20%" /&gt;
+
+
+&lt;style type="text/css"&gt;
+.remark-code{line-height: 1.5; font-size: 80%}
+
+@media print {
+  .has-continuation {
+    display: block;
+  }
+}
+
+&lt;/style&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:10",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

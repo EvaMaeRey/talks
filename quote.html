@@ -365,6 +365,18 @@ summary {
 </div>
 
 
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ──────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.2     ✓ purrr   0.3.3
+## ✓ tibble  3.0.0     ✓ dplyr   1.0.2
+## ✓ tidyr   1.0.2     ✓ stringr 1.4.0
+## ✓ readr   1.3.1     ✓ forcats 0.5.0</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.6.2</code></pre>
+<pre><code>## Warning: package &#39;tibble&#39; was built under R version 3.6.2</code></pre>
+<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.6.2</code></pre>
+<pre><code>## ── Conflicts ─────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="markdown"><code>---
 
 `r chunk_reveal(&quot;wrangle&quot;)`</code></pre>
@@ -398,22 +410,44 @@ cars_mod
 
 ---</code></pre>
 <pre class="r"><code>library(tidyverse)
-read_lines(&quot;https://raw.githubusercontent.com/EvaMaeRey/flipbookr/master/inst/rmarkdown/templates/most-features/skeleton/skeleton.Rmd&quot;) %&gt;% 
-  tibble(line = .) %&gt;% 
-  mutate(start_chunk = str_detect(line, &quot;```\\{r&quot;)) %&gt;% 
-  mutate(mod = ifelse(start_chunk, 
-                      paste0(&quot;````markdown\n&quot;, line, 
-                             &quot;`r &#39;&#39;`&quot;), &quot;&quot;)) %&gt;% 
-  mutate(end_chunk = str_detect(line, &quot;```$&quot;)) %&gt;% 
-  filter(start_chunk) %&gt;% 
-  mutate(in_line = str_detect(line, &quot;^`r&quot;)) %&gt;% 
-  mutate(mod = ifelse(end_chunk, 
-                      paste0(line, &quot;\n````&quot;),
-                      &quot;&quot;))
-  
+readLines(&quot;10_rstudio_2021_pitch.Rmd&quot;, skipNul = F) -&gt;
+lines  
 
-ifelse(T, paste0(&quot;hi&quot;, &quot;`r &#39;&#39;`&quot;), &quot;&quot;)
-str_detect(&quot;`r&quot;, &quot;`r&quot;)</code></pre>
+lines %&gt;% 
+  str_replace_all(&quot; &quot;, &quot;~~&quot;) %&gt;% 
+  data.frame(line = .) %&gt;% 
+  mutate(original = str_replace_all(line, &quot;~~&quot;, &quot; &quot;)) %&gt;% 
+  # mutate(start_chunk = str_detect(line, &quot;```\\{r&quot;)) %&gt;% 
+  # mutate(mod = ifelse(start_chunk, 
+  #                     paste0(&quot;````markdown\n&quot;, line, 
+  #                            &quot;`r &#39;&#39;`&quot;), &quot;&quot;)) %&gt;% 
+  # mutate(end_chunk = str_detect(line, &quot;```$&quot;)) %&gt;% 
+  # # filter(start_chunk) %&gt;% 
+  # mutate(in_line = str_detect(line, &quot;^`r&quot;)) %&gt;% 
+  # mutate(mod = ifelse(end_chunk, 
+  #                     paste0(line, &quot;\n````&quot;),
+  #                     &quot;&quot;)) %&gt;% 
+  mutate(slide_break = str_detect(line, &quot;^---$&quot;)) %&gt;% 
+  mutate(slide = cumsum(slide_break)) %&gt;% 
+  filter(!slide_break) %&gt;% 
+  group_by(slide) %&gt;% 
+  summarize(slide_content = paste0(line, collapse = &quot;\n&quot;)) %&gt;% 
+  pull() %&gt;% 
+  str_replace_all(&quot;~~&quot;, &quot; &quot;) %&gt;% 
+  paste0(&quot;---\n&quot;,., &quot;\n---\nclass: inverse\n\n&quot;, 
+         &quot;```{r, comment = &#39;&#39;, echo = F, return = &#39;asis&#39;}\ncat(&#39;````&quot;, 
+         str_replace_all(str_replace_all(., &quot;\&#39;&quot;, &quot;\\\\&#39;&quot;), &quot;\n&quot;, &quot;\\\\n&quot;) , 
+         &quot;&#39;)\n```&quot;) %&gt;% 
+  paste0(collapse = &quot;\n\n&quot;) %&gt;% 
+  writeLines(con = &quot;test_out.Rmd&quot;)  
+
+&quot;```{r, comment = &#39;&#39;}\ncat(&quot;
+&quot;)
+```&quot;</code></pre>
+<pre class="r"><code>ifelse(T, paste0(&quot;hi&quot;, &quot;`r &#39;&#39;`&quot;), &quot;&quot;)</code></pre>
+<pre><code>## [1] &quot;hi`r &#39;&#39;`&quot;</code></pre>
+<pre class="r"><code>str_detect(&quot;`r&quot;, &quot;`r&quot;)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
 
 
 

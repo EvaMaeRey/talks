@@ -30,11 +30,12 @@ magick::image_read(honey_comb) %>%
 
 ```{r xaringan-themer, include = F}
 xaringanthemer::style_mono_accent(
-  inverse_text_color = "#ff4500", #faded-orange
+  inverse_text_color = "oldlace", #faded-orange
   # hex color should be provided, or theme_xaringan doesn't work
-  base_color = '#ffa500', #orange
+  base_color = 'slateblue', #orange
   title_slide_background_image = "https://images.unsplash.com/photo-1541697418880-71a2ccd305a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80",
-  background_image = "background.png",
+  background_color = "whitesmoke",
+  # background_image = "background.png",
   code_font_size = '14px',
   text_slide_number_color = '#b3b3b3', #grey70
   link_color = '#ff4500', #orangered  
@@ -168,13 +169,13 @@ chunk_expand(num_breaks = length(code_seqq))
 
 ---
 
-## New capabilities allow for
+## New functionality allow for
 
 - *more* useful comparisons 
 
 --
 
-- *more powerful* narratives
+- *more* storytelling tools
 
 --
 

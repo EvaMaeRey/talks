@@ -1,0 +1,54 @@
+---
+title: "My First Flipbook"
+subtitle: "With flipbookr and xaringan"
+author: "Your name here"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, hygge, ninjutsu]
+    nature:
+      ratio: 16:10
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+```{r setup, include = FALSE}
+library(flipbookr)
+library(tidyverse)
+library(gapminder)
+knitr::opts_chunk$set(fig.width = 6, message = FALSE, 
+                      warning = FALSE, comment = "", 
+                      cache = F)
+```
+
+
+```{css, eval = TRUE, echo = FALSE}
+.remark-code{line-height: 1.5; font-size: 80%}
+@media print {
+  .has-continuation {
+    display: block;
+  }
+}
+```
+
+# gapminder flipping
+
+---
+
+
+
+`r chunk_reveal("hans")`
+
+```{r hans, include=F}
+gapminder %>% 
+  filter(year == 2002) %>% 
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point() +
+  aes(size = pop) +
+  aes(color = continent)
+```
+

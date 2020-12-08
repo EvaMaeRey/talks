@@ -354,7 +354,7 @@ cars %>%
 class: inverse
 
 ```{r, comment = '', echo = F, return = 'asis'}
-cat('---\n`r chunk_reveal("cars3", title = "## The cars data were reported in 1930 by M. Ezekiel", widths = c(24, 75))`\n\n\n```{r cars3, include=F}\ncars %>% \n  ggplot() +\n  aes(x = speed) +\n  aes(y = dist) +\n  geom_point() +\n  aes(size = speed)\n```\n\n')
+cat('````\n`r chunk_reveal("cars3", title = "## The cars data were reported in 1930 by M. Ezekiel", widths = c(24, 75))`\n\n\n```{r cars3, include=F}\ncars %>% \n  ggplot() +\n  aes(x = speed) +\n  aes(y = dist) +\n  geom_point() +\n  aes(size = speed)\n```\n\n')
 ```
 
 ---

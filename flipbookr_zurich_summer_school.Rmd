@@ -162,7 +162,7 @@ knitr::include_graphics("figures/layered_presentation_of_graphics.png")
 
 # 2018: early flipbooks
 
-```{r, out.width="70%", fig.show="hold"}
+```{r early, out.width="70%", fig.show="hold"}
 knitr::include_graphics("figures/garrick_proto_flipbook.png")
 ```                        
 

@@ -1,5 +1,10 @@
 
 
+```{r}
+library(tidyverse)
+```
+
+
 ```markdown
 ---
 
@@ -20,7 +25,7 @@ cars_mod
 
 ---
 
-```{r, comment = ""}
+```{r, comment = "", eval = T}
 cat("---\n\n```{r wrangle, include = FALSE}
 cars %>% 
   mutate(high_speed = 
@@ -36,7 +41,7 @@ cars_mod
 
 ```{r, eval = F}
 library(tidyverse)
-readLines("https://raw.githubusercontent.com/EvaMaeRey/flipbookr/master/inst/rmarkdown/templates/most-features/skeleton/skeleton.Rmd", skipNul = F) ->
+readLines("10_rstudio_2021_pitch.Rmd", skipNul = F) ->
 lines  
 
 lines %>% 
@@ -61,10 +66,10 @@ lines %>%
   pull() %>% 
   str_replace_all("~~", " ") %>% 
   paste0("---\n",., "\n---\nclass: inverse\n\n", 
-         "```{r, comment = '', echo = F, return = 'asis'}\ncat('"````, 
-         str_replace_all(str_replace_all(., "\'", "\\\\'"), "\n", "\n\\\\n ") , 
+         "```{r, comment = '', echo = F, return = 'asis'}\ncat('````", 
+         str_replace_all(str_replace_all(., "\'", "\\\\'"), "\n", "\\\\n") , 
          "')\n```") %>% 
-  paste0(collapse = "\n---\n") %>% 
+  paste0(collapse = "\n\n") %>% 
   writeLines(con = "test_out.Rmd")  
 
 "```{r, comment = ''}\ncat("
