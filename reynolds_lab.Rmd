@@ -1,0 +1,260 @@
+---
+title: "Reynolds Lab"
+subtitle: ""
+author: ""
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, hygge, ninjutsu]
+    nature:
+      seal: FALSE
+      ratio: 16:9
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+
+
+```{r, include = F}
+# This is the recommended set up for flipbooks
+# you might think about setting cache to TRUE as you gain practice --- building flipbooks from scratch can be time consuming
+knitr::opts_chunk$set(fig.width = 6, message = FALSE, warning = FALSE, comment = "", cache = T)
+options(knitr.duplicate.label = "allow")
+library(flipbookr)
+library(tidyverse)
+```
+
+class: inverse
+background-image: url(https://images.unsplash.com/photo-1568526381923-caf3fd520382?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1500&q=80)
+
+
+# Reynolds lab for statistical learning and communication
+
+
+
+# Current and previous affiliates
+
+- Conner Surrency
+-
+
+
+
+# {flipbookr}
+
+- new reveal modes
+- python
+- embedding
+
+
+---
+
+# We worked on new functionality
+
+
+```{r, eval = F}
+flipbookr::chunk_expand(chunk_name = "chunk", break_type = "replace", 
+                        replace = "green",
+                        replacements = c("green", "red"),
+                        display_type = c("md", "output", "output_lag"), 
+                        md = c("first ...", "then ,,"),
+                        chunk_options = "fig.width = 6, fig.height = 3",
+                        title = "my flipbook",
+                        lang = "python"
+                        )
+```
+
+
+---
+
+`r chunk_reveal("features", display_type = "code")`
+
+
+```{r features, eval = F, echo = F}
+download.file("https://raw.githubusercontent.com/EvaMaeRey/flipbookr/master/inst/rmarkdown/templates/most-features/skeleton/skeleton.Rmd", 
+              destfile = "flipbookr_features.Rmd")
+rmarkdown::render("flipbookr_features.Rmd")
+```
+
+
+---
+class: inverse, right
+background-image: url(https://images.unsplash.com/photo-1559533352-2a5655ff467b?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80)
+background-size: cover
+
+--
+
+# {[ggquiet](https://github.com/EvaMaeRey/ggquiet)}
+
+
+
+---
+
+`r chunk_reveal("ggquiet", break_type = "user")`
+
+
+
+```{r ggquiet, include=F}
+cars %>% 
+  ggplot() + 
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_blank() + 
+  labs(title = "What a great title") +
+  theme_minimal(base_size = 18) +
+  theme(plot.title.position = "plot") + #BREAK
+  ggquiet::theme_quiet() + #BREAK
+  ggquiet:::x_axis_adjust("black", alpha = .8) + #BREAK
+  ggquiet:::y_axis_adjust("black", alpha = .8) + #BREAK
+  ggquiet:::titles_adjust("black", alpha = .8) + #BREAK
+  geom_point(data = . %>% slice(20),
+             size = 5) + #BREAK
+  geom_point(size = 5) #BREAK
+```
+
+
+
+---
+
+`r chunk_reveal("ggquiet2", break_type = "user", display_type = "output", chunk_options = "fig.width = 10, fig.height = 7, fig.align = 'center'", title = "### Now w/ display of output only I present it ... *quietly*! <br>")`
+
+```{r ggquiet2, include=F}
+cars %>% 
+  ggplot() + 
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_blank() + 
+  labs(title = "What a great title") +
+  theme_minimal(base_size = 18) +
+  theme(plot.title.position = "plot") +
+  ggquiet::theme_quiet() + #BREAK
+  ggquiet:::x_axis_adjust("black", alpha = .8) + #BREAK
+  ggquiet:::y_axis_adjust("black", alpha = .8) + #BREAK
+  ggquiet:::titles_adjust("black", alpha = .8) + #BREAK
+  geom_point(data = . %>% slice(20),
+             size = 5) + #BREAK
+  geom_point(size = 5) + #BREAK
+  aes(color = speed) +
+  scale_color_viridis_c(option = "magma") +
+  theme(legend.position = c(.2,.8),
+        legend.direction = "horizontal",
+        legend.background = element_rect(fill = alpha("black", alpha = 0), 
+                                         color = alpha("black", alpha = 0))) +
+  geom_point(color = "black", size = 5) + #BREAK
+  geom_point(size = 5) #BREAK
+```
+
+
+---
+class: inverse
+background-image: url(https://images.unsplash.com/photo-1572291720677-d8d28ac52a5b?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1556&q=80)
+
+--
+
+# {ggxmean}
+
+---
+
+`r chunk_reveal("ggxmean")`
+
+
+```{r ggxmean, include=F}
+library(ggxmean) #BREAK
+mtcars %>% 
+  ggplot() + 
+  aes(x = wt) + 
+  aes(y = mpg) +
+  geom_point() + #BREAK
+  geom_xmean(linetype = "dashed") + #BREAK
+  geom_xvlines(alpha = .2) + #BREAK
+  aes(color = as_factor(cyl)) + #BREAK
+  facet_grid(rows = vars(cyl)) #BREAK
+```
+
+---
+class: right, inverse
+background-image: url(https://images.unsplash.com/photo-1517327832109-76f52a6c5eab?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80)
+background-size: contain
+
+--
+
+# flipbookr::text_reveal()
+
+---
+class: bottom, center, inverse
+background-image: url(https://images.unsplash.com/photo-1578161467910-11ca4025aa0e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80)
+background-size: contain
+
+--
+
+# flipbookr::embed_flipbook()
+
+
+---
+
+```{r embedding, include = F}
+ggplot(cars) +
+  aes(speed, dist) +
+  geom_point(size = 5) +
+  aes(color = speed) + 
+  scale_color_viridis_c(option = "magma")
+```
+
+```{r}
+flipbookr::embed_flipbook("embedding", 
+                          use_share_again = T,
+                          use_embed_xaringan = T
+                          )
+```
+
+
+
+---
+class: inverse, bottom
+background-image: url(https://images.unsplash.com/photo-1577635515158-dcce4789c8fb?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=751&q=80)
+background-size: cover
+
+
+# {doublecrochet}
+
+
+
+---
+
+`r chunk_reveal("doublecrochet", display_type = "code")`
+
+
+```{r doublecrochet, eval = F, echo = F}
+doublecrochet::crochet("flipbookr_features.Rmd")
+rmarkdown::render("flipbookr_features_double.Rmd")
+```
+
+
+---
+
+Compare the rendered original and the double crocheted version, or check out the full double crocheted version [here](flipbookr_features_double.html).
+
+```{r, out.width="46%"}
+knitr::include_url(c("flipbookr_features.html", "flipbookr_features_double.html"))
+```
+
+
+
+---
+class: inverse
+background-image: url(https://images.unsplash.com/photo-1503694978374-8a2fa686963a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80)
+background-size: cover
+
+# {xaringanPrinter}
+
+
+---
+class: inverse
+background-image: url(https://images.unsplash.com/photo-1588429750683-c423e17a10c0?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80)
+background-size: contain
+
+# {viztoc}
+
+
+---
