@@ -299,8 +299,16 @@ ggplot(data = gapminder_2002) +
 ---
 
 
-# These slides and most code-movies are made with {xaringan}. See how my slides were built with {xaringan}, the {tidyverse} and {flipbookr} [here](https://evamaerey.github.io/talks/ma_206_tidyverse_tutorial_code_movies_double_crochet.html) and [here](https://github.com/EvaMaeRey/talks/ma_206_tidyverse_tutorial_code_movies_double_crochet.Rmd) and learn more about {xaringan} [here](https://slides.yihui.org/xaringan/#1) 
+# These slides are made with {xaringan}, the {tidyverse} and {flipbookr} 
 
+## Learn more about {xaringan} [here](https://slides.yihui.org/xaringan/#1) 
+
+## Easy flipbook recipes [here](https://evamaerey.github.io/flipbooks/flipbook_recipes#1)
+
+## See how these slides were built with {xaringan}, 
+
+- [source .Rmd](https://github.com/EvaMaeRey/talks/ma_206_tidyverse_tutorial_code_movies.Rmd) 
+- [source w slides](https://evamaerey.github.io/talks/ma_206_tidyverse_tutorial_code_movies_double_crochet.html)
 
 
 ```{css, eval = TRUE, echo = F}
