@@ -386,7 +386,7 @@ class: inverse
 
  ```{r, comment = '', echo = F, return = 'asis'}
 cat('---
-class: inverse, middle\nbackground-image: url(figures/upsplash_yancy_min_snail.jpg)\nbackground-size: cover\n\n\n# **S**LOW ggplot2\n\n\n')
+class: inverse, middle\nbackground-image: url(figures/upsplash_yancy_min_snail.jpg)\nbackground-size: cover\n\n\n# **S**LOW ggplot2\n\n')
 ```
 ---
 class: inverse, middle
@@ -395,6 +395,24 @@ background-size: cover
 
 
 # **S**LOW ggplot2
+
+
+
+
+---
+class: inverse
+
+###From source .Rmd:
+
+ ```{r, comment = '', echo = F, return = 'asis'}
+cat('---
+\n\n\n\n\n\n')
+```
+---
+
+
+
+
 
 
 
@@ -530,13 +548,16 @@ class: inverse
 
  ```{r, comment = '', echo = F, return = 'asis'}
 cat('---
-\n# Big thanks Conner Surrency, for translating the guide! \n\n![](figures/typing_pinky_brain.webp)\n\n')
+\n# Big thanks Conner, for translating the guide! \n\n![](figures/typing_pinky_brain.webp)\n\n\n<!-- ![](figures/university_of_denver_shield.svg){ width=10% } -->\n\n')
 ```
 ---
 
-# Big thanks Conner Surrency, for translating the guide! 
+# Big thanks Conner, for translating the guide! 
 
 ![](figures/typing_pinky_brain.webp)
+
+
+<!-- ![](figures/university_of_denver_shield.svg){ width=10% } -->
 
 
 
@@ -548,13 +569,21 @@ class: inverse
 
  ```{r, comment = '', echo = F, return = 'asis'}
 cat('---
-\n\n# These slides and most code-movies are made with {xaringan}. Learn more about {xaringan} [here](https://slides.yihui.org/xaringan/#1) and see how these slides were built [here]().\n\n\n\n```{css, eval = TRUE, echo = F}\n.remark-code{line-height: 1.5; font-size: 100%}\n```\n\n')
+\n\n# These slides are made with {xaringan}, the {tidyverse} and {flipbookr} \n\n## Learn more about {xaringan} [here](https://slides.yihui.org/xaringan/#1) \n\n## Easy flipbook recipes [here](https://evamaerey.github.io/flipbooks/flipbook_recipes#1)\n\n## See how these slides were built with {xaringan}, \n\n- [source .Rmd](https://github.com/EvaMaeRey/talks/blob/master/ma_206_tidyverse_tutorial_code_movies.Rmd) \n- [source & slides](https://evamaerey.github.io/talks/ma_206_tidyverse_tutorial_code_movies_double_crochet.html)\n\n\n```{css, eval = TRUE, echo = F}\n.remark-code{line-height: 1.5; font-size: 100%}\n```\n\n')
 ```
 ---
 
 
-# These slides and most code-movies are made with {xaringan}. Learn more about {xaringan} [here](https://slides.yihui.org/xaringan/#1) and see how these slides were built [here]().
+# These slides are made with {xaringan}, the {tidyverse} and {flipbookr} 
 
+## Learn more about {xaringan} [here](https://slides.yihui.org/xaringan/#1) 
+
+## Easy flipbook recipes [here](https://evamaerey.github.io/flipbooks/flipbook_recipes#1)
+
+## See how these slides were built with {xaringan}, 
+
+- [source .Rmd](https://github.com/EvaMaeRey/talks/blob/master/ma_206_tidyverse_tutorial_code_movies.Rmd) 
+- [source & slides](https://evamaerey.github.io/talks/ma_206_tidyverse_tutorial_code_movies_double_crochet.html)
 
 
 ```{css, eval = TRUE, echo = F}

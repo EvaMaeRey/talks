@@ -307,8 +307,8 @@ ggplot(data = gapminder_2002) +
 
 ## See how these slides were built with {xaringan}, 
 
-- [source .Rmd](https://github.com/EvaMaeRey/talks/ma_206_tidyverse_tutorial_code_movies.Rmd) 
-- [source w slides](https://evamaerey.github.io/talks/ma_206_tidyverse_tutorial_code_movies_double_crochet.html)
+- [source .Rmd](https://github.com/EvaMaeRey/talks/blob/master/ma_206_tidyverse_tutorial_code_movies.Rmd) 
+- [source & slides](https://evamaerey.github.io/talks/ma_206_tidyverse_tutorial_code_movies_double_crochet.html)
 
 
 ```{css, eval = TRUE, echo = F}
