@@ -20,15 +20,12 @@ output:
 knitr::opts_chunk$set(echo = F, comment = "", message = F, 
                       warning = F, cache = T, fig.retina = 3)
 library(tidyverse)
-# remotes::install_github("EvaMaeRey/)
+# remotes::install_github("EvaMaeRey/flipbookr")
 library(flipbookr)
 library(xaringanthemer)
 
 xaringanthemer::mono_light(
   base_color = "#02075D",
-  # header_font_google = google_font("Josefin Sans"),
-  # text_font_google   = google_font("Montserrat", "200", "200i"),
-  # code_font_google   = google_font("Droid Mono"),
   text_font_size = ".85cm",
   code_font_size = ".15cm")
 
