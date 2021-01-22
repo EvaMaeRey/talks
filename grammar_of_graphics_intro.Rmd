@@ -65,6 +65,7 @@ knitr::opts_chunk$set(message = F, warning = F, comment = "", fig.height = 4.5, 
 - Welcome
 - Introductions (w cat and quant var discussion)
 - Course expectations
+- 6 steps of a statistical investigation
 - Prep for tidyverse 1) data visualization
 
 
@@ -88,13 +89,25 @@ Course expectations:
 
 --
 
-- Course Guide
+- Bonus and instructor points...
+
+-- data manipulation exercise
+-- participation
+-- data viz exercise
+
 
 --
 
-- Bonus and instructor points...
+- AI - by appointment!  Taylor 104
 
 ---
+
+
+MA206 Course guide + talk through 6 steps w/ organ donation example
+
+
+---
+
 
 # Prep for tidyverse work
 
