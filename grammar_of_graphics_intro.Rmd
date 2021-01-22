@@ -15,10 +15,10 @@ class: inverse, left, bottom
 background-image: url(images_for_lecture/data_viz_william_iven_unsplash.jpg)
 background-size: cover
 
-# .Large[Data Visualization]
+# .Large[Probability and Statistics]
 
 ## .small[Welcome]
-#### .tiny[Dr. Evangeline Reynolds | DS4IR | 2020-01-13 |Image credit: William Iven, Upsplash]
+#### .tiny[Dr. Evangeline Reynolds | Meeting 1 | 2021-01-21 | Image credit: William Iven, Upsplash]
 
 
 ???
@@ -40,7 +40,6 @@ doc_type <- "pres"
 
 ```{r xaringan-themer, include = FALSE}
 library(xaringanthemer)
-
 
 xaringanthemer::mono_light(
   base_color = "#4c5253",
@@ -64,14 +63,13 @@ knitr::opts_chunk$set(message = F, warning = F, comment = "", fig.height = 4.5, 
 # Agenda
 
 - Welcome
-- Introductions
+- Introductions (w cat and quant var discussion)
 - Course expectations
-- The Promise of Data Visualization and Grammar of Graphics w/ ggplot 2
-
----
+- Prep for tidyverse 1) data visualization
 
 
-![](images_for_lecture/ggplot_beautiful_examples.png)
+
+<!-- ![](images_for_lecture/ggplot_beautiful_examples.png) -->
 
 
 <!-- Quadratisch. Praktisch. Gut  Je suis un artist -->
@@ -79,7 +77,31 @@ knitr::opts_chunk$set(message = F, warning = F, comment = "", fig.height = 4.5, 
 
 <!-- --- -->
 
-<!-- ![](images_for_lecture/ritter_sport.jpeg) -->
+![](images_for_lecture/ritter_sport.jpeg)
+
+
+---
+
+Course expectations: 
+
+- This course requires documentation!  Do it!  Be detailed about the extend of help you get.   
+
+--
+
+- Course Guide
+
+--
+
+- Bonus and instructor points...
+
+---
+
+# Prep for tidyverse work
+
+
+---
+background-image: url(images_for_lecture/ggplot_beautiful_examples.png)
+background-size: contain
 
 
 ---
@@ -92,11 +114,12 @@ Function of Data Viz:
 
 
 
+
 ---
 
 # Use *visual channels* to communicated information
 
-- "pre-attentive processing"
+- consumed "pre-attentive processing" (McGill and Cleveland)
 
 
 ---
@@ -109,12 +132,47 @@ knitr::include_graphics("images_for_lecture/common-aesthetics-1.png")
 ```
 
 
+From Fundamentals of Data Visualization - Clause Wilke
 
-"Patterns are identified with Pre-attentive processing" 
+
 
 
 
 ---
+class: center, middle
+# A famous data visualization presentation
+
+https://www.youtube.com/embed/jbkSRLYSojo?list=PL6F8D7054D12E7C5A
+
+--
+
+What are the variables that are represented in the data vizualization?
+
+--
+
+What are the *aesthetics* (visual channels) are used to represent variables?
+
+--
+
+What are the aesthetic mappings (variable  <-> aesthetic pairings)
+
+--
+
+
+
+---
+
+# Hans Rosling
+
+<iframe width="767" height="431" src="https://www.youtube.com/embed/jbkSRLYSojo?list=PL6F8D7054D12E7C5A" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+https://www.youtube.com/embed/jbkSRLYSojo?list=PL6F8D7054D12E7C5A
+
+
+
+---
+
+
 
 
 # definition of a data visualization...
@@ -206,35 +264,5 @@ Polaris -> Tableau - Acquired for 15.7 Billion dollars (salesforce)
 
 
 
-
-
----
-class: center, middle
-# Prep for Demo
-
-https://www.youtube.com/embed/jbkSRLYSojo?list=PL6F8D7054D12E7C5A
-
-# Hans Rosling
-
-<iframe width="767" height="431" src="https://www.youtube.com/embed/jbkSRLYSojo?list=PL6F8D7054D12E7C5A" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-https://www.youtube.com/embed/jbkSRLYSojo?list=PL6F8D7054D12E7C5A
-
----
-
-What are the variables that are represented in the data vizualization?
-
---
-
-What are the *aesthetics* (visual channels) are used to represent variables?
-
---
-
-What are the aesthetic mappings (variable  <-> aesthetic pairings)
-
---
-
-
----
 
 
