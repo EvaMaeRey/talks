@@ -68,12 +68,12 @@ knitr::opts_chunk$set(message = F, warning = F, comment = "", fig.height = 4.5, 
 - 6 steps of a statistical investigation
 - Prep for tidyverse 1) data visualization
 
-
+---
 
 <!-- ![](images_for_lecture/ggplot_beautiful_examples.png) -->
 
 
-<!-- Quadratisch. Praktisch. Gut  Je suis un artist -->
+Quadratisch. Praktisch. Gut  Je suis un artist
 
 
 <!-- --- -->
