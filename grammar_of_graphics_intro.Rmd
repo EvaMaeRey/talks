@@ -62,30 +62,89 @@ knitr::opts_chunk$set(message = F, warning = F, comment = "", fig.height = 4.5, 
 
 # Agenda
 
-- Welcome
-- Introductions (w cat and quant var discussion)
-- Course expectations
-- 6 steps of a statistical investigation
-- Prep for tidyverse 1) data visualization
-
----
-
-<!-- ![](images_for_lecture/ggplot_beautiful_examples.png) -->
-
-
-Quadratisch. Praktisch. Gut  Je suis un artist
-
-
-<!-- --- -->
-
-![](images_for_lecture/ritter_sport.jpeg)
-
+- Housekeeping
+- Review
+- Data visualization discussion and exercise
 
 ---
 
 Course expectations: 
 
-- This course requires documentation!  Do it!  Be detailed about the extend of help you get.   
+- Course project, 2 or 3 people (talk more about it tomorrow)
+
+--
+
+Don't worry about the overall importance of the problem; work on it if it looks interesting. I think there's a sufficient correlation between interest and importance. - David Blackwell
+
+--
+
+Tidyverse tutorial - Due by Thursday at Midnight - on blackboard. 
+
+
+---
+
+Observational unit
+
+--
+
+vs. 
+
+Variable
+
+---
+
+Quantitative
+
+--
+
+- integer (number of siblings)
+- non integer (float) (heights 1.23 meters)
+
+--
+
+Categorical 
+
+- non-binary (multilnomial - many names)
+
+  - not ordered (which candy, which Field of Study)
+  - ordinal (class year: plebe yuk cow firstie)
+
+--
+
+- binary (STEM Major, or HSS Major)
+  
+  - a special binary case: indicator variable (TRUE or FALSE, 1 or 0, has siblings or not)
+  
+
+---
+
+# Steps of analysis
+
+1. Asking a question
+2. Design a study and collect data
+3. Explore data
+4. Draw inferences
+5. Formulate conclusions
+6. Looking backward and ahead
+
+
+--
+
+Where might visualization be involved in the 6 steps?
+
+--
+
+"Quadratisch. Praktisch. Gut." <-> "Je suis e artist"
+
+---
+
+- Prep for tidyverse 1) data visualization
+
+
+---
+
+
+
 
 --
 
@@ -152,7 +211,7 @@ From Fundamentals of Data Visualization - Clause Wilke
 
 
 ---
-class: center, middle
+class: 
 # A famous data visualization presentation
 
 https://www.youtube.com/embed/jbkSRLYSojo?list=PL6F8D7054D12E7C5A
@@ -275,7 +334,20 @@ Polaris -> Tableau - Acquired for 15.7 Billion dollars (salesforce)
 # ggplot2 (in R)
 
 
+---
 
 
 
+`r flipbookr::chunk_reveal("faithful", title = "# Old faithful")`
 
+```{r faithful, include = F}
+library(tidyverse)
+faithful %>%
+  mutate(long_eruption = 
+           eruptions >= 3) %>% 
+  ggplot() +
+  aes(x = waiting) +
+  geom_dotplot(binwidth = 1) + 
+  aes(fill = long_eruption) +
+  facet_grid(rows = vars(long_eruption))
+```
